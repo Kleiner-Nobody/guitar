@@ -22,12 +22,12 @@
         --success-green: #34A853;
         --border-radius: 28px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        --spacing-xs: 8px;
-        --spacing-sm: 16px;
-        --spacing-md: 24px;
-        --spacing-lg: 32px;
-        --spacing-xl: 48px;
-        --spacing-xxl: 64px;
+        --spacing-xs: 12px;
+        --spacing-sm: 24px;
+        --spacing-md: 36px;
+        --spacing-lg: 48px;
+        --spacing-xl: 64px;
+        --spacing-xxl: 80px;
     }
 
     /* Dark Mode Variablen */
@@ -62,11 +62,11 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
         background: var(--primary-bg);
         color: var(--text-color);
-        line-height: 1.6;
+        line-height: 1.7;
         min-height: 100vh;
         overflow-x: hidden;
         transition: var(--transition);
-        padding: var(--spacing-sm);
+        padding: var(--spacing-md);
     }
 
     /* Header mit Theme-Toggle */
@@ -79,6 +79,9 @@
         border-radius: var(--border-radius);
         background: var(--card-bg);
         box-shadow: 0 4px 20px var(--shadow-color);
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .logo {
@@ -129,27 +132,30 @@
         min-height: 70vh;
         text-align: center;
         padding: var(--spacing-xl);
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     .hero-icon {
-        font-size: 5rem;
+        font-size: 6rem;
         color: var(--accent-green);
         margin-bottom: var(--spacing-md);
     }
 
     .hero-text {
-        font-size: 3.5rem;
+        font-size: 3.8rem;
         font-weight: 500;
         letter-spacing: -1.5px;
         background: linear-gradient(to right, #4CAF50, #8BC34A);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: var(--spacing-xl);
+        line-height: 1.2;
     }
 
     .search-container {
         width: 100%;
-        max-width: 700px;
+        max-width: 800px;
         position: relative;
         margin-bottom: var(--spacing-md);
     }
@@ -159,7 +165,7 @@
         padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
         border: 1px solid var(--border-color);
         border-radius: var(--border-radius);
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         transition: var(--transition);
         background: var(--card-bg);
         color: var(--text-color);
@@ -182,7 +188,7 @@
         background: transparent;
         border: none;
         color: var(--accent-green);
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         cursor: pointer;
         padding: var(--spacing-xs);
         transition: var(--transition);
@@ -199,7 +205,7 @@
         color: var(--text-color);
         border: none;
         border-radius: var(--border-radius);
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         cursor: pointer;
         transition: var(--transition);
         display: flex;
@@ -219,7 +225,7 @@
 
     /* Container für Ergebnisse */
     .container {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
         display: none; /* Anfangs versteckt */
     }
@@ -228,7 +234,7 @@
     .card {
         background: var(--card-bg);
         border-radius: calc(var(--border-radius) - 4px);
-        padding: var(--spacing-lg);
+        padding: var(--spacing-xl);
         position: relative;
         overflow: hidden;
         transition: var(--transition);
@@ -238,8 +244,8 @@
     }
 
     .card-header {
-        margin-bottom: var(--spacing-md);
-        padding-bottom: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
         border-bottom: 1px solid var(--border-color);
         display: flex;
         justify-content: space-between;
@@ -247,7 +253,7 @@
     }
 
     .card-header h2 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         font-weight: 600;
         color: var(--text-color);
         position: relative;
@@ -256,15 +262,15 @@
     /* Suchergebnisse */
     .results-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
         gap: var(--spacing-md);
-        margin-top: var(--spacing-md);
+        margin-top: var(--spacing-lg);
     }
 
     .result-card {
         background: var(--card-bg);
-        border-radius: 20px;
-        padding: var(--spacing-md);
+        border-radius: 24px;
+        padding: var(--spacing-lg);
         cursor: pointer;
         transition: var(--transition);
         border: 1px solid var(--border-color);
@@ -280,14 +286,15 @@
     }
 
     .result-title {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         font-weight: 600;
         color: var(--accent-green);
         margin-bottom: var(--spacing-xs);
+        line-height: 1.3;
     }
 
     .result-artist {
-        font-size: 1rem;
+        font-size: 1.2rem;
         color: var(--text-color);
         opacity: 0.9;
         margin-bottom: var(--spacing-sm);
@@ -296,7 +303,7 @@
     .result-info {
         display: flex;
         gap: var(--spacing-sm);
-        font-size: 0.9rem;
+        font-size: 1rem;
         color: var(--text-gray);
         margin-top: auto;
         padding-top: var(--spacing-sm);
@@ -306,14 +313,14 @@
     .result-info span {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
 
     /* Song-Anzeige */
     .song-display {
         background: var(--card-bg);
-        border-radius: 20px;
-        padding: var(--spacing-lg);
+        border-radius: 24px;
+        padding: var(--spacing-xl);
         position: relative;
         border: 1px solid var(--border-color);
         box-shadow: 0 5px 25px var(--shadow-color);
@@ -323,22 +330,24 @@
     .song-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--spacing-md);
-        padding-bottom: var(--spacing-sm);
+        align-items: flex-start;
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
         border-bottom: 1px solid var(--border-color);
     }
 
     .song-title {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         font-weight: 700;
         color: var(--accent-green);
+        line-height: 1.2;
     }
 
     .song-artist {
-        font-size: 1.3rem;
+        font-size: 1.6rem;
         color: var(--text-color);
         opacity: 0.9;
+        margin-top: var(--spacing-xs);
     }
 
     .song-content {
@@ -351,6 +360,7 @@
         border-radius: 16px;
         border: 1px solid var(--border-color);
         margin: var(--spacing-md) 0;
+        font-size: 1.1rem;
     }
 
     .song-section {
@@ -364,27 +374,28 @@
         margin: 0 0 var(--spacing-md);
         padding-bottom: var(--spacing-xs);
         border-bottom: 1px solid var(--border-color);
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
 
     .song-line {
         display: flex;
         flex-direction: column;
-        margin-bottom: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
     }
 
     .chord-line {
         color: var(--accent-blue);
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         letter-spacing: 1px;
-        min-height: 1.6rem;
-        margin-bottom: 4px;
+        min-height: 1.8rem;
+        margin-bottom: 6px;
     }
 
     .lyrics-line {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         padding-left: 10px;
+        line-height: 1.6;
     }
 
     /* Steuerelemente */
@@ -392,14 +403,14 @@
         display: flex;
         flex-wrap: wrap;
         gap: var(--spacing-sm);
-        margin-top: var(--spacing-md);
+        margin-top: var(--spacing-lg);
     }
 
     .control-btn {
         padding: var(--spacing-md) var(--spacing-lg);
         border: none;
         border-radius: 20px;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         cursor: pointer;
         transition: var(--transition);
         display: flex;
@@ -409,7 +420,7 @@
         background: var(--card-bg);
         color: var(--text-color);
         flex: 1;
-        min-width: 180px;
+        min-width: 200px;
         justify-content: center;
         box-shadow: 0 4px 15px var(--shadow-color);
         border: 1px solid var(--border-color);
@@ -438,21 +449,21 @@
         display: flex;
         align-items: center;
         gap: var(--spacing-sm);
-        margin-top: var(--spacing-md);
+        margin-top: var(--spacing-lg);
         padding: var(--spacing-md);
         background: rgba(76, 175, 80, 0.1);
         border-radius: 20px;
+        font-size: 1.2rem;
     }
 
     .speed-control label {
-        font-size: 1.1rem;
         white-space: nowrap;
         color: var(--text-color);
     }
 
     .speed-control input {
         flex: 1;
-        height: 8px;
+        height: 10px;
         border-radius: 10px;
         background: var(--text-gray);
         outline: none;
@@ -461,19 +472,19 @@
 
     .speed-control input::-webkit-slider-thumb {
         -webkit-appearance: none;
-        width: 22px;
-        height: 22px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background: var(--accent-green);
         cursor: pointer;
-        box-shadow: 0 2px 6px var(--shadow-color);
+        box-shadow: 0 2px 8px var(--shadow-color);
     }
 
     #speedValue {
-        min-width: 45px;
+        min-width: 50px;
         text-align: center;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: var(--accent-green);
     }
 
@@ -490,7 +501,7 @@
         display: none;
         z-index: 1001;
         box-shadow: 0 8px 30px var(--shadow-color);
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         font-weight: 600;
         border: 1px solid var(--border-color);
         animation: slideIn 0.4s ease-out;
@@ -504,11 +515,11 @@
 
     /* Ladeindikator */
     .spinner {
-        border: 4px solid rgba(255, 255, 255, 0.1);
-        border-top: 4px solid var(--accent-green);
+        border: 6px solid rgba(255, 255, 255, 0.1);
+        border-top: 6px solid var(--accent-green);
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         animation: spin 1s linear infinite;
         margin: var(--spacing-xl) auto;
         display: none;
@@ -527,7 +538,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(0, 0, 0, 0.9);
         z-index: 1000;
         align-items: center;
         justify-content: center;
@@ -537,10 +548,10 @@
         background: var(--card-bg);
         border-radius: var(--border-radius);
         width: 90%;
-        max-width: 700px;
+        max-width: 800px;
         max-height: 80vh;
         overflow-y: auto;
-        padding: var(--spacing-lg);
+        padding: var(--spacing-xl);
         box-shadow: 0 15px 50px var(--shadow-color);
         position: relative;
         border: 1px solid var(--border-color);
@@ -550,14 +561,14 @@
         position: absolute;
         top: var(--spacing-md);
         right: var(--spacing-md);
-        font-size: 1.8rem;
+        font-size: 2rem;
         color: var(--text-gray);
         cursor: pointer;
         background: none;
         border: none;
         transition: var(--transition);
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -570,13 +581,13 @@
     }
 
     .modal-header {
-        margin-bottom: var(--spacing-md);
-        padding-bottom: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
         border-bottom: 1px solid var(--border-color);
     }
 
     .modal-header h2 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         color: var(--accent-green);
     }
 
@@ -588,8 +599,8 @@
 
     .offline-item {
         background: var(--card-bg);
-        border-radius: 16px;
-        padding: var(--spacing-md);
+        border-radius: 20px;
+        padding: var(--spacing-lg);
         cursor: pointer;
         transition: var(--transition);
         border: 1px solid var(--border-color);
@@ -603,19 +614,19 @@
     }
 
     .offline-item-title {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         font-weight: 600;
         color: var(--accent-green);
     }
 
     .offline-item-artist {
-        font-size: 1rem;
+        font-size: 1.2rem;
         color: var(--text-color);
         opacity: 0.8;
     }
 
     .offline-item-date {
-        font-size: 0.8rem;
+        font-size: 1rem;
         color: var(--text-gray);
         margin-top: var(--spacing-xs);
     }
@@ -624,29 +635,56 @@
         text-align: center;
         padding: var(--spacing-xl);
         color: var(--text-gray);
+        font-size: 1.2rem;
     }
 
     /* Responsive Design */
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
         .hero-text {
-            font-size: 2.8rem;
+            font-size: 3.2rem;
+        }
+        
+        .hero-icon {
+            font-size: 5rem;
+        }
+        
+        .search-input {
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+            font-size: 1.2rem;
+        }
+        
+        .card {
+            padding: var(--spacing-lg);
+        }
+        
+        .results-container {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: var(--spacing-sm);
+        }
+        
+        .hero-text {
+            font-size: 2.6rem;
         }
         
         .hero-icon {
             font-size: 4rem;
         }
         
-        .search-input {
-            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-md);
-            font-size: 1.1rem;
+        .card-header h2 {
+            font-size: 1.8rem;
         }
         
-        .card {
-            padding: var(--spacing-md);
+        .song-title {
+            font-size: 1.8rem;
         }
         
-        .song-display {
-            padding: var(--spacing-md);
+        .song-artist {
+            font-size: 1.4rem;
         }
         
         .controls {
@@ -659,6 +697,10 @@
         
         .results-container {
             grid-template-columns: 1fr;
+        }
+        
+        .modal-content {
+            padding: var(--spacing-lg);
         }
     }
 
@@ -679,24 +721,29 @@
         
         .search-input {
             padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) var(--spacing-md);
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         .control-btn {
             padding: var(--spacing-sm);
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
         
         .song-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
         
         .song-artist {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
         
         .modal-content {
             padding: var(--spacing-md);
+        }
+        
+        .notification {
+            font-size: 1.1rem;
+            padding: var(--spacing-sm) var(--spacing-md);
         }
     }
     </style>
@@ -774,7 +821,7 @@
                 <div class="speed-control">
                     <label for="scrollSpeed">Scroll-Geschwindigkeit:</label>
                     <input type="range" id="scrollSpeed" min="1" max="10" value="3">
-                    <span id="speedValue">3 W/s</span>
+                    <span id="speedValue">3 Z/s</span>
                 </div>
                 
                 <div class="controls">
@@ -814,24 +861,6 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Ultimate Guitar API Key (sollte eigentlich geheim sein)
-        const UG_API_KEY = "xgNDu6kLc2hIy8Uf4QZ7V1t9oJ0RqWb";
-        
-        // Registriere Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => {
-                    console.log('Service Worker registriert:', reg);
-                    showNotification("Service Worker aktiv - Proxy funktioniert", "success");
-                })
-                .catch(err => {
-                    console.error('Service Worker Registrierung fehlgeschlagen:', err);
-                    showNotification("Service Worker konnte nicht aktiviert werden", "error");
-                });
-        } else {
-            showNotification("Dein Browser unterstützt keinen Service Worker", "error");
-        }
-
         // App State
         let currentSongData = null;
         let autoScrollInterval = null;
@@ -915,9 +944,12 @@
             window.addEventListener('click', (e) => {
                 if (e.target === offlineModal) offlineModal.style.display = 'none';
             });
+            
+            // Initialisiere Geschwindigkeitsregler
+            updateScrollSpeed();
         });
 
-        // Suche nach einem Song mit eigenem Proxy
+        // Suche nach einem Song
         async function searchSong() {
             const query = songInput.value.trim();
             
@@ -936,7 +968,8 @@
             resultsContainer.innerHTML = '';
             
             try {
-                const results = await searchUltimateGuitar(query);
+                // Simuliere API-Aufruf mit Demo-Daten
+                const results = await simulateApiSearch(query);
                 currentSearchResults = results;
                 displaySearchResults(results);
                 showNotification("Suchergebnisse geladen", "success");
@@ -957,63 +990,135 @@
             }
         }
 
-        // Suche mit Ultimate Guitar API über eigenen Proxy
-        async function searchUltimateGuitar(query) {
-            const params = new URLSearchParams({
-                page: 1,
-                page_size: 20,
-                query: query,
-                type: "chords"
-            }).toString();
-            
-            const proxyUrl = `/proxy/tab/search?${params}`;
-            
-            try {
-                const response = await fetch(proxyUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`API-Fehler: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Filtere nur Chord-Tabs mit genügend Sternen
-                return data.tabs
-                    .filter(tab => 
-                        tab.type === "chords" && 
-                        tab.rating >= 4.0 && 
-                        tab.versions > 0
-                    )
-                    .map(tab => ({
-                        id: tab.id,
-                        title: tab.song_name,
-                        artist: tab.artist_name,
-                        rating: tab.rating,
-                        votes: tab.votes,
-                        type: "Chord",
-                        version: tab.version
-                    }));
-            } catch (error) {
-                throw new Error("Proxy-Anfrage fehlgeschlagen: " + error.message);
-            }
+        // Simuliere API-Suche mit Demo-Daten
+        async function simulateApiSearch(query) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const demoResults = [
+                        {
+                            id: 1,
+                            title: "Wonderwall",
+                            artist: "Oasis",
+                            rating: 4.8,
+                            votes: 12500,
+                            type: "Chord",
+                            version: 1
+                        },
+                        {
+                            id: 2,
+                            title: "Hotel California",
+                            artist: "Eagles",
+                            rating: 4.9,
+                            votes: 9800,
+                            type: "Chord",
+                            version: 1
+                        },
+                        {
+                            id: 3,
+                            title: "Stairway to Heaven",
+                            artist: "Led Zeppelin",
+                            rating: 4.7,
+                            votes: 11200,
+                            type: "Chord",
+                            version: 1
+                        },
+                        {
+                            id: 4,
+                            title: "Sweet Child O' Mine",
+                            artist: "Guns N' Roses",
+                            rating: 4.6,
+                            votes: 8700,
+                            type: "Chord",
+                            version: 1
+                        },
+                        {
+                            id: 5,
+                            title: "Wish You Were Here",
+                            artist: "Pink Floyd",
+                            rating: 4.8,
+                            votes: 9200,
+                            type: "Chord",
+                            version: 1
+                        },
+                        {
+                            id: 6,
+                            title: "Knockin' On Heaven's Door",
+                            artist: "Bob Dylan",
+                            rating: 4.5,
+                            votes: 7800,
+                            type: "Chord",
+                            version: 1
+                        }
+                    ];
+                    
+                    // Filtern nach Suchbegriff
+                    const filteredResults = demoResults.filter(song => 
+                        song.title.toLowerCase().includes(query.toLowerCase()) || 
+                        song.artist.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    resolve(filteredResults);
+                }, 1500);
+            });
         }
 
-        // Lade Song-Inhalt mit eigenem Proxy
+        // Suchergebnisse anzeigen
+        function displaySearchResults(results) {
+            if (!results || results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: var(--spacing-xl); color: var(--text-gray);">
+                        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: var(--spacing-md); opacity: 0.3;"></i>
+                        <h3>Keine Ergebnisse gefunden</h3>
+                        <p>Bitte versuche einen anderen Suchbegriff</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsContainer.innerHTML = '';
+            
+            results.forEach(song => {
+                const resultCard = document.createElement('div');
+                resultCard.className = 'result-card';
+                resultCard.innerHTML = `
+                    <div class="result-title">${song.title}</div>
+                    <div class="result-artist">${song.artist}</div>
+                    <div class="result-info">
+                        <span><i class="fas fa-star"></i> ${song.rating.toFixed(1)}</span>
+                        <span><i class="fas fa-thumbs-up"></i> ${song.votes.toLocaleString()}</span>
+                        <span><i class="fas fa-music"></i> ${song.type}</span>
+                    </div>
+                `;
+                
+                resultCard.addEventListener('click', () => {
+                    loadSongContent(song);
+                });
+                
+                resultsContainer.appendChild(resultCard);
+            });
+        }
+
+        // Lade Song-Inhalt (Demo)
         async function loadSongContent(song) {
             showNotification("Lade Song-Inhalt...", "info");
             loadingSpinner.style.display = 'block';
             
             try {
-                // Lade Song-Daten von Ultimate Guitar über eigenen Proxy
-                const songData = await getSongTab(song.id);
-                currentSongData = songData;
+                // Simuliere das Laden von Song-Daten
+                await new Promise(resolve => setTimeout(resolve, 1200));
                 
-                // Zeige den Song an
+                currentSongData = {
+                    id: song.id,
+                    title: song.title,
+                    artist: song.artist,
+                    content: generateDemoTabContent(song.title),
+                    type: song.type
+                };
+                
                 songTitle.textContent = song.title;
                 songArtist.textContent = song.artist;
-                displaySong(songData);
+                displaySong(currentSongData);
                 
-                // Wechsle zur Song-Ansicht
                 resultsContainer.style.display = 'none';
                 songDisplay.style.display = 'block';
                 
@@ -1026,56 +1131,38 @@
             }
         }
 
-        // Hole Tab-Daten mit eigenem Proxy
-        async function getSongTab(tabId) {
-            const proxyUrl = `/proxy/tab/${tabId}`;
+        // Generiere Demo-Tab-Inhalt
+        function generateDemoTabContent(songTitle) {
+            const chords = [
+                "G", "D", "Em", "C", "Am", "F", "E", "A", 
+                "Bm", "C#m", "F#m", "Bb", "Eb", "Ab", "Dm", "G7"
+            ];
             
-            try {
-                const response = await fetch(proxyUrl);
+            const sections = ["Intro", "Verse", "Chorus", "Bridge", "Solo", "Outro"];
+            let content = "";
+            
+            sections.forEach(section => {
+                content += `[${section}]\n\n`;
                 
-                if (!response.ok) {
-                    throw new Error(`Tab API-Fehler: ${response.status}`);
+                // 4-6 Zeilen pro Abschnitt
+                for (let i = 0; i < 4 + Math.floor(Math.random() * 3); i++) {
+                    // Zufällige Akkorde generieren
+                    const lineChords = [];
+                    for (let j = 0; j < 3 + Math.floor(Math.random() * 3); j++) {
+                        const chord = chords[Math.floor(Math.random() * chords.length)];
+                        lineChords.push(`[ch]${chord}[/ch]`);
+                    }
+                    
+                    const chordLine = lineChords.join(" ");
+                    const lyricsLine = `Hier kommt der Text für ${songTitle} in ${section} Teil`;
+                    
+                    content += `${chordLine}\n${lyricsLine}\n\n`;
                 }
                 
-                const tabData = await response.json();
-                
-                // Extrahiere relevante Daten
-                return {
-                    id: tabData.id,
-                    title: tabData.song_name,
-                    artist: tabData.artist_name,
-                    content: formatTabContent(tabData.content),
-                    type: tabData.type,
-                    url: tabData.tab_url
-                };
-            } catch (error) {
-                throw new Error("Proxy-Anfrage fehlgeschlagen: " + error.message);
-            }
-        }
-
-        // Formatiere den Tab-Inhalt für die Anzeige
-        function formatTabContent(content) {
-            // Vereinfachte Formatierung:
-            // 1. Ersetze [ch]Akkord[/ch] mit unserem Format
-            // 2. Behalte Abschnitte bei
-            // 3. Konvertiere HTML-Tags zu Text
+                content += "\n";
+            });
             
-            // Entferne HTML-Tags
-            let text = content.replace(/<[^>]*>/g, '');
-            
-            // Ersetze UG Chord-Tags mit unserem Format
-            text = text.replace(/\[ch\](.*?)\[\/ch\]/g, '[ch]$1[/ch]');
-            
-            // Ersetze Abschnitts-Tags
-            text = text.replace(/\[tab\]/g, '').replace(/\[\/tab\]/g, '');
-            text = text.replace(/\[intro\]/gi, '[Intro]');
-            text = text.replace(/\[verse.*?\]/gi, '[Verse]');
-            text = text.replace(/\[chorus\]/gi, '[Chorus]');
-            text = text.replace(/\[bridge\]/gi, '[Bridge]');
-            text = text.replace(/\[outro\]/gi, '[Outro]');
-            text = text.replace(/\[solo\]/gi, '[Solo]');
-            
-            return text;
+            return content;
         }
 
         // Song mit Akkorden und Lyrics anzeigen
@@ -1097,6 +1184,8 @@
                 
                 for (let i = sectionTitleMatch ? 1 : 0; i < lines.length; i++) {
                     const line = lines[i].trim();
+                    
+                    if (!line) continue;
                     
                     // Prozessiere Zeilen mit Akkorden
                     if (line.includes('[ch]')) {
@@ -1192,12 +1281,12 @@
                 if (!lastUpdateTime) lastUpdateTime = timestamp;
                 
                 const elapsed = timestamp - lastUpdateTime;
-                const wordsPerSecond = currentScrollSpeed;
-                const wordsPerMillisecond = wordsPerSecond / 1000;
-                const wordsScrolled = elapsed * wordsPerMillisecond;
+                const linesPerSecond = currentScrollSpeed;
+                const linesPerMillisecond = linesPerSecond / 1000;
+                const linesScrolled = elapsed * linesPerMillisecond;
                 
                 // Gehe zur nächsten Zeile
-                if (wordsScrolled > 1) {
+                if (linesScrolled > 1) {
                     currentLineIndex = Math.min(currentLineIndex + 1, songLines.length - 1);
                     lastUpdateTime = timestamp;
                 }
@@ -1209,8 +1298,8 @@
                     const visibleHeight = songContent.clientHeight;
                     
                     // Scrolle nur wenn nötig
-                    if (targetPosition > currentPosition + visibleHeight - 50) {
-                        songContent.scrollTop = targetPosition - 100;
+                    if (targetPosition > currentPosition + visibleHeight - 100) {
+                        songContent.scrollTop = targetPosition - 150;
                     }
                 }
                 
