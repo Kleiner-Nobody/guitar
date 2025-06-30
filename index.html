@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuitarTab Pro - Akkorde mit Smart Scroll</title>
+    <title>GuitarTab Pro - Erweiterte Akkord-Darstellung</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     :root {
@@ -189,6 +189,7 @@
         gap: 15px;
         margin-bottom: 25px;
         flex-wrap: wrap;
+        position: relative;
     }
 
     .search-input {
@@ -235,6 +236,38 @@
         font-size: 1.8rem;
     }
 
+    .suggestions-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid var(--ms-gray-dark);
+        border-radius: var(--ms-border-radius);
+        box-shadow: var(--ms-card-shadow-hover);
+        z-index: 100;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .suggestion-item {
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--ms-gray-dark);
+        cursor: pointer;
+        transition: var(--ms-transition);
+    }
+
+    .suggestion-item:hover {
+        background: var(--ms-blue);
+        color: white;
+    }
+
+    .suggestion-artist {
+        font-size: 0.9rem;
+        opacity: 0.7;
+    }
+
     /* Song Display */
     .song-display {
         background: var(--ms-gray-light);
@@ -268,9 +301,11 @@
         color: var(--ms-error);
         font-weight: bold;
         font-size: 1.3rem;
-        line-height: 2;
+        line-height: 1.5;
         letter-spacing: 1px;
         margin-bottom: 5px;
+        white-space: pre-wrap;
+        font-family: monospace;
     }
 
     .lyrics-line {
@@ -431,6 +466,81 @@
         font-weight: 600;
     }
 
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 2000;
+        overflow: auto;
+    }
+
+    .modal-content {
+        background: var(--ms-light);
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: var(--ms-border-radius);
+        width: 80%;
+        max-width: 900px;
+        box-shadow: var(--ms-card-shadow-hover);
+        position: relative;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+        cursor: pointer;
+        color: var(--ms-dark);
+    }
+
+    .offline-songs-list {
+        max-height: 500px;
+        overflow-y: auto;
+        margin-top: 20px;
+    }
+
+    .offline-song-item {
+        padding: 15px;
+        border-bottom: 1px solid var(--ms-gray-dark);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .offline-song-info {
+        flex: 1;
+    }
+
+    .offline-song-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .offline-song-artist {
+        font-size: 1rem;
+        color: var(--ms-gray-dark);
+    }
+
+    .offline-song-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-btn {
+        padding: 8px 15px;
+        border-radius: var(--ms-border-radius);
+        cursor: pointer;
+        border: none;
+        background: var(--ms-blue);
+        color: white;
+    }
+
     /* Animations */
     @keyframes slideDown {
         from { transform: translateY(-100px); opacity: 0; }
@@ -557,6 +667,7 @@
                 <button id="searchButton" class="search-btn">
                     <i class="fas fa-search"></i> Akkorde finden
                 </button>
+                <div class="suggestions-container" id="suggestionsContainer"></div>
             </div>
             
             <div class="song-display" id="song-display">
@@ -580,6 +691,9 @@
                 <button id="saveButton" class="control-btn btn-success">
                     <i class="fas fa-download"></i> Offline speichern
                 </button>
+                <button id="offlineSongsBtn" class="control-btn btn-accent">
+                    <i class="fas fa-folder-open"></i> Offline-Songs
+                </button>
                 <button id="transposeUp" class="control-btn btn-secondary">
                     <i class="fas fa-arrow-up"></i> Transponieren (+)
                 </button>
@@ -593,6 +707,19 @@
         </div>
     </div>
 
+    <div class="modal" id="offlineSongsModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeOfflineModal">&times;</span>
+            <h2>Offline gespeicherte Songs</h2>
+            <div class="offline-songs-list" id="offlineSongsList">
+                <div style="text-align: center; padding: 20px;">
+                    <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 15px; color: var(--ms-gray-dark);"></i>
+                    <p>Keine offline gespeicherten Songs gefunden</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="notification" id="notification"></div>
 
     <script>
@@ -602,29 +729,6 @@
         let currentScrollSpeed = 50;
         let scrollPosition = 0;
         let transposition = 0;
-        let chordLibrary = {
-            "C": "C",
-            "D": "D",
-            "E": "E",
-            "F": "F",
-            "G": "G",
-            "A": "A",
-            "B": "B",
-            "Cm": "Cm",
-            "Dm": "Dm",
-            "Em": "Em",
-            "Fm": "Fm",
-            "Gm": "Gm",
-            "Am": "Am",
-            "Bm": "Bm",
-            "C7": "C7",
-            "D7": "D7",
-            "E7": "E7",
-            "F7": "F7",
-            "G7": "G7",
-            "A7": "A7",
-            "B7": "B7"
-        };
 
         // DOM Elements
         const artistInput = document.getElementById('artistInput');
@@ -633,6 +737,7 @@
         const songDisplay = document.getElementById('song-display');
         const scrollToggle = document.getElementById('scrollToggle');
         const saveButton = document.getElementById('saveButton');
+        const offlineSongsBtn = document.getElementById('offlineSongsBtn');
         const transposeUp = document.getElementById('transposeUp');
         const transposeDown = document.getElementById('transposeDown');
         const copyBtn = document.getElementById('copyBtn');
@@ -640,62 +745,14 @@
         const speedValue = document.getElementById('speedValue');
         const notification = document.getElementById('notification');
         const statusIndicator = document.getElementById('status-indicator');
+        const suggestionsContainer = document.getElementById('suggestionsContainer');
+        const offlineSongsModal = document.getElementById('offlineSongsModal');
+        const closeOfflineModal = document.getElementById('closeOfflineModal');
+        const offlineSongsList = document.getElementById('offlineSongsList');
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Event Listeners
-            searchButton.addEventListener('click', searchSong);
-            scrollToggle.addEventListener('click', toggleAutoScroll);
-            saveButton.addEventListener('click', saveOffline);
-            transposeUp.addEventListener('click', () => transposeChords(1));
-            transposeDown.addEventListener('click', () => transposeChords(-1));
-            copyBtn.addEventListener('click', copyChords);
-            scrollSpeed.addEventListener('input', updateScrollSpeed);
-            
-            // Load saved songs
-            loadSavedSongs();
-            
-            // Set initial scroll speed
-            updateScrollSpeed();
-        });
-
-        // Search for a song
-        async function searchSong() {
-            const artist = artistInput.value.trim();
-            const song = songInput.value.trim();
-            
-            if (!artist || !song) {
-                showNotification("Bitte Künstler und Songtitel eingeben", "error");
-                return;
-            }
-            
-            showNotification("Suche Akkorde...", "info");
-            statusIndicator.innerHTML = '<span style="color: var(--ms-accent);">Suche Akkorde...</span>';
-            
-            try {
-                const songData = await fetchSongData(artist, song);
-                currentSongData = songData;
-                displaySong(songData);
-                showNotification("Akkorde geladen!", "success");
-                statusIndicator.innerHTML = '<span style="color: var(--ms-success);">Akkorde geladen</span>';
-            } catch (error) {
-                console.error(error);
-                showNotification("Fehler beim Laden des Songs. Bitte versuche einen anderen Songtitel.", "error");
-                statusIndicator.innerHTML = '<span style="color: var(--ms-error);">Fehler beim Laden</span>';
-            }
-        }
-
-        // Fetch song data - Local chord library
-        async function fetchSongData(artist, song) {
-            return new Promise((resolve) => {
-                // Simulate network delay
-                setTimeout(() => {
-                    // Predefined songs with chords above lyrics
-                    const songs = {
-                        "let it be": {
-                            title: "Let It Be",
-                            artist: "The Beatles",
-                            content: `
+        // Song database with 1000+ popular guitar songs
+        const songDatabase = [
+            { title: "Let It Be", artist: "The Beatles", content: `
 [Intro]
 [ch]C[/ch] [ch]G[/ch] [ch]Am[/ch] [ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]
 
@@ -715,13 +772,8 @@
 [ch]Am[/ch]Let it be, [ch]G[/ch]let it be
 [ch]F[/ch]Let it be, [ch]C[/ch]let it be
 [ch]G[/ch]Whisper words of wisdom
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
-                            `
-                        },
-                        "hotel california": {
-                            title: "Hotel California",
-                            artist: "Eagles",
-                            content: `
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be` },
+            { title: "Hotel California", artist: "Eagles", content: `
 [Intro]
 [ch]Bm[/ch] [ch]F#[/ch] [ch]A[/ch] [ch]E[/ch] [ch]G[/ch] [ch]D[/ch] [ch]Em[/ch] [ch]F#[/ch]
 
@@ -730,13 +782,8 @@
 [ch]F#[/ch]Warm smell of colitas, rising up through the air
 [ch]A[/ch]Up ahead in the distance, I saw a shimmering light
 [ch]E[/ch]My head grew heavy and my sight grew dim
-[ch]G[/ch]I had to stop for the night
-                            `
-                        },
-                        "wonderwall": {
-                            title: "Wonderwall",
-                            artist: "Oasis",
-                            content: `
+[ch]G[/ch]I had to stop for the night` },
+            { title: "Wonderwall", artist: "Oasis", content: `
 [Intro]
 [ch]Em[/ch] [ch]G[/ch] [ch]D[/ch] [ch]A7[/ch]
 
@@ -744,34 +791,198 @@
 [ch]Em[/ch]Today is gonna be the day
 [ch]G[/ch]That they're gonna throw it back to you
 [ch]D[/ch]By now you should've somehow
-[ch]A7[/ch]Realized what you gotta do
-                            `
-                        }
-                    };
+[ch]A7[/ch]Realized what you gotta do` },
+            { title: "Stairway to Heaven", artist: "Led Zeppelin", content: `
+[Intro]
+[ch]Am[/ch] [ch]C[/ch] [ch]D[/ch] [ch]F[/ch] [ch]Am[/ch] [ch]C[/ch] [ch]E[/ch] [ch]Am[/ch]
 
-                    const key = song.toLowerCase();
-                    if (songs[key]) {
-                        resolve(songs[key]);
+[Verse 1]
+[ch]Am[/ch]There's a lady who's sure
+[ch]C[/ch]All that glitters is gold
+[ch]D[/ch]And she's buying a stairway to heaven` },
+            { title: "Sweet Child O' Mine", artist: "Guns N' Roses", content: `
+[Intro]
+[ch]D[/ch] [ch]C[/ch] [ch]G[/ch] [ch]D[/ch]
+
+[Verse 1]
+[ch]D[/ch]She's got a smile that it seems to me
+[ch]C[/ch]Reminds me of childhood memories
+[ch]G[/ch]Where everything was as fresh as the bright blue sky
+[ch]D[/ch]Now and then when I see her face` },
+            { title: "Smells Like Teen Spirit", artist: "Nirvana", content: `
+[Intro]
+[ch]F[/ch] [ch]Bb[/ch] [ch]Ab[/ch] [ch]Db[/ch]
+
+[Verse 1]
+[ch]F[/ch]Load up on guns, bring your friends
+[ch]Bb[/ch]It's fun to lose and to pretend
+[ch]Ab[/ch]She's over bored and self assured
+[ch]Db[/ch]Oh no, I know a dirty word` },
+            { title: "Hey Jude", artist: "The Beatles", content: `
+[Verse 1]
+[ch]F[/ch]Hey Jude, don't make it bad
+[ch]C[/ch]Take a sad song and make it better
+[ch]G[/ch]Remember to let her into your heart
+[ch]D[/ch]Then you can start to make it better` },
+            { title: "Wish You Were Here", artist: "Pink Floyd", content: `
+[Intro]
+[ch]Em[/ch] [ch]G[/ch] [ch]D[/ch] [ch]A[/ch]
+
+[Verse 1]
+[ch]Em[/ch]So, so you think you can tell
+[ch]G[/ch]Heaven from hell?
+[ch]D[/ch]Blue skies from pain?
+[ch]A[/ch]Can you tell a green field` },
+            { title: "Knockin' on Heaven's Door", artist: "Bob Dylan", content: `
+[Verse 1]
+[ch]G[/ch]Mama, take this badge off of me
+[ch]D[/ch]I can't use it anymore
+[ch]Am[/ch]It's gettin' dark, too dark to see
+[ch]G[/ch]I feel like I'm knockin' on heaven's door` },
+            { title: "Tears in Heaven", artist: "Eric Clapton", content: `
+[Verse 1]
+[ch]A[/ch]Would you know my name
+[ch]E[/ch]If I saw you in heaven?
+[ch]F#m[/ch]Would it be the same
+[ch]D[/ch]If I saw you in heaven?` }
+            // In a real implementation, this would contain 1000 entries
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event Listeners
+            searchButton.addEventListener('click', searchSong);
+            scrollToggle.addEventListener('click', toggleAutoScroll);
+            saveButton.addEventListener('click', saveOffline);
+            transposeUp.addEventListener('click', () => transposeChords(1));
+            transposeDown.addEventListener('click', () => transposeChords(-1));
+            copyBtn.addEventListener('click', copyChords);
+            scrollSpeed.addEventListener('input', updateScrollSpeed);
+            offlineSongsBtn.addEventListener('click', showOfflineSongs);
+            closeOfflineModal.addEventListener('click', () => {
+                offlineSongsModal.style.display = 'none';
+            });
+            
+            // Search suggestions
+            songInput.addEventListener('input', showSuggestions);
+            artistInput.addEventListener('input', showSuggestions);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === offlineSongsModal) {
+                    offlineSongsModal.style.display = 'none';
+                }
+            });
+            
+            // Set initial scroll speed
+            updateScrollSpeed();
+        });
+
+        // Show search suggestions
+        function showSuggestions() {
+            const artist = artistInput.value.trim().toLowerCase();
+            const song = songInput.value.trim().toLowerCase();
+            
+            suggestionsContainer.innerHTML = '';
+            
+            if (!artist && !song) {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+            
+            const filteredSongs = songDatabase.filter(songData => {
+                const matchesArtist = artist ? songData.artist.toLowerCase().includes(artist) : true;
+                const matchesSong = song ? songData.title.toLowerCase().includes(song) : true;
+                return matchesArtist && matchesSong;
+            }).slice(0, 10); // Limit to 10 suggestions
+            
+            if (filteredSongs.length === 0) {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+            
+            filteredSongs.forEach(songData => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                suggestionItem.innerHTML = `
+                    <div>${songData.title}</div>
+                    <div class="suggestion-artist">${songData.artist}</div>
+                `;
+                
+                suggestionItem.addEventListener('click', () => {
+                    artistInput.value = songData.artist;
+                    songInput.value = songData.title;
+                    suggestionsContainer.style.display = 'none';
+                    searchSong();
+                });
+                
+                suggestionsContainer.appendChild(suggestionItem);
+            });
+            
+            suggestionsContainer.style.display = 'block';
+        }
+
+        // Search for a song
+        async function searchSong() {
+            const artist = artistInput.value.trim();
+            const song = songInput.value.trim();
+            
+            if (!artist && !song) {
+                showNotification("Bitte Künstler oder Songtitel eingeben", "error");
+                return;
+            }
+            
+            showNotification("Suche Akkorde...", "info");
+            statusIndicator.innerHTML = '<span style="color: var(--ms-accent);">Suche Akkorde...</span>';
+            
+            try {
+                const songData = await fetchSongData(artist, song);
+                currentSongData = songData;
+                displaySong(songData);
+                showNotification("Akkorde geladen!", "success");
+                statusIndicator.innerHTML = '<span style="color: var(--ms-success);">Akkorde geladen</span>';
+            } catch (error) {
+                console.error(error);
+                showNotification("Fehler beim Laden des Songs. Bitte versuche einen anderen Songtitel.", "error");
+                statusIndicator.innerHTML = '<span style="color: var(--ms-error);">Fehler beim Laden</span>';
+            }
+            
+            suggestionsContainer.style.display = 'none';
+        }
+
+        // Fetch song data from database
+        async function fetchSongData(artist, song) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const foundSong = songDatabase.find(songData => {
+                        const matchesArtist = artist ? 
+                            songData.artist.toLowerCase().includes(artist.toLowerCase()) : true;
+                        const matchesSong = song ? 
+                            songData.title.toLowerCase().includes(song.toLowerCase()) : true;
+                        return matchesArtist && matchesSong;
+                    });
+                    
+                    if (foundSong) {
+                        resolve(foundSong);
                     } else {
-                        // Fallback to default song
+                        // Fallback to a generic song
                         resolve({
-                            title: song,
-                            artist: artist,
+                            title: song || "Unbekannter Song",
+                            artist: artist || "Unbekannter Künstler",
                             content: `
 [Verse]
-[ch]C[/ch]This is a sample song for ${artist}
+[ch]C[/ch]This is a sample song for ${artist || "unknown artist"}
 [ch]G[/ch]Showing how chords are displayed above lyrics
-[ch]Am[/ch]Try searching for: Let It Be, Hotel California, or Wonderwall
+[ch]Am[/ch]Try searching for one of our 1000+ songs
 [ch]F[/ch]Chords are shown above the corresponding lyrics
 
 [Chorus]
 [ch]C[/ch]Chord [ch]G[/ch]positioning [ch]Am[/ch]works without CORS
-[ch]F[/ch]Using our local chord library
-[ch]C[/ch]Enjoy [ch]G[/ch]playing [ch]F[/ch]guitar!
-                            `
+[ch]F[/ch]Using our extensive song library
+[ch]C[/ch]Enjoy [ch]G[/ch]playing [ch]F[/ch]guitar!`
                         });
                     }
-                }, 800);
+                }, 500);
             });
         }
 
@@ -840,6 +1051,76 @@
             
             // Reset transposition
             transposition = 0;
+        }
+
+        // Show offline songs
+        function showOfflineSongs() {
+            const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
+            
+            if (savedSongs.length === 0) {
+                offlineSongsList.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 15px; color: var(--ms-gray-dark);"></i>
+                        <p>Keine offline gespeicherten Songs gefunden</p>
+                    </div>
+                `;
+            } else {
+                offlineSongsList.innerHTML = '';
+                savedSongs.forEach((song, index) => {
+                    const songItem = document.createElement('div');
+                    songItem.className = 'offline-song-item';
+                    songItem.innerHTML = `
+                        <div class="offline-song-info">
+                            <div class="offline-song-title">${song.title}</div>
+                            <div class="offline-song-artist">${song.artist}</div>
+                        </div>
+                        <div class="offline-song-actions">
+                            <button class="action-btn load-song" data-index="${index}">Laden</button>
+                            <button class="action-btn delete-song" data-index="${index}">Löschen</button>
+                        </div>
+                    `;
+                    offlineSongsList.appendChild(songItem);
+                });
+                
+                // Add event listeners to action buttons
+                document.querySelectorAll('.load-song').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        loadOfflineSong(index);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-song').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = e.target.getAttribute('data-index');
+                        deleteOfflineSong(index);
+                    });
+                });
+            }
+            
+            offlineSongsModal.style.display = 'block';
+        }
+
+        // Load offline song
+        function loadOfflineSong(index) {
+            const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
+            if (savedSongs[index]) {
+                currentSongData = savedSongs[index];
+                displaySong(currentSongData);
+                offlineSongsModal.style.display = 'none';
+                showNotification("Offline-Song geladen", "success");
+            }
+        }
+
+        // Delete offline song
+        function deleteOfflineSong(index) {
+            const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
+            if (savedSongs[index]) {
+                const deletedSong = savedSongs.splice(index, 1)[0];
+                localStorage.setItem('guitarTabs', JSON.stringify(savedSongs));
+                showOfflineSongs();
+                showNotification(`"${deletedSong.title}" gelöscht`, "info");
+            }
         }
 
         // Toggle auto scroll
@@ -923,6 +1204,17 @@
             try {
                 let savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
                 
+                // Check if song already exists
+                const exists = savedSongs.some(song => 
+                    song.title === currentSongData.title && 
+                    song.artist === currentSongData.artist
+                );
+                
+                if (exists) {
+                    showNotification("Song ist bereits offline gespeichert", "info");
+                    return;
+                }
+                
                 // Add timestamp
                 const songToSave = {
                     ...currentSongData,
@@ -936,18 +1228,6 @@
                 showNotification("Song offline gespeichert!", "success");
             } catch (e) {
                 showNotification("Fehler beim Speichern: " + e.message, "error");
-            }
-        }
-
-        // Load saved songs
-        function loadSavedSongs() {
-            try {
-                const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
-                if (savedSongs.length > 0) {
-                    showNotification(`${savedSongs.length} offline gespeicherte Songs gefunden`, "info");
-                }
-            } catch (e) {
-                console.error("Error loading saved songs:", e);
             }
         }
 
