@@ -5,20 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GuitarTab Pro - Modernes Design</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     :root {
-        --lichess-dark: #1f1f1f;
-        --lichess-card: #2f2f2f;
-        --lichess-green: #759656;
-        --lichess-light: #ffffff;
-        --lichess-gray: #7a7a7a;
-        --lichess-accent: #3893E8;
-        --lichess-error: #d13438;
-        --lichess-success: #107c10;
-        --border-radius-lg: 16px;
-        --border-radius-md: 12px;
-        --border-radius-sm: 8px;
+        --primary-dark: #0f0f0f;
+        --primary-light: #f8f9fa;
+        --card-bg-dark: #1a1a1a;
+        --card-bg-light: #ffffff;
+        --accent-green: #4CAF50;
+        --text-dark: #f1f1f1;
+        --text-light: #202124;
+        --text-gray-dark: #aaa;
+        --text-gray-light: #5f6368;
+        --accent-blue: #4285F4;
+        --error-red: #EA4335;
+        --success-green: #34A853;
+        --border-radius: 28px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --spacing-xs: 8px;
+        --spacing-sm: 16px;
+        --spacing-md: 24px;
+        --spacing-lg: 32px;
+        --spacing-xl: 48px;
+        --spacing-xxl: 64px;
+    }
+
+    /* Dark Mode Variablen */
+    [data-theme="dark"] {
+        --primary-bg: var(--primary-dark);
+        --card-bg: var(--card-bg-dark);
+        --text-color: var(--text-dark);
+        --text-gray: var(--text-gray-dark);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --hover-bg: rgba(255, 255, 255, 0.05);
+        --shadow-color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Light Mode Variablen */
+    [data-theme="light"] {
+        --primary-bg: var(--primary-light);
+        --card-bg: var(--card-bg-light);
+        --text-color: var(--text-light);
+        --text-gray: var(--text-gray-light);
+        --border-color: rgba(0, 0, 0, 0.1);
+        --hover-bg: rgba(0, 0, 0, 0.03);
+        --shadow-color: rgba(0, 0, 0, 0.15);
     }
 
     * {
@@ -28,75 +59,188 @@
     }
 
     body {
-        font-family: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
-        background-color: var(--lichess-dark);
-        color: var(--lichess-light);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+        background: var(--primary-bg);
+        color: var(--text-color);
         line-height: 1.6;
         min-height: 100vh;
         overflow-x: hidden;
-        padding: 20px;
+        transition: var(--transition);
+        padding: var(--spacing-sm);
     }
 
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    /* Header im Lichess-Stil */
-    header {
-        background: var(--lichess-card);
-        color: white;
-        padding: 20px;
-        border-radius: var(--border-radius-lg);
-        position: relative;
-        overflow: hidden;
-        z-index: 10;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        margin-bottom: 20px;
+    /* Header mit Theme-Toggle */
+    .app-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-xl);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--border-radius);
+        background: var(--card-bg);
+        box-shadow: 0 4px 20px var(--shadow-color);
     }
 
     .logo {
         display: flex;
         align-items: center;
-        gap: 15px;
-        justify-content: center;
+        gap: var(--spacing-sm);
     }
 
-    .logo h1 {
+    .logo-icon {
         font-size: 2.2rem;
+        color: var(--accent-green);
+    }
+
+    .logo-text {
+        font-size: 1.8rem;
         font-weight: 700;
         letter-spacing: -0.5px;
+        background: linear-gradient(to right, #4CAF50, #8BC34A);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .logo i {
-        font-size: 2rem;
-        background: rgba(117, 150, 86, 0.2);
-        width: 60px;
-        height: 60px;
+    .theme-toggle {
+        background: none;
+        border: none;
+        color: var(--text-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: var(--transition);
     }
 
-    /* Karten-Design mit erhöhtem Border Radius */
+    .theme-toggle:hover {
+        background: var(--hover-bg);
+    }
+
+    /* Google-like Startseite */
+    .start-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+        text-align: center;
+        padding: var(--spacing-xl);
+    }
+
+    .hero-icon {
+        font-size: 5rem;
+        color: var(--accent-green);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .hero-text {
+        font-size: 3.5rem;
+        font-weight: 500;
+        letter-spacing: -1.5px;
+        background: linear-gradient(to right, #4CAF50, #8BC34A);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .search-container {
+        width: 100%;
+        max-width: 700px;
+        position: relative;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .search-input {
+        width: 100%;
+        padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-size: 1.2rem;
+        transition: var(--transition);
+        background: var(--card-bg);
+        color: var(--text-color);
+        box-shadow: 0 4px 20px var(--shadow-color);
+    }
+
+    .search-input:hover, 
+    .search-input:focus {
+        background: var(--card-bg);
+        box-shadow: 0 6px 25px var(--shadow-color);
+        border-color: var(--accent-green);
+        outline: none;
+    }
+
+    .search-btn {
+        position: absolute;
+        right: var(--spacing-md);
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: var(--accent-green);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: var(--spacing-xs);
+        transition: var(--transition);
+    }
+
+    .search-btn:hover {
+        color: #8BC34A;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .offline-btn {
+        padding: var(--spacing-md) var(--spacing-lg);
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        font-weight: 500;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        margin-top: var(--spacing-sm);
+    }
+
+    .offline-btn:hover {
+        background: var(--hover-bg);
+        border-color: var(--accent-green);
+        transform: translateY(-2px);
+    }
+
+    /* Container für Ergebnisse */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: none; /* Anfangs versteckt */
+    }
+
+    /* Karten-Design */
     .card {
-        background: var(--lichess-card);
-        border-radius: var(--border-radius-lg);
-        padding: 25px;
+        background: var(--card-bg);
+        border-radius: calc(var(--border-radius) - 4px);
+        padding: var(--spacing-lg);
         position: relative;
         overflow: hidden;
         transition: var(--transition);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        box-shadow: 0 8px 30px var(--shadow-color);
+        border: 1px solid var(--border-color);
+        margin-bottom: var(--spacing-xl);
     }
 
     .card-header {
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid var(--border-color);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -105,173 +249,141 @@
     .card-header h2 {
         font-size: 1.8rem;
         font-weight: 600;
-        color: var(--lichess-light);
+        color: var(--text-color);
         position: relative;
-    }
-
-    /* Suchbereich */
-    .search-container {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 20px;
-        position: relative;
-    }
-
-    .search-input {
-        flex: 1;
-        padding: 18px;
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: var(--border-radius-md);
-        font-size: 1.1rem;
-        transition: var(--transition);
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--lichess-light);
-    }
-
-    .search-input:focus {
-        border-color: var(--lichess-green);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(117, 150, 86, 0.3);
-    }
-
-    .search-btn {
-        padding: 18px 30px;
-        background: var(--lichess-green);
-        color: white;
-        border: none;
-        border-radius: var(--border-radius-md);
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 600;
-    }
-
-    .search-btn:hover {
-        background: #678a4a;
-        transform: translateY(-3px);
-    }
-
-    .search-btn i {
-        font-size: 1.5rem;
     }
 
     /* Suchergebnisse */
     .results-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 15px;
-        margin-top: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-md);
     }
 
     .result-card {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: var(--border-radius-md);
-        padding: 20px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: var(--spacing-md);
         cursor: pointer;
         transition: var(--transition);
-        border: 1px solid rgba(255,255,255,0.05);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 15px var(--shadow-color);
+        display: flex;
+        flex-direction: column;
     }
 
     .result-card:hover {
         transform: translateY(-5px);
-        background: rgba(117, 150, 86, 0.1);
-        border-color: var(--lichess-green);
+        border-color: var(--accent-green);
+        box-shadow: 0 10px 25px var(--shadow-color);
     }
 
     .result-title {
         font-size: 1.3rem;
         font-weight: 600;
-        color: var(--lichess-green);
-        margin-bottom: 5px;
+        color: var(--accent-green);
+        margin-bottom: var(--spacing-xs);
     }
 
     .result-artist {
         font-size: 1rem;
-        color: var(--lichess-light);
-        opacity: 0.8;
-        margin-bottom: 10px;
+        color: var(--text-color);
+        opacity: 0.9;
+        margin-bottom: var(--spacing-sm);
     }
 
     .result-info {
         display: flex;
-        gap: 10px;
+        gap: var(--spacing-sm);
         font-size: 0.9rem;
-        color: var(--lichess-gray);
+        color: var(--text-gray);
+        margin-top: auto;
+        padding-top: var(--spacing-sm);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .result-info span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
     }
 
     /* Song-Anzeige */
     .song-display {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: var(--border-radius-md);
-        padding: 25px;
-        margin-top: 20px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: var(--spacing-lg);
         position: relative;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 5px 25px var(--shadow-color);
+        margin-bottom: var(--spacing-lg);
     }
 
     .song-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid var(--border-color);
     }
 
     .song-title {
         font-size: 1.8rem;
         font-weight: 700;
-        color: var(--lichess-green);
+        color: var(--accent-green);
     }
 
     .song-artist {
         font-size: 1.3rem;
-        color: var(--lichess-light);
+        color: var(--text-color);
         opacity: 0.9;
     }
 
     .song-content {
-        max-height: 500px;
+        max-height: 600px;
         overflow-y: auto;
-        padding: 10px;
+        padding: var(--spacing-md);
+        font-family: 'Courier New', monospace;
+        line-height: 1.8;
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        margin: var(--spacing-md) 0;
     }
 
     .song-section {
-        margin-bottom: 30px;
+        margin-bottom: var(--spacing-lg);
     }
 
     .section-title {
         display: block;
-        color: var(--lichess-green);
+        color: var(--accent-green);
         font-weight: bold;
-        margin: 0 0 15px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin: 0 0 var(--spacing-md);
+        padding-bottom: var(--spacing-xs);
+        border-bottom: 1px solid var(--border-color);
         font-size: 1.3rem;
     }
 
     .song-line {
         display: flex;
         flex-direction: column;
-        margin-bottom: 15px;
+        margin-bottom: var(--spacing-md);
     }
 
     .chord-line {
-        color: var(--lichess-accent);
+        color: var(--accent-blue);
         font-weight: bold;
         font-size: 1.2rem;
-        line-height: 1.6;
         letter-spacing: 1px;
-        font-family: monospace;
         min-height: 1.6rem;
+        margin-bottom: 4px;
     }
 
     .lyrics-line {
         font-size: 1.1rem;
-        line-height: 1.7;
         padding-left: 10px;
     }
 
@@ -279,73 +391,70 @@
     .controls {
         display: flex;
         flex-wrap: wrap;
-        gap: 15px;
-        margin-top: 25px;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
     }
 
     .control-btn {
-        padding: 16px 20px;
+        padding: var(--spacing-md) var(--spacing-lg);
         border: none;
-        border-radius: var(--border-radius-md);
+        border-radius: 20px;
         font-size: 1.1rem;
         cursor: pointer;
         transition: var(--transition);
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: var(--spacing-xs);
         font-weight: 600;
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--lichess-light);
+        background: var(--card-bg);
+        color: var(--text-color);
         flex: 1;
-        min-width: 160px;
+        min-width: 180px;
         justify-content: center;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        border: 1px solid var(--border-color);
     }
 
     .control-btn:hover {
         transform: translateY(-3px);
-        background: rgba(255, 255, 255, 0.2);
+        background: var(--hover-bg);
+        box-shadow: 0 6px 20px var(--shadow-color);
     }
 
     .btn-primary {
-        background: var(--lichess-green);
+        background: linear-gradient(to right, #4CAF50, #8BC34A);
         color: white;
-    }
-
-    .btn-primary:hover {
-        background: #678a4a;
+        border: none !important;
     }
 
     .btn-success {
-        background: var(--lichess-success);
+        background: linear-gradient(to right, #34A853, #57BB5C);
         color: white;
-    }
-
-    .btn-success:hover {
-        background: #0d6910;
+        border: none !important;
     }
 
     /* Geschwindigkeitsregler */
     .speed-control {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-top: 20px;
-        padding: 15px;
-        background: rgba(117, 150, 86, 0.1);
-        border-radius: var(--border-radius-md);
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: rgba(76, 175, 80, 0.1);
+        border-radius: 20px;
     }
 
     .speed-control label {
         font-size: 1.1rem;
         white-space: nowrap;
-        color: var(--lichess-light);
+        color: var(--text-color);
     }
 
     .speed-control input {
         flex: 1;
         height: 8px;
         border-radius: 10px;
-        background: var(--lichess-gray);
+        background: var(--text-gray);
         outline: none;
         -webkit-appearance: none;
     }
@@ -355,8 +464,9 @@
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background: var(--lichess-green);
+        background: var(--accent-green);
         cursor: pointer;
+        box-shadow: 0 2px 6px var(--shadow-color);
     }
 
     #speedValue {
@@ -364,7 +474,7 @@
         text-align: center;
         font-weight: bold;
         font-size: 1.1rem;
-        color: var(--lichess-green);
+        color: var(--accent-green);
     }
 
     /* Benachrichtigungen */
@@ -373,27 +483,34 @@
         bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
-        background: var(--lichess-card);
-        color: white;
-        padding: 20px 40px;
-        border-radius: var(--border-radius-md);
+        background: var(--card-bg);
+        color: var(--text-color);
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-radius: 20px;
         display: none;
         z-index: 1001;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 8px 30px var(--shadow-color);
         font-size: 1.2rem;
         font-weight: 600;
-        border: 1px solid var(--lichess-gray);
+        border: 1px solid var(--border-color);
+        animation: slideIn 0.4s ease-out;
+        max-width: 90%;
+    }
+
+    @keyframes slideIn {
+        from { bottom: -100px; opacity: 0; }
+        to { bottom: 40px; opacity: 1; }
     }
 
     /* Ladeindikator */
     .spinner {
         border: 4px solid rgba(255, 255, 255, 0.1);
-        border-top: 4px solid var(--lichess-green);
+        border-top: 4px solid var(--accent-green);
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         animation: spin 1s linear infinite;
-        margin: 30px auto;
+        margin: var(--spacing-xl) auto;
         display: none;
     }
 
@@ -402,39 +519,136 @@
         100% { transform: rotate(360deg); }
     }
 
+    /* Modal für Offline-Songs */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 700px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: var(--spacing-lg);
+        box-shadow: 0 15px 50px var(--shadow-color);
+        position: relative;
+        border: 1px solid var(--border-color);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        font-size: 1.8rem;
+        color: var(--text-gray);
+        cursor: pointer;
+        background: none;
+        border: none;
+        transition: var(--transition);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .close-modal:hover {
+        color: var(--accent-green);
+        background: var(--hover-bg);
+    }
+
+    .modal-header {
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-header h2 {
+        font-size: 1.8rem;
+        color: var(--accent-green);
+    }
+
+    .offline-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .offline-item {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: var(--spacing-md);
+        cursor: pointer;
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .offline-item:hover {
+        border-color: var(--accent-green);
+        transform: translateY(-2px);
+    }
+
+    .offline-item-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--accent-green);
+    }
+
+    .offline-item-artist {
+        font-size: 1rem;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+
+    .offline-item-date {
+        font-size: 0.8rem;
+        color: var(--text-gray);
+        margin-top: var(--spacing-xs);
+    }
+
+    .empty-offline {
+        text-align: center;
+        padding: var(--spacing-xl);
+        color: var(--text-gray);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
-        .logo h1 {
-            font-size: 1.8rem;
+        .hero-text {
+            font-size: 2.8rem;
         }
         
-        .logo i {
-            width: 50px;
-            height: 50px;
-            font-size: 1.6rem;
+        .hero-icon {
+            font-size: 4rem;
+        }
+        
+        .search-input {
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+            font-size: 1.1rem;
         }
         
         .card {
-            padding: 20px;
+            padding: var(--spacing-md);
         }
         
         .song-display {
-            padding: 20px;
+            padding: var(--spacing-md);
         }
         
-        .card-header h2 {
-            font-size: 1.6rem;
-        }
-        
-        .search-container {
-            flex-direction: column;
-        }
-        
-        .search-btn {
-            width: 100%;
-            justify-content: center;
-        }
-
         .controls {
             flex-direction: column;
         }
@@ -442,15 +656,34 @@
         .control-btn {
             width: 100%;
         }
+        
+        .results-container {
+            grid-template-columns: 1fr;
+        }
     }
 
     @media (max-width: 480px) {
-        body {
-            padding: 15px;
+        .app-header {
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+        }
+        
+        .hero-text {
+            font-size: 2.2rem;
+        }
+        
+        .hero-icon {
+            font-size: 3.5rem;
+        }
+        
+        .search-input {
+            padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) var(--spacing-md);
+            font-size: 1rem;
         }
         
         .control-btn {
-            padding: 14px;
+            padding: var(--spacing-sm);
             font-size: 1rem;
         }
         
@@ -462,53 +695,61 @@
             font-size: 1.1rem;
         }
         
-        .chord-line {
-            font-size: 1rem;
-        }
-        
-        .lyrics-line {
-            font-size: 0.95rem;
-        }
-        
-        .results-container {
-            grid-template-columns: 1fr;
+        .modal-content {
+            padding: var(--spacing-md);
         }
     }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="logo">
+<body data-theme="dark">
+    <!-- App Header mit Dark-Mode-Toggle -->
+    <header class="app-header">
+        <div class="logo">
+            <div class="logo-icon">
                 <i class="fas fa-guitar"></i>
-                <h1>GuitarTab Pro</h1>
             </div>
-            <p style="text-align: center; margin-top: 15px; font-size: 1.1rem; opacity: 0.8;">
-                Finde Gitarrenakkorde für deine Lieblingssongs
-            </p>
-        </header>
+            <div class="logo-text">GuitarTab Pro</div>
+        </div>
+        <button id="themeToggle" class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
 
+    <!-- Google-ähnliche Startseite -->
+    <div class="start-page">
+        <div class="hero-icon">
+            <i class="fas fa-music"></i>
+        </div>
+        <div class="hero-text">Finde deine Akkorde</div>
+        
+        <div class="search-container">
+            <input type="text" id="songInput" class="search-input" placeholder="Songtitel und Künstler eingeben" autocomplete="off">
+            <button id="searchButton" class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        
+        <button id="offlineButton" class="offline-btn">
+            <i class="fas fa-download"></i> Offline Akkorde
+        </button>
+    </div>
+
+    <!-- Container für Ergebnisse -->
+    <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2>Online Songsuche</h2>
+                <h2>Suchergebnisse</h2>
                 <div class="status-indicator" id="status-indicator">
                     <span>Bereit</span>
                 </div>
-            </div>
-            
-            <div class="search-container">
-                <input type="text" id="songInput" class="search-input" placeholder="Songtitel und Künstler (z.B. Let It Be Beatles)">
-                <button id="searchButton" class="search-btn">
-                    <i class="fas fa-search"></i> Suchen
-                </button>
             </div>
             
             <div class="spinner" id="loadingSpinner"></div>
             
             <!-- Suchergebnisse werden hier angezeigt -->
             <div class="results-container" id="resultsContainer">
-                <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--lichess-gray);">
-                    <i class="fas fa-music" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                <div style="text-align: center; grid-column: 1 / -1; padding: var(--spacing-xl); color: var(--text-gray);">
+                    <i class="fas fa-music" style="font-size: 4rem; margin-bottom: var(--spacing-md); opacity: 0.3;"></i>
                     <h3>Gib einen Songtitel und Künstler ein</h3>
                     <p>Deine Suchergebnisse werden hier angezeigt</p>
                 </div>
@@ -557,13 +798,44 @@
         </div>
     </div>
 
+    <!-- Modal für Offline-Songs -->
+    <div class="modal" id="offlineModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h2>Offline gespeicherte Songs</h2>
+            </div>
+            <div class="offline-list" id="offlineList">
+                <!-- Offline-Songs werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+    </div>
+
     <div class="notification" id="notification"></div>
 
     <script>
+        // Ultimate Guitar API Key (sollte eigentlich geheim sein)
+        const UG_API_KEY = "xgNDu6kLc2hIy8Uf4QZ7V1t9oJ0RqWb";
+        
+        // Registriere Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => {
+                    console.log('Service Worker registriert:', reg);
+                    showNotification("Service Worker aktiv - Proxy funktioniert", "success");
+                })
+                .catch(err => {
+                    console.error('Service Worker Registrierung fehlgeschlagen:', err);
+                    showNotification("Service Worker konnte nicht aktiviert werden", "error");
+                });
+        } else {
+            showNotification("Dein Browser unterstützt keinen Service Worker", "error");
+        }
+
         // App State
         let currentSongData = null;
         let autoScrollInterval = null;
-        let currentScrollSpeed = 3; // Wörter pro Sekunde
+        let currentScrollSpeed = 3;
         let transposition = 0;
         let currentSearchResults = [];
         let songLines = [];
@@ -589,15 +861,45 @@
         const notification = document.getElementById('notification');
         const statusIndicator = document.getElementById('status-indicator');
         const loadingSpinner = document.getElementById('loadingSpinner');
+        const offlineButton = document.getElementById('offlineButton');
+        const offlineModal = document.getElementById('offlineModal');
+        const closeModal = document.getElementById('closeModal');
+        const offlineList = document.getElementById('offlineList');
+        const container = document.querySelector('.container');
+        const startPage = document.querySelector('.start-page');
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
 
-        // Proxy für API-Zugriffe
-        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
-        const API_URL = 'https://www.ultimate-guitar.com/';
+        // Theme initialisieren
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            body.setAttribute('data-theme', savedTheme);
+            themeToggle.innerHTML = savedTheme === 'dark' ? 
+                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // Theme wechseln
+        function toggleTheme() {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            themeToggle.innerHTML = newTheme === 'dark' ? 
+                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            // Theme initialisieren
+            initTheme();
+            
             // Event Listeners
             searchButton.addEventListener('click', searchSong);
+            songInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchSong();
+            });
             scrollToggle.addEventListener('click', toggleAutoScroll);
             saveButton.addEventListener('click', saveOffline);
             backButton.addEventListener('click', showSearchResults);
@@ -605,12 +907,17 @@
             transposeDown.addEventListener('click', () => transposeChords(-1));
             copyBtn.addEventListener('click', copyChords);
             scrollSpeed.addEventListener('input', updateScrollSpeed);
+            offlineButton.addEventListener('click', showOfflineModal);
+            closeModal.addEventListener('click', () => offlineModal.style.display = 'none');
+            themeToggle.addEventListener('click', toggleTheme);
             
-            // Set initial scroll speed
-            updateScrollSpeed();
+            // Schließe Modal bei Klick außerhalb
+            window.addEventListener('click', (e) => {
+                if (e.target === offlineModal) offlineModal.style.display = 'none';
+            });
         });
 
-        // Search for a song online
+        // Suche nach einem Song mit eigenem Proxy
         async function searchSong() {
             const query = songInput.value.trim();
             
@@ -619,27 +926,30 @@
                 return;
             }
             
+            // Zeige Container an und verstecke Startseite
+            container.style.display = 'block';
+            startPage.style.display = 'none';
+            
             showNotification("Suche Akkorde online...", "info");
-            statusIndicator.innerHTML = '<span style="color: var(--lichess-green);">Suche Akkorde...</span>';
+            statusIndicator.innerHTML = '<span style="color: var(--accent-green);">Suche Akkorde...</span>';
             loadingSpinner.style.display = 'block';
             resultsContainer.innerHTML = '';
             
             try {
-                // Simuliere API-Aufruf (in einem echten Szenario würden Sie hier den Proxy verwenden)
-                const results = await simulateSearch(query);
+                const results = await searchUltimateGuitar(query);
                 currentSearchResults = results;
                 displaySearchResults(results);
                 showNotification("Suchergebnisse geladen", "success");
-                statusIndicator.innerHTML = '<span style="color: var(--lichess-green);">Ergebnisse geladen</span>';
+                statusIndicator.innerHTML = '<span style="color: var(--accent-green);">Ergebnisse geladen</span>';
             } catch (error) {
-                console.error(error);
-                showNotification("Fehler bei der Suche. Bitte versuche es erneut.", "error");
-                statusIndicator.innerHTML = '<span style="color: var(--lichess-error);">Fehler bei der Suche</span>';
+                console.error("Suchfehler:", error);
+                showNotification(`Fehler bei der Suche: ${error.message}`, "error");
+                statusIndicator.innerHTML = '<span style="color: var(--error-red);">Fehler bei der Suche</span>';
                 resultsContainer.innerHTML = `
-                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--lichess-gray);">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 20px; color: var(--lichess-error);"></i>
+                    <div style="text-align: center; grid-column: 1 / -1; padding: var(--spacing-xl); color: var(--text-gray);">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: var(--spacing-md); color: var(--error-red);"></i>
                         <h3>Fehler bei der Suche</h3>
-                        <p>Bitte versuche einen anderen Suchbegriff</p>
+                        <p>${error.message || "Bitte versuche einen anderen Suchbegriff"}</p>
                     </div>
                 `;
             } finally {
@@ -647,76 +957,55 @@
             }
         }
 
-        // Simuliere API-Suche (ersetzt durch echten API-Aufruf in Produktion)
-        function simulateSearch(query) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    // Simulierte Suchergebnisse
-                    const results = [
-                        { id: 1, title: "Let It Be", artist: "The Beatles", rating: 4.9, votes: 12500, type: "Chord" },
-                        { id: 2, title: "Hotel California", artist: "Eagles", rating: 4.8, votes: 9800, type: "Tab" },
-                        { id: 3, title: "Wonderwall", artist: "Oasis", rating: 4.7, votes: 8450, type: "Chord" },
-                        { id: 4, title: "Stairway to Heaven", artist: "Led Zeppelin", rating: 4.9, votes: 11200, type: "Tab" },
-                        { id: 5, title: "Sweet Child O' Mine", artist: "Guns N' Roses", rating: 4.8, votes: 9200, type: "Chord" },
-                        { id: 6, title: "Smells Like Teen Spirit", artist: "Nirvana", rating: 4.7, votes: 7800, type: "Tab" },
-                        { id: 7, title: "Hey Jude", artist: "The Beatles", rating: 4.8, votes: 8700, type: "Chord" },
-                        { id: 8, title: "Wish You Were Here", artist: "Pink Floyd", rating: 4.9, votes: 9500, type: "Tab" }
-                    ];
-                    
-                    // Filtern basierend auf der Abfrage für die Simulation
-                    const filteredResults = results.filter(song => 
-                        `${song.title} ${song.artist}`.toLowerCase().includes(query.toLowerCase())
-                    );
-                    
-                    resolve(filteredResults);
-                }, 1500);
-            });
-        }
-
-        // Suchergebnisse anzeigen
-        function displaySearchResults(results) {
-            if (results.length === 0) {
-                resultsContainer.innerHTML = `
-                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--lichess-gray);">
-                        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
-                        <h3>Keine Ergebnisse gefunden</h3>
-                        <p>Bitte versuche einen anderen Suchbegriff</p>
-                    </div>
-                `;
-                return;
+        // Suche mit Ultimate Guitar API über eigenen Proxy
+        async function searchUltimateGuitar(query) {
+            const params = new URLSearchParams({
+                page: 1,
+                page_size: 20,
+                query: query,
+                type: "chords"
+            }).toString();
+            
+            const proxyUrl = `/proxy/tab/search?${params}`;
+            
+            try {
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`API-Fehler: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Filtere nur Chord-Tabs mit genügend Sternen
+                return data.tabs
+                    .filter(tab => 
+                        tab.type === "chords" && 
+                        tab.rating >= 4.0 && 
+                        tab.versions > 0
+                    )
+                    .map(tab => ({
+                        id: tab.id,
+                        title: tab.song_name,
+                        artist: tab.artist_name,
+                        rating: tab.rating,
+                        votes: tab.votes,
+                        type: "Chord",
+                        version: tab.version
+                    }));
+            } catch (error) {
+                throw new Error("Proxy-Anfrage fehlgeschlagen: " + error.message);
             }
-            
-            resultsContainer.innerHTML = '';
-            
-            results.forEach(song => {
-                const resultCard = document.createElement('div');
-                resultCard.className = 'result-card';
-                resultCard.innerHTML = `
-                    <div class="result-title">${song.title}</div>
-                    <div class="result-artist">${song.artist}</div>
-                    <div class="result-info">
-                        <span><i class="fas fa-star"></i> ${song.rating}</span>
-                        <span><i class="fas fa-thumbs-up"></i> ${song.votes.toLocaleString()}</span>
-                        <span><i class="fas fa-music"></i> ${song.type}</span>
-                    </div>
-                `;
-                
-                resultCard.addEventListener('click', () => {
-                    loadSongContent(song);
-                });
-                
-                resultsContainer.appendChild(resultCard);
-            });
         }
 
-        // Lade Song-Inhalt
+        // Lade Song-Inhalt mit eigenem Proxy
         async function loadSongContent(song) {
             showNotification("Lade Song-Inhalt...", "info");
             loadingSpinner.style.display = 'block';
             
             try {
-                // Simuliere das Laden von Song-Daten
-                const songData = await simulateLoadSong(song.id);
+                // Lade Song-Daten von Ultimate Guitar über eigenen Proxy
+                const songData = await getSongTab(song.id);
                 currentSongData = songData;
                 
                 // Zeige den Song an
@@ -730,71 +1019,69 @@
                 
                 showNotification("Song geladen", "success");
             } catch (error) {
-                console.error(error);
-                showNotification("Fehler beim Laden des Songs", "error");
+                console.error("Ladefehler:", error);
+                showNotification(`Fehler beim Laden: ${error.message}`, "error");
             } finally {
                 loadingSpinner.style.display = 'none';
             }
         }
 
-        // Simuliere Song-Laden
-        function simulateLoadSong(id) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    // Simulierte Song-Daten mit Akkorden und Lyrics
-                    resolve({
-                        title: "Let It Be",
-                        artist: "The Beatles",
-                        content: `
-[Verse 1]
-[ch]C[/ch]When I find myself in times of trouble
-[ch]G[/ch]Mother Mary comes to me
-[ch]Am[/ch]Speaking words of wisdom
-[ch]F[/ch]Let it be
+        // Hole Tab-Daten mit eigenem Proxy
+        async function getSongTab(tabId) {
+            const proxyUrl = `/proxy/tab/${tabId}`;
+            
+            try {
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`Tab API-Fehler: ${response.status}`);
+                }
+                
+                const tabData = await response.json();
+                
+                // Extrahiere relevante Daten
+                return {
+                    id: tabData.id,
+                    title: tabData.song_name,
+                    artist: tabData.artist_name,
+                    content: formatTabContent(tabData.content),
+                    type: tabData.type,
+                    url: tabData.tab_url
+                };
+            } catch (error) {
+                throw new Error("Proxy-Anfrage fehlgeschlagen: " + error.message);
+            }
+        }
 
-[Verse 2]
-[ch]C[/ch]And in my hour of darkness
-[ch]G[/ch]She is standing right in front of me
-[ch]Am[/ch]Speaking words of wisdom
-[ch]F[/ch]Let it be
-
-[Chorus]
-[ch]Am[/ch]Let it be, [ch]G[/ch]let it be
-[ch]F[/ch]Let it be, [ch]C[/ch]let it be
-[ch]G[/ch]Whisper words of wisdom
-[ch]F[/ch]Let it be
-
-[Verse 3]
-[ch]C[/ch]And when the broken hearted people
-[ch]G[/ch]Living in the world agree
-[ch]Am[/ch]There will be an answer
-[ch]F[/ch]Let it be
-
-[Chorus]
-[ch]Am[/ch]Let it be, [ch]G[/ch]let it be
-[ch]F[/ch]Let it be, [ch]C[/ch]let it be
-[ch]G[/ch]There will be an answer
-[ch]F[/ch]Let it be
-
-[Outro]
-[ch]C[/ch]Let it be, [ch]G[/ch]let it be
-[ch]Am[/ch]Let it be, [ch]F[/ch]let it be
-[ch]C[/ch]Yeah, there will be an answer
-[ch]G[/ch]Let it be
-[ch]F[/ch]Let it be, [ch]C[/ch]let it be
-[ch]G[/ch]Let it be, [ch]F[/ch]let it be
-[ch]C[/ch]Whisper words of wisdom
-[ch]G[/ch]Let it be`
-                    });
-                }, 1200);
-            });
+        // Formatiere den Tab-Inhalt für die Anzeige
+        function formatTabContent(content) {
+            // Vereinfachte Formatierung:
+            // 1. Ersetze [ch]Akkord[/ch] mit unserem Format
+            // 2. Behalte Abschnitte bei
+            // 3. Konvertiere HTML-Tags zu Text
+            
+            // Entferne HTML-Tags
+            let text = content.replace(/<[^>]*>/g, '');
+            
+            // Ersetze UG Chord-Tags mit unserem Format
+            text = text.replace(/\[ch\](.*?)\[\/ch\]/g, '[ch]$1[/ch]');
+            
+            // Ersetze Abschnitts-Tags
+            text = text.replace(/\[tab\]/g, '').replace(/\[\/tab\]/g, '');
+            text = text.replace(/\[intro\]/gi, '[Intro]');
+            text = text.replace(/\[verse.*?\]/gi, '[Verse]');
+            text = text.replace(/\[chorus\]/gi, '[Chorus]');
+            text = text.replace(/\[bridge\]/gi, '[Bridge]');
+            text = text.replace(/\[outro\]/gi, '[Outro]');
+            text = text.replace(/\[solo\]/gi, '[Solo]');
+            
+            return text;
         }
 
         // Song mit Akkorden und Lyrics anzeigen
         function displaySong(songData) {
             let html = '';
             const sections = songData.content.trim().split('\n\n');
-            songLines = [];
             
             sections.forEach(section => {
                 const lines = section.split('\n');
@@ -804,6 +1091,8 @@
                     html += `<div class="song-section">
                         <div class="section-title">${sectionTitleMatch[1]}</div>
                     `;
+                } else {
+                    html += `<div class="song-section">`;
                 }
                 
                 for (let i = sectionTitleMatch ? 1 : 0; i < lines.length; i++) {
@@ -812,7 +1101,7 @@
                     // Prozessiere Zeilen mit Akkorden
                     if (line.includes('[ch]')) {
                         const chords = line.match(/\[ch\](.*?)\[\/ch\]/g) || [];
-                        let chordHtml = '<div class="song-line">';
+                        let chordHtml = '<div class="chord-line">';
                         let lyricsHtml = '<div class="lyrics-line">';
                         
                         let currentIndex = 0;
@@ -855,18 +1144,24 @@
                     }
                 }
                 
-                if (sectionTitleMatch) {
-                    html += '</div>';
-                }
+                html += '</div>';
             });
             
             songContent.innerHTML = html;
+            
+            // Bereite Smartscroll vor
+            songLines = Array.from(songContent.querySelectorAll('.song-section, .chord-line, .lyrics-line'));
         }
 
         // Zeige Suchergebnisse wieder an
         function showSearchResults() {
             songDisplay.style.display = 'none';
             resultsContainer.style.display = 'grid';
+            
+            // Stoppe Auto-Scroll
+            if (autoScrollInterval) {
+                toggleAutoScroll();
+            }
         }
 
         // Toggle auto scroll
@@ -885,7 +1180,7 @@
             }
         }
 
-        // Start auto scroll with word-based speed
+        // Starte Smartscroll
         function startAutoScroll() {
             if (autoScrollInterval) cancelAnimationFrame(autoScrollInterval);
             
@@ -901,17 +1196,19 @@
                 const wordsPerMillisecond = wordsPerSecond / 1000;
                 const wordsScrolled = elapsed * wordsPerMillisecond;
                 
-                // Move to the next line
-                currentLineIndex = Math.min(currentLineIndex + 1, songLines.length - 1);
+                // Gehe zur nächsten Zeile
+                if (wordsScrolled > 1) {
+                    currentLineIndex = Math.min(currentLineIndex + 1, songLines.length - 1);
+                    lastUpdateTime = timestamp;
+                }
                 
-                // Calculate new scroll position
-                const lineElements = songContent.querySelectorAll('.song-line, .lyrics-line, .song-section');
-                if (lineElements[currentLineIndex]) {
-                    const targetPosition = lineElements[currentLineIndex].offsetTop;
+                // Berechne neue Scroll-Position
+                if (songLines[currentLineIndex]) {
+                    const targetPosition = songLines[currentLineIndex].offsetTop;
                     const currentPosition = songContent.scrollTop;
                     const visibleHeight = songContent.clientHeight;
                     
-                    // Scroll nur wenn nötig
+                    // Scrolle nur wenn nötig
                     if (targetPosition > currentPosition + visibleHeight - 50) {
                         songContent.scrollTop = targetPosition - 100;
                     }
@@ -928,10 +1225,10 @@
         // Update scroll speed
         function updateScrollSpeed() {
             currentScrollSpeed = parseInt(scrollSpeed.value);
-            speedValue.textContent = `${currentScrollSpeed} W/s`;
+            speedValue.textContent = `${currentScrollSpeed} Z/s`;
         }
 
-        // Transpose chords
+        // Transponiere Akkorde
         function transposeChords(steps) {
             if (!currentSongData) return;
             
@@ -945,7 +1242,7 @@
             showNotification(`Um ${steps} Halbtöne transponiert`, "info");
         }
 
-        // Transpose a single chord
+        // Transponiere einen einzelnen Akkord
         function transposeChord(chord, steps) {
             const chordMap = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
             const baseChord = chord.replace(/[^A-G#]/g, '');
@@ -958,7 +1255,7 @@
             return chordMap[newIndex] + suffix;
         }
 
-        // Save song offline
+        // Speichere Song offline
         function saveOffline() {
             if (!currentSongData) {
                 showNotification("Kein Song zum Speichern gefunden", "error");
@@ -968,10 +1265,9 @@
             try {
                 let savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
                 
-                // Check if song already exists
+                // Überprüfe ob Song bereits existiert
                 const exists = savedSongs.some(song => 
-                    song.title === currentSongData.title && 
-                    song.artist === currentSongData.artist
+                    song.id === currentSongData.id
                 );
                 
                 if (exists) {
@@ -979,10 +1275,10 @@
                     return;
                 }
                 
-                // Add timestamp
+                // Füge Zeitstempel hinzu
                 const songToSave = {
                     ...currentSongData,
-                    savedAt: new Date().toISOString(),
+                    savedAt: new Date().toLocaleString('de-DE'),
                     transposition: transposition
                 };
                 
@@ -995,7 +1291,7 @@
             }
         }
 
-        // Copy chords to clipboard
+        // Kopiere Akkorde in die Zwischenablage
         function copyChords() {
             if (!currentSongData) {
                 showNotification("Keine Akkorde zum Kopieren", "error");
@@ -1003,7 +1299,7 @@
             }
             
             try {
-                // Create a simplified text version
+                // Erstelle eine vereinfachte Textversion
                 const chordText = currentSongData.content
                     .replace(/\[ch\](.*?)\[\/ch\]/g, '$1')
                     .replace(/\[.*?\]/g, '');
@@ -1020,23 +1316,80 @@
             }
         }
 
-        // Show notification
+        // Zeige Offline-Modal an
+        function showOfflineModal() {
+            offlineModal.style.display = 'flex';
+            loadOfflineSongs();
+        }
+
+        // Lade offline gespeicherte Songs
+        function loadOfflineSongs() {
+            try {
+                const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
+                offlineList.innerHTML = '';
+                
+                if (savedSongs.length === 0) {
+                    offlineList.innerHTML = `
+                        <div class="empty-offline">
+                            <i class="fas fa-download" style="font-size: 3rem; margin-bottom: var(--spacing-md);"></i>
+                            <h3>Keine offline gespeicherten Songs</h3>
+                            <p>Speichere Songs über die "Offline speichern" Funktion</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                savedSongs.forEach(song => {
+                    const item = document.createElement('div');
+                    item.className = 'offline-item';
+                    item.innerHTML = `
+                        <div class="offline-item-title">${song.title}</div>
+                        <div class="offline-item-artist">${song.artist}</div>
+                        <div class="offline-item-date">Gespeichert am: ${song.savedAt}</div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        currentSongData = song;
+                        songTitle.textContent = song.title;
+                        songArtist.textContent = song.artist;
+                        displaySong(song);
+                        offlineModal.style.display = 'none';
+                        
+                        // Wechsle zur Song-Ansicht
+                        resultsContainer.style.display = 'none';
+                        songDisplay.style.display = 'block';
+                    });
+                    
+                    offlineList.appendChild(item);
+                });
+            } catch (e) {
+                offlineList.innerHTML = `
+                    <div class="empty-offline">
+                        <i class="fas fa-exclamation-triangle" style="color: var(--error-red); font-size: 3rem; margin-bottom: var(--spacing-md);"></i>
+                        <h3>Fehler beim Laden</h3>
+                        <p>${e.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Zeige Benachrichtigung
         function showNotification(message, type = "info") {
             notification.textContent = message;
             notification.style.display = 'block';
             
             switch (type) {
                 case "success":
-                    notification.style.backgroundColor = "var(--lichess-success)";
+                    notification.style.backgroundColor = "var(--success-green)";
                     break;
                 case "error":
-                    notification.style.backgroundColor = "var(--lichess-error)";
+                    notification.style.backgroundColor = "var(--error-red)";
                     break;
                 case "info":
-                    notification.style.backgroundColor = "var(--lichess-green)";
+                    notification.style.backgroundColor = "var(--accent-green)";
                     break;
                 default:
-                    notification.style.backgroundColor = "var(--lichess-card)";
+                    notification.style.backgroundColor = "var(--card-bg)";
             }
             
             setTimeout(() => {
