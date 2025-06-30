@@ -278,6 +278,7 @@
         line-height: 1.8;
         margin-bottom: 20px;
         padding-left: 10px;
+        position: relative;
     }
 
     .section-title {
@@ -601,6 +602,29 @@
         let currentScrollSpeed = 50;
         let scrollPosition = 0;
         let transposition = 0;
+        let chordLibrary = {
+            "C": "C",
+            "D": "D",
+            "E": "E",
+            "F": "F",
+            "G": "G",
+            "A": "A",
+            "B": "B",
+            "Cm": "Cm",
+            "Dm": "Dm",
+            "Em": "Em",
+            "Fm": "Fm",
+            "Gm": "Gm",
+            "Am": "Am",
+            "Bm": "Bm",
+            "C7": "C7",
+            "D7": "D7",
+            "E7": "E7",
+            "F7": "F7",
+            "G7": "G7",
+            "A7": "A7",
+            "B7": "B7"
+        };
 
         // DOM Elements
         const artistInput = document.getElementById('artistInput');
@@ -649,8 +673,6 @@
             statusIndicator.innerHTML = '<span style="color: var(--ms-accent);">Suche Akkorde...</span>';
             
             try {
-                // For GitHub Pages, we'll use a simple mock as we can't use a proxy
-                // In a real implementation, you would use a backend service here
                 const songData = await fetchSongData(artist, song);
                 currentSongData = songData;
                 displaySong(songData);
@@ -663,19 +685,17 @@
             }
         }
 
-        // Fetch song data - Mock implementation for GitHub Pages
+        // Fetch song data - Local chord library
         async function fetchSongData(artist, song) {
-            // This is a mock implementation for GitHub Pages
-            // In a real implementation, you would call a backend service
-            // that fetches data from Ultimate Guitar or similar
-            
             return new Promise((resolve) => {
                 // Simulate network delay
                 setTimeout(() => {
-                    resolve({
-                        title: song,
-                        artist: artist,
-                        content: `
+                    // Predefined songs with chords above lyrics
+                    const songs = {
+                        "let it be": {
+                            title: "Let It Be",
+                            artist: "The Beatles",
+                            content: `
 [Intro]
 [ch]C[/ch] [ch]G[/ch] [ch]Am[/ch] [ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]
 
@@ -696,68 +716,120 @@
 [ch]F[/ch]Let it be, [ch]C[/ch]let it be
 [ch]G[/ch]Whisper words of wisdom
 [ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+                            `
+                        },
+                        "hotel california": {
+                            title: "Hotel California",
+                            artist: "Eagles",
+                            content: `
+[Intro]
+[ch]Bm[/ch] [ch]F#[/ch] [ch]A[/ch] [ch]E[/ch] [ch]G[/ch] [ch]D[/ch] [ch]Em[/ch] [ch]F#[/ch]
 
-[Verse 3]
-[ch]C[/ch]And when the broken hearted people
-[ch]G[/ch]Living in the world agree
-[ch]Am[/ch]There will be an answer
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+[Verse 1]
+[ch]Bm[/ch]On a dark desert highway, cool wind in my hair
+[ch]F#[/ch]Warm smell of colitas, rising up through the air
+[ch]A[/ch]Up ahead in the distance, I saw a shimmering light
+[ch]E[/ch]My head grew heavy and my sight grew dim
+[ch]G[/ch]I had to stop for the night
+                            `
+                        },
+                        "wonderwall": {
+                            title: "Wonderwall",
+                            artist: "Oasis",
+                            content: `
+[Intro]
+[ch]Em[/ch] [ch]G[/ch] [ch]D[/ch] [ch]A7[/ch]
+
+[Verse 1]
+[ch]Em[/ch]Today is gonna be the day
+[ch]G[/ch]That they're gonna throw it back to you
+[ch]D[/ch]By now you should've somehow
+[ch]A7[/ch]Realized what you gotta do
+                            `
+                        }
+                    };
+
+                    const key = song.toLowerCase();
+                    if (songs[key]) {
+                        resolve(songs[key]);
+                    } else {
+                        // Fallback to default song
+                        resolve({
+                            title: song,
+                            artist: artist,
+                            content: `
+[Verse]
+[ch]C[/ch]This is a sample song for ${artist}
+[ch]G[/ch]Showing how chords are displayed above lyrics
+[ch]Am[/ch]Try searching for: Let It Be, Hotel California, or Wonderwall
+[ch]F[/ch]Chords are shown above the corresponding lyrics
 
 [Chorus]
-[ch]Am[/ch]Let it be, [ch]G[/ch]let it be
-[ch]F[/ch]Let it be, [ch]C[/ch]let it be
-[ch]G[/ch]There will be an answer
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
-
-[Outro]
-[ch]C[/ch]Let it be, [ch]G[/ch]let it be
-[ch]Am[/ch]Let it be, [ch]F[/ch]let it be
-[ch]C[/ch]Yeah, there will be an answer
-[ch]G[/ch]Let it be
-[ch]F[/ch]Let it be, [ch]C[/ch]let it be
-[ch]G[/ch]Let it be, [ch]F[/ch]let it be
-[ch]C[/ch]Whisper words of wisdom
-[ch]G[/ch]Let it be
-                        `
-                    });
-                }, 1500);
+[ch]C[/ch]Chord [ch]G[/ch]positioning [ch]Am[/ch]works without CORS
+[ch]F[/ch]Using our local chord library
+[ch]C[/ch]Enjoy [ch]G[/ch]playing [ch]F[/ch]guitar!
+                            `
+                        });
+                    }
+                }, 800);
             });
         }
 
-        // Display song
+        // Display song with chords above lyrics
         function displaySong(songData) {
             let html = `
                 <div class="song-title">${songData.title}</div>
                 <div class="song-artist">${songData.artist}</div>
             `;
             
-            const sections = songData.content.split('\n\n');
+            const sections = songData.content.trim().split('\n\n');
             
             sections.forEach(section => {
-                const lines = section.trim().split('\n');
-                const sectionTitle = lines[0].match(/\[(.*?)\]/)?.[1];
+                const lines = section.split('\n');
+                const sectionTitleMatch = lines[0].match(/^\[(.*)\]$/);
                 
-                if (sectionTitle) {
-                    html += `<div class="section-title">${sectionTitle}</div>`;
+                if (sectionTitleMatch) {
+                    html += `<div class="section-title">${sectionTitleMatch[1]}</div>`;
                 }
                 
                 let chordLine = '';
                 let lyricLine = '';
+                let chordActive = false;
                 
-                for (let i = sectionTitle ? 1 : 0; i < lines.length; i++) {
+                for (let i = sectionTitleMatch ? 1 : 0; i < lines.length; i++) {
                     const line = lines[i].trim();
                     
+                    // Process chord lines
                     if (line.includes('[ch]')) {
-                        // Chord line
-                        const chordLineContent = line.replace(/\[ch\](.*?)\[\/ch\]/g, '<span class="chord">$1</span>');
-                        chordLine += `<div class="chord-line">${chordLineContent}</div>`;
-                    } else if (line) {
-                        // Lyric line
-                        lyricLine += `<div class="lyrics-line">${line}</div>`;
+                        chordActive = true;
+                        const chords = line.match(/\[ch\](.*?)\[\/ch\]/g);
+                        chordLine = '<div class="chord-line">';
+                        
+                        chords.forEach(chord => {
+                            const chordName = chord.replace(/\[ch\]|\[\/ch\]/g, '');
+                            chordLine += `<span class="chord">${chordName}</span> `;
+                        });
+                        
+                        chordLine += '</div>';
+                    } else {
+                        // Process lyric lines
+                        lyricLine = `<div class="lyrics-line">${line}</div>`;
+                        
+                        // Only add if we have chords to display above
+                        if (chordLine) {
+                            html += chordLine + lyricLine;
+                            chordLine = '';
+                            chordActive = false;
+                        } else {
+                            html += lyricLine;
+                        }
                     }
                 }
                 
-                html += chordLine + lyricLine;
+                // Add remaining chords if any
+                if (chordLine) {
+                    html += chordLine;
+                }
             });
             
             songDisplay.innerHTML = html;
@@ -816,6 +888,8 @@
 
         // Transpose chords
         function transposeChords(steps) {
+            if (!currentSongData) return;
+            
             transposition += steps;
             const chords = document.querySelectorAll('.chord');
             
