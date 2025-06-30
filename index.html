@@ -15,9 +15,9 @@
         --lichess-accent: #3893E8;
         --lichess-error: #d13438;
         --lichess-success: #107c10;
-        --border-radius-lg: 12px;
-        --border-radius-md: 8px;
-        --border-radius-sm: 6px;
+        --border-radius-lg: 16px;
+        --border-radius-md: 12px;
+        --border-radius-sm: 8px;
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -34,12 +34,12 @@
         line-height: 1.6;
         min-height: 100vh;
         overflow-x: hidden;
+        padding: 20px;
     }
 
     .container {
-        max-width: 1400px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 20px;
         display: grid;
         grid-template-columns: 1fr;
         gap: 20px;
@@ -49,13 +49,13 @@
     header {
         background: var(--lichess-card);
         color: white;
-        padding: 25px;
-        margin: 0 0 20px;
-        border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+        padding: 20px;
+        border-radius: var(--border-radius-lg);
         position: relative;
         overflow: hidden;
         z-index: 10;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
     }
 
     .logo {
@@ -73,7 +73,7 @@
 
     .logo i {
         font-size: 2rem;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(117, 150, 86, 0.2);
         width: 60px;
         height: 60px;
         border-radius: 50%;
@@ -87,17 +87,16 @@
         background: var(--lichess-card);
         border-radius: var(--border-radius-lg);
         padding: 25px;
-        margin-bottom: 0;
         position: relative;
         overflow: hidden;
         transition: var(--transition);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.25);
     }
 
     .card-header {
         margin-bottom: 20px;
         padding-bottom: 15px;
-        border-bottom: 1px solid var(--lichess-gray);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -110,20 +109,18 @@
         position: relative;
     }
 
-    /* Suchbereich mit erhöhtem Border Radius */
+    /* Suchbereich */
     .search-container {
         display: flex;
         gap: 12px;
         margin-bottom: 20px;
-        flex-wrap: wrap;
         position: relative;
     }
 
     .search-input {
         flex: 1;
-        min-width: 200px;
         padding: 18px;
-        border: 1px solid var(--lichess-gray);
+        border: 1px solid rgba(255,255,255,0.1);
         border-radius: var(--border-radius-md);
         font-size: 1.1rem;
         transition: var(--transition);
@@ -161,40 +158,48 @@
         font-size: 1.5rem;
     }
 
-    /* Suchergebnisse im Lichess-Stil */
-    .suggestions-container {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--lichess-card);
-        border: 1px solid var(--lichess-gray);
-        border-radius: var(--border-radius-md);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-        z-index: 100;
-        max-height: 300px;
-        overflow-y: auto;
-        display: none;
-        margin-top: 5px;
+    /* Suchergebnisse */
+    .results-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
     }
 
-    .suggestion-item {
-        padding: 12px 18px;
-        border-bottom: 1px solid var(--lichess-gray);
+    .result-card {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: var(--border-radius-md);
+        padding: 20px;
         cursor: pointer;
         transition: var(--transition);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .suggestion-item:hover {
-        background: var(--lichess-green);
+    .result-card:hover {
+        transform: translateY(-5px);
+        background: rgba(117, 150, 86, 0.1);
+        border-color: var(--lichess-green);
     }
 
-    .suggestion-artist {
-        font-size: 0.9rem;
+    .result-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--lichess-green);
+        margin-bottom: 5px;
+    }
+
+    .result-artist {
+        font-size: 1rem;
+        color: var(--lichess-light);
         opacity: 0.8;
+        margin-bottom: 10px;
+    }
+
+    .result-info {
+        display: flex;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: var(--lichess-gray);
     }
 
     /* Song-Anzeige */
@@ -202,25 +207,56 @@
         background: rgba(0, 0, 0, 0.2);
         border-radius: var(--border-radius-md);
         padding: 25px;
-        margin-top: 15px;
-        max-height: 500px;
-        overflow-y: auto;
+        margin-top: 20px;
         position: relative;
-        border: 1px solid var(--lichess-gray);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .song-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     .song-title {
         font-size: 1.8rem;
         font-weight: 700;
         color: var(--lichess-green);
-        margin-bottom: 8px;
     }
 
     .song-artist {
         font-size: 1.3rem;
         color: var(--lichess-light);
-        margin-bottom: 20px;
-        font-style: italic;
+        opacity: 0.9;
+    }
+
+    .song-content {
+        max-height: 500px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .song-section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        display: block;
+        color: var(--lichess-green);
+        font-weight: bold;
+        margin: 0 0 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-size: 1.3rem;
+    }
+
+    .song-line {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
     }
 
     .chord-line {
@@ -229,50 +265,40 @@
         font-size: 1.2rem;
         line-height: 1.6;
         letter-spacing: 1px;
-        margin-bottom: 5px;
-        white-space: pre-wrap;
         font-family: monospace;
+        min-height: 1.6rem;
     }
 
     .lyrics-line {
         font-size: 1.1rem;
         line-height: 1.7;
-        margin-bottom: 15px;
         padding-left: 10px;
-    }
-
-    .section-title {
-        display: block;
-        color: var(--lichess-green);
-        font-weight: bold;
-        margin: 25px 0 12px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid var(--lichess-gray);
-        font-size: 1.3rem;
     }
 
     /* Steuerelemente */
     .controls {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        display: flex;
+        flex-wrap: wrap;
         gap: 15px;
         margin-top: 25px;
     }
 
     .control-btn {
-        padding: 20px 15px;
+        padding: 16px 20px;
         border: none;
         border-radius: var(--border-radius-md);
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         cursor: pointer;
         transition: var(--transition);
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 12px;
+        gap: 10px;
         font-weight: 600;
         background: rgba(255, 255, 255, 0.1);
         color: var(--lichess-light);
+        flex: 1;
+        min-width: 160px;
+        justify-content: center;
     }
 
     .control-btn:hover {
@@ -304,7 +330,7 @@
         align-items: center;
         gap: 12px;
         margin-top: 20px;
-        padding: 12px;
+        padding: 15px;
         background: rgba(117, 150, 86, 0.1);
         border-radius: var(--border-radius-md);
     }
@@ -317,7 +343,7 @@
 
     .speed-control input {
         flex: 1;
-        height: 10px;
+        height: 8px;
         border-radius: 10px;
         background: var(--lichess-gray);
         outline: none;
@@ -393,7 +419,6 @@
         }
         
         .song-display {
-            max-height: 400px;
             padding: 20px;
         }
         
@@ -401,27 +426,31 @@
             font-size: 1.6rem;
         }
         
-        .control-btn {
-            padding: 18px;
-            font-size: 1.1rem;
+        .search-container {
+            flex-direction: column;
         }
         
-        .search-input {
-            min-width: 100%;
+        .search-btn {
+            width: 100%;
+            justify-content: center;
         }
 
         .controls {
-            grid-template-columns: 1fr;
+            flex-direction: column;
+        }
+        
+        .control-btn {
+            width: 100%;
         }
     }
 
     @media (max-width: 480px) {
-        .container {
+        body {
             padding: 15px;
         }
         
         .control-btn {
-            padding: 16px;
+            padding: 14px;
             font-size: 1rem;
         }
         
@@ -440,21 +469,25 @@
         .lyrics-line {
             font-size: 0.95rem;
         }
+        
+        .results-container {
+            grid-template-columns: 1fr;
+        }
     }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fas fa-guitar"></i>
-            <h1>GuitarTab Pro</h1>
-        </div>
-        <p style="text-align: center; margin-top: 15px; font-size: 1.1rem; opacity: 0.8;">
-            Finde Gitarrenakkorde für deine Lieblingssongs - Modernes Design
-        </p>
-    </header> 
-
     <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-guitar"></i>
+                <h1>GuitarTab Pro</h1>
+            </div>
+            <p style="text-align: center; margin-top: 15px; font-size: 1.1rem; opacity: 0.8;">
+                Finde Gitarrenakkorde für deine Lieblingssongs
+            </p>
+        </header>
+
         <div class="card">
             <div class="card-header">
                 <h2>Online Songsuche</h2>
@@ -468,41 +501,58 @@
                 <button id="searchButton" class="search-btn">
                     <i class="fas fa-search"></i> Suchen
                 </button>
-                <div class="suggestions-container" id="suggestionsContainer"></div>
             </div>
             
             <div class="spinner" id="loadingSpinner"></div>
             
-            <div class="song-display" id="song-display">
-                <div style="text-align: center; padding: 40px; color: var(--lichess-gray);">
+            <!-- Suchergebnisse werden hier angezeigt -->
+            <div class="results-container" id="resultsContainer">
+                <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--lichess-gray);">
                     <i class="fas fa-music" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
                     <h3>Gib einen Songtitel und Künstler ein</h3>
-                    <p>Deine Akkorde werden hier angezeigt</p>
+                    <p>Deine Suchergebnisse werden hier angezeigt</p>
                 </div>
             </div>
             
-            <div class="speed-control">
-                <label for="scrollSpeed">Scroll-Geschwindigkeit:</label>
-                <input type="range" id="scrollSpeed" min="1" max="10" value="3">
-                <span id="speedValue">3 W/s</span>
-            </div>
-            
-            <div class="controls">
-                <button id="scrollToggle" class="control-btn btn-primary">
-                    <i class="fas fa-play"></i> Auto-Scroll Start
-                </button>
-                <button id="saveButton" class="control-btn btn-success">
-                    <i class="fas fa-download"></i> Offline speichern
-                </button>
-                <button id="transposeUp" class="control-btn">
-                    <i class="fas fa-arrow-up"></i> Transponieren (+)
-                </button>
-                <button id="transposeDown" class="control-btn">
-                    <i class="fas fa-arrow-down"></i> Transponieren (-)
-                </button>
-                <button id="copyBtn" class="control-btn">
-                    <i class="fas fa-copy"></i> Akkorde kopieren
-                </button>
+            <!-- Song-Display (zuerst versteckt) -->
+            <div class="song-display" id="songDisplay" style="display: none;">
+                <div class="song-header">
+                    <div>
+                        <div class="song-title" id="songTitle">Songtitel</div>
+                        <div class="song-artist" id="songArtist">Künstler</div>
+                    </div>
+                    <button id="backButton" class="control-btn">
+                        <i class="fas fa-arrow-left"></i> Zurück
+                    </button>
+                </div>
+                
+                <div class="song-content" id="songContent">
+                    <!-- Song-Inhalt wird hier dynamisch eingefügt -->
+                </div>
+                
+                <div class="speed-control">
+                    <label for="scrollSpeed">Scroll-Geschwindigkeit:</label>
+                    <input type="range" id="scrollSpeed" min="1" max="10" value="3">
+                    <span id="speedValue">3 W/s</span>
+                </div>
+                
+                <div class="controls">
+                    <button id="scrollToggle" class="control-btn btn-primary">
+                        <i class="fas fa-play"></i> Auto-Scroll Start
+                    </button>
+                    <button id="saveButton" class="control-btn btn-success">
+                        <i class="fas fa-download"></i> Offline speichern
+                    </button>
+                    <button id="transposeUp" class="control-btn">
+                        <i class="fas fa-arrow-up"></i> Transponieren (+)
+                    </button>
+                    <button id="transposeDown" class="control-btn">
+                        <i class="fas fa-arrow-down"></i> Transponieren (-)
+                    </button>
+                    <button id="copyBtn" class="control-btn">
+                        <i class="fas fa-copy"></i> Akkorde kopieren
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -514,8 +564,8 @@
         let currentSongData = null;
         let autoScrollInterval = null;
         let currentScrollSpeed = 3; // Wörter pro Sekunde
-        let scrollPosition = 0;
         let transposition = 0;
+        let currentSearchResults = [];
         let songLines = [];
         let currentLineIndex = 0;
         let lastUpdateTime = 0;
@@ -523,9 +573,14 @@
         // DOM Elements
         const songInput = document.getElementById('songInput');
         const searchButton = document.getElementById('searchButton');
-        const songDisplay = document.getElementById('song-display');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const songDisplay = document.getElementById('songDisplay');
+        const songTitle = document.getElementById('songTitle');
+        const songArtist = document.getElementById('songArtist');
+        const songContent = document.getElementById('songContent');
         const scrollToggle = document.getElementById('scrollToggle');
         const saveButton = document.getElementById('saveButton');
+        const backButton = document.getElementById('backButton');
         const transposeUp = document.getElementById('transposeUp');
         const transposeDown = document.getElementById('transposeDown');
         const copyBtn = document.getElementById('copyBtn');
@@ -533,11 +588,11 @@
         const speedValue = document.getElementById('speedValue');
         const notification = document.getElementById('notification');
         const statusIndicator = document.getElementById('status-indicator');
-        const suggestionsContainer = document.getElementById('suggestionsContainer');
         const loadingSpinner = document.getElementById('loadingSpinner');
 
         // Proxy für API-Zugriffe
-        const PROXY_URL = 'https://corsproxy.io/?';
+        const PROXY_URL = 'https://api.allorigins.win/raw?url=';
+        const API_URL = 'https://www.ultimate-guitar.com/';
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -545,68 +600,15 @@
             searchButton.addEventListener('click', searchSong);
             scrollToggle.addEventListener('click', toggleAutoScroll);
             saveButton.addEventListener('click', saveOffline);
+            backButton.addEventListener('click', showSearchResults);
             transposeUp.addEventListener('click', () => transposeChords(1));
             transposeDown.addEventListener('click', () => transposeChords(-1));
             copyBtn.addEventListener('click', copyChords);
             scrollSpeed.addEventListener('input', updateScrollSpeed);
             
-            // Search suggestions
-            songInput.addEventListener('input', showSuggestions);
-            
             // Set initial scroll speed
             updateScrollSpeed();
         });
-
-        // Show search suggestions
-        function showSuggestions() {
-            const query = songInput.value.trim().toLowerCase();
-            
-            suggestionsContainer.innerHTML = '';
-            
-            if (!query) {
-                suggestionsContainer.style.display = 'none';
-                return;
-            }
-            
-            // Populäre Vorschläge
-            const popularSongs = [
-                "Let It Be Beatles",
-                "Hotel California Eagles",
-                "Wonderwall Oasis",
-                "Stairway to Heaven Led Zeppelin",
-                "Sweet Child O' Mine Guns N' Roses",
-                "Smells Like Teen Spirit Nirvana",
-                "Hey Jude Beatles",
-                "Wish You Were Here Pink Floyd",
-                "Knockin' on Heaven's Door Bob Dylan",
-                "Tears in Heaven Eric Clapton"
-            ];
-            
-            const filteredSongs = popularSongs.filter(song => 
-                song.toLowerCase().includes(query)
-            ).slice(0, 5);
-            
-            if (filteredSongs.length === 0) {
-                suggestionsContainer.style.display = 'none';
-                return;
-            }
-            
-            filteredSongs.forEach(song => {
-                const suggestionItem = document.createElement('div');
-                suggestionItem.className = 'suggestion-item';
-                suggestionItem.textContent = song;
-                
-                suggestionItem.addEventListener('click', () => {
-                    songInput.value = song;
-                    suggestionsContainer.style.display = 'none';
-                    searchSong();
-                });
-                
-                suggestionsContainer.appendChild(suggestionItem);
-            });
-            
-            suggestionsContainer.style.display = 'block';
-        }
 
         // Search for a song online
         async function searchSong() {
@@ -620,75 +622,177 @@
             showNotification("Suche Akkorde online...", "info");
             statusIndicator.innerHTML = '<span style="color: var(--lichess-green);">Suche Akkorde...</span>';
             loadingSpinner.style.display = 'block';
-            songDisplay.innerHTML = '';
+            resultsContainer.innerHTML = '';
             
             try {
-                const songData = await fetchSongData(query);
-                currentSongData = songData;
-                displaySong(songData);
-                showNotification("Akkorde geladen!", "success");
-                statusIndicator.innerHTML = '<span style="color: var(--lichess-green);">Akkorde geladen</span>';
+                // Simuliere API-Aufruf (in einem echten Szenario würden Sie hier den Proxy verwenden)
+                const results = await simulateSearch(query);
+                currentSearchResults = results;
+                displaySearchResults(results);
+                showNotification("Suchergebnisse geladen", "success");
+                statusIndicator.innerHTML = '<span style="color: var(--lichess-green);">Ergebnisse geladen</span>';
             } catch (error) {
                 console.error(error);
-                showNotification("Fehler beim Laden des Songs. Bitte versuche einen anderen Songtitel.", "error");
-                statusIndicator.innerHTML = '<span style="color: var(--lichess-error);">Fehler beim Laden</span>';
-                songDisplay.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--lichess-gray);">
+                showNotification("Fehler bei der Suche. Bitte versuche es erneut.", "error");
+                statusIndicator.innerHTML = '<span style="color: var(--lichess-error);">Fehler bei der Suche</span>';
+                resultsContainer.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--lichess-gray);">
                         <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 20px; color: var(--lichess-error);"></i>
-                        <h3>Fehler beim Laden des Songs</h3>
-                        <p>Bitte versuche einen anderen Songtitel</p>
+                        <h3>Fehler bei der Suche</h3>
+                        <p>Bitte versuche einen anderen Suchbegriff</p>
                     </div>
                 `;
             } finally {
                 loadingSpinner.style.display = 'none';
-                suggestionsContainer.style.display = 'none';
             }
         }
 
-        // Fetch song data from Ultimate Guitar API using proxy
-        async function fetchSongData(query) {
-            // In einer echten Implementierung würde dies die Ultimate Guitar API über einen Proxy aufrufen
-            // Für dieses Beispiel verwenden wir simulierte Daten
-            
+        // Simuliere API-Suche (ersetzt durch echten API-Aufruf in Produktion)
+        function simulateSearch(query) {
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    // Simulierte API-Antwort
-                    resolve({
-                        title: query.split(' ').slice(0, -1).join(' ') || "Unbekannter Song",
-                        artist: query.split(' ').pop() || "Unbekannter Künstler",
-                        content: `
-[Intro]
-[ch]C[/ch] [ch]G[/ch] [ch]Am[/ch] [ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]
+                    // Simulierte Suchergebnisse
+                    const results = [
+                        { id: 1, title: "Let It Be", artist: "The Beatles", rating: 4.9, votes: 12500, type: "Chord" },
+                        { id: 2, title: "Hotel California", artist: "Eagles", rating: 4.8, votes: 9800, type: "Tab" },
+                        { id: 3, title: "Wonderwall", artist: "Oasis", rating: 4.7, votes: 8450, type: "Chord" },
+                        { id: 4, title: "Stairway to Heaven", artist: "Led Zeppelin", rating: 4.9, votes: 11200, type: "Tab" },
+                        { id: 5, title: "Sweet Child O' Mine", artist: "Guns N' Roses", rating: 4.8, votes: 9200, type: "Chord" },
+                        { id: 6, title: "Smells Like Teen Spirit", artist: "Nirvana", rating: 4.7, votes: 7800, type: "Tab" },
+                        { id: 7, title: "Hey Jude", artist: "The Beatles", rating: 4.8, votes: 8700, type: "Chord" },
+                        { id: 8, title: "Wish You Were Here", artist: "Pink Floyd", rating: 4.9, votes: 9500, type: "Tab" }
+                    ];
+                    
+                    // Filtern basierend auf der Abfrage für die Simulation
+                    const filteredResults = results.filter(song => 
+                        `${song.title} ${song.artist}`.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    resolve(filteredResults);
+                }, 1500);
+            });
+        }
 
+        // Suchergebnisse anzeigen
+        function displaySearchResults(results) {
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 40px; color: var(--lichess-gray);">
+                        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                        <h3>Keine Ergebnisse gefunden</h3>
+                        <p>Bitte versuche einen anderen Suchbegriff</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsContainer.innerHTML = '';
+            
+            results.forEach(song => {
+                const resultCard = document.createElement('div');
+                resultCard.className = 'result-card';
+                resultCard.innerHTML = `
+                    <div class="result-title">${song.title}</div>
+                    <div class="result-artist">${song.artist}</div>
+                    <div class="result-info">
+                        <span><i class="fas fa-star"></i> ${song.rating}</span>
+                        <span><i class="fas fa-thumbs-up"></i> ${song.votes.toLocaleString()}</span>
+                        <span><i class="fas fa-music"></i> ${song.type}</span>
+                    </div>
+                `;
+                
+                resultCard.addEventListener('click', () => {
+                    loadSongContent(song);
+                });
+                
+                resultsContainer.appendChild(resultCard);
+            });
+        }
+
+        // Lade Song-Inhalt
+        async function loadSongContent(song) {
+            showNotification("Lade Song-Inhalt...", "info");
+            loadingSpinner.style.display = 'block';
+            
+            try {
+                // Simuliere das Laden von Song-Daten
+                const songData = await simulateLoadSong(song.id);
+                currentSongData = songData;
+                
+                // Zeige den Song an
+                songTitle.textContent = song.title;
+                songArtist.textContent = song.artist;
+                displaySong(songData);
+                
+                // Wechsle zur Song-Ansicht
+                resultsContainer.style.display = 'none';
+                songDisplay.style.display = 'block';
+                
+                showNotification("Song geladen", "success");
+            } catch (error) {
+                console.error(error);
+                showNotification("Fehler beim Laden des Songs", "error");
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // Simuliere Song-Laden
+        function simulateLoadSong(id) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Simulierte Song-Daten mit Akkorden und Lyrics
+                    resolve({
+                        title: "Let It Be",
+                        artist: "The Beatles",
+                        content: `
 [Verse 1]
 [ch]C[/ch]When I find myself in times of trouble
 [ch]G[/ch]Mother Mary comes to me
 [ch]Am[/ch]Speaking words of wisdom
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+[ch]F[/ch]Let it be
 
 [Verse 2]
 [ch]C[/ch]And in my hour of darkness
 [ch]G[/ch]She is standing right in front of me
 [ch]Am[/ch]Speaking words of wisdom
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+[ch]F[/ch]Let it be
 
 [Chorus]
 [ch]Am[/ch]Let it be, [ch]G[/ch]let it be
 [ch]F[/ch]Let it be, [ch]C[/ch]let it be
 [ch]G[/ch]Whisper words of wisdom
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be`
+[ch]F[/ch]Let it be
+
+[Verse 3]
+[ch]C[/ch]And when the broken hearted people
+[ch]G[/ch]Living in the world agree
+[ch]Am[/ch]There will be an answer
+[ch]F[/ch]Let it be
+
+[Chorus]
+[ch]Am[/ch]Let it be, [ch]G[/ch]let it be
+[ch]F[/ch]Let it be, [ch]C[/ch]let it be
+[ch]G[/ch]There will be an answer
+[ch]F[/ch]Let it be
+
+[Outro]
+[ch]C[/ch]Let it be, [ch]G[/ch]let it be
+[ch]Am[/ch]Let it be, [ch]F[/ch]let it be
+[ch]C[/ch]Yeah, there will be an answer
+[ch]G[/ch]Let it be
+[ch]F[/ch]Let it be, [ch]C[/ch]let it be
+[ch]G[/ch]Let it be, [ch]F[/ch]let it be
+[ch]C[/ch]Whisper words of wisdom
+[ch]G[/ch]Let it be`
                     });
-                }, 1500);
+                }, 1200);
             });
         }
 
-        // Display song with chords above lyrics
+        // Song mit Akkorden und Lyrics anzeigen
         function displaySong(songData) {
-            let html = `
-                <div class="song-title">${songData.title}</div>
-                <div class="song-artist">${songData.artist}</div>
-            `;
-            
+            let html = '';
             const sections = songData.content.trim().split('\n\n');
             songLines = [];
             
@@ -697,60 +801,72 @@
                 const sectionTitleMatch = lines[0].match(/^\[(.*)\]$/);
                 
                 if (sectionTitleMatch) {
-                    html += `<div class="section-title">${sectionTitleMatch[1]}</div>`;
+                    html += `<div class="song-section">
+                        <div class="section-title">${sectionTitleMatch[1]}</div>
+                    `;
                 }
-                
-                let chordLine = '';
-                let lyricLine = '';
                 
                 for (let i = sectionTitleMatch ? 1 : 0; i < lines.length; i++) {
                     const line = lines[i].trim();
                     
-                    // Process chord lines
+                    // Prozessiere Zeilen mit Akkorden
                     if (line.includes('[ch]')) {
-                        chordLine = '<div class="chord-line">';
                         const chords = line.match(/\[ch\](.*?)\[\/ch\]/g) || [];
+                        let chordHtml = '<div class="song-line">';
+                        let lyricsHtml = '<div class="lyrics-line">';
+                        
+                        let currentIndex = 0;
+                        let hasChords = false;
                         
                         chords.forEach(chord => {
                             const chordName = chord.replace(/\[ch\]|\[\/ch\]/g, '');
-                            chordLine += `<span class="chord">${chordName}</span> `;
+                            const chordIndex = line.indexOf(chord, currentIndex);
+                            
+                            // Füge Text vor dem Akkord hinzu
+                            if (chordIndex > currentIndex) {
+                                const textBefore = line.substring(currentIndex, chordIndex);
+                                lyricsHtml += textBefore;
+                            }
+                            
+                            // Füge Akkord hinzu
+                            chordHtml += `<span class="chord">${chordName}</span> `;
+                            lyricsHtml += `<span class="chord-space"> </span>`;
+                            
+                            currentIndex = chordIndex + chord.length;
+                            hasChords = true;
                         });
                         
-                        chordLine += '</div>';
-                    } else {
-                        // Process lyric lines
-                        lyricLine = `<div class="lyrics-line">${line}</div>`;
-                        
-                        // Only add if we have chords to display above
-                        if (chordLine) {
-                            html += chordLine + lyricLine;
-                            songLines.push(chordLine);
-                            songLines.push(lyricLine);
-                            chordLine = '';
-                        } else {
-                            html += lyricLine;
-                            songLines.push(lyricLine);
+                        // Füge verbleibenden Text nach den Akkorden hinzu
+                        if (currentIndex < line.length) {
+                            lyricsHtml += line.substring(currentIndex);
                         }
+                        
+                        chordHtml += '</div>';
+                        lyricsHtml += '</div>';
+                        
+                        if (hasChords) {
+                            html += chordHtml + lyricsHtml;
+                        } else {
+                            html += `<div class="lyrics-line">${line.replace(/\[ch\]|\[\/ch\]/g, '')}</div>`;
+                        }
+                    } else {
+                        // Zeile ohne Akkorde
+                        html += `<div class="lyrics-line">${line}</div>`;
                     }
                 }
                 
-                // Add remaining chords if any
-                if (chordLine) {
-                    html += chordLine;
-                    songLines.push(chordLine);
+                if (sectionTitleMatch) {
+                    html += '</div>';
                 }
             });
             
-            songDisplay.innerHTML = html;
-            
-            // Reset scroll position
-            songDisplay.scrollTop = 0;
-            scrollPosition = 0;
-            currentLineIndex = 0;
-            lastUpdateTime = 0;
-            
-            // Reset transposition
-            transposition = 0;
+            songContent.innerHTML = html;
+        }
+
+        // Zeige Suchergebnisse wieder an
+        function showSearchResults() {
+            songDisplay.style.display = 'none';
+            resultsContainer.style.display = 'grid';
         }
 
         // Toggle auto scroll
@@ -775,6 +891,7 @@
             
             const startTime = performance.now();
             lastUpdateTime = startTime;
+            currentLineIndex = 0;
             
             function scrollStep(timestamp) {
                 if (!lastUpdateTime) lastUpdateTime = timestamp;
@@ -784,31 +901,20 @@
                 const wordsPerMillisecond = wordsPerSecond / 1000;
                 const wordsScrolled = elapsed * wordsPerMillisecond;
                 
-                // Move to the next line based on word count
-                if (currentLineIndex < songLines.length) {
-                    const line = songLines[currentLineIndex];
-                    const wordCount = line.split(/\s+/).filter(word => word.length > 0).length;
+                // Move to the next line
+                currentLineIndex = Math.min(currentLineIndex + 1, songLines.length - 1);
+                
+                // Calculate new scroll position
+                const lineElements = songContent.querySelectorAll('.song-line, .lyrics-line, .song-section');
+                if (lineElements[currentLineIndex]) {
+                    const targetPosition = lineElements[currentLineIndex].offsetTop;
+                    const currentPosition = songContent.scrollTop;
+                    const visibleHeight = songContent.clientHeight;
                     
-                    if (wordsScrolled >= wordCount) {
-                        // Move to next line
-                        currentLineIndex++;
-                        lastUpdateTime = timestamp;
-                        
-                        // Calculate new scroll position
-                        if (currentLineIndex > 0) {
-                            const lineElements = songDisplay.querySelectorAll('.chord-line, .lyrics-line, .section-title');
-                            if (lineElements[currentLineIndex]) {
-                                scrollPosition = lineElements[currentLineIndex].offsetTop;
-                                songDisplay.scrollTop = scrollPosition;
-                            }
-                        }
+                    // Scroll nur wenn nötig
+                    if (targetPosition > currentPosition + visibleHeight - 50) {
+                        songContent.scrollTop = targetPosition - 100;
                     }
-                } else {
-                    // Reached the end, reset
-                    currentLineIndex = 0;
-                    scrollPosition = 0;
-                    songDisplay.scrollTop = 0;
-                    lastUpdateTime = timestamp;
                 }
                 
                 if (autoScrollInterval) {
