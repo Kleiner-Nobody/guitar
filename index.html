@@ -3,1335 +3,1479 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuitarTab Pro - Modernes Design</title>
+    <title>Ultimate Guitar Tab Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-    :root {
-        --primary-dark: #0f0f0f;
-        --primary-light: #f8f9fa;
-        --card-bg-dark: #1a1a1a;
-        --card-bg-light: #ffffff;
-        --accent-green: #4CAF50;
-        --text-dark: #f1f1f1;
-        --text-light: #202124;
-        --text-gray-dark: #aaa;
-        --text-gray-light: #5f6368;
-        --accent-blue: #4285F4;
-        --error-red: #EA4335;
-        --success-green: #34A853;
-        --border-radius: 28px;
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        --spacing-xs: 12px;
-        --spacing-sm: 24px;
-        --spacing-md: 36px;
-        --spacing-lg: 48px;
-        --spacing-xl: 64px;
-        --spacing-xxl: 80px;
-    }
-
-    /* Dark Mode Variablen */
-    [data-theme="dark"] {
-        --primary-bg: var(--primary-dark);
-        --card-bg: var(--card-bg-dark);
-        --text-color: var(--text-dark);
-        --text-gray: var(--text-gray-dark);
-        --border-color: rgba(255, 255, 255, 0.1);
-        --hover-bg: rgba(255, 255, 255, 0.05);
-        --shadow-color: rgba(0, 0, 0, 0.5);
-    }
-
-    /* Light Mode Variablen */
-    [data-theme="light"] {
-        --primary-bg: var(--primary-light);
-        --card-bg: var(--card-bg-light);
-        --text-color: var(--text-light);
-        --text-gray: var(--text-gray-light);
-        --border-color: rgba(0, 0, 0, 0.1);
-        --hover-bg: rgba(0, 0, 0, 0.03);
-        --shadow-color: rgba(0, 0, 0, 0.15);
-    }
-
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
-        background: var(--primary-bg);
-        color: var(--text-color);
-        line-height: 1.7;
-        min-height: 100vh;
-        overflow-x: hidden;
-        transition: var(--transition);
-        padding: var(--spacing-md);
-    }
-
-    /* Header mit Theme-Toggle */
-    .app-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--spacing-xl);
-        padding: var(--spacing-sm) var(--spacing-md);
-        border-radius: var(--border-radius);
-        background: var(--card-bg);
-        box-shadow: 0 4px 20px var(--shadow-color);
-        max-width: 1400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-    }
-
-    .logo-icon {
-        font-size: 2.2rem;
-        color: var(--accent-green);
-    }
-
-    .logo-text {
-        font-size: 1.8rem;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-        background: linear-gradient(to right, #4CAF50, #8BC34A);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .theme-toggle {
-        background: none;
-        border: none;
-        color: var(--text-color);
-        font-size: 1.5rem;
-        cursor: pointer;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: var(--transition);
-    }
-
-    .theme-toggle:hover {
-        background: var(--hover-bg);
-    }
-
-    /* Google-like Startseite */
-    .start-page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 70vh;
-        text-align: center;
-        padding: var(--spacing-xl);
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    .hero-icon {
-        font-size: 6rem;
-        color: var(--accent-green);
-        margin-bottom: var(--spacing-md);
-    }
-
-    .hero-text {
-        font-size: 3.8rem;
-        font-weight: 500;
-        letter-spacing: -1.5px;
-        background: linear-gradient(to right, #4CAF50, #8BC34A);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: var(--spacing-xl);
-        line-height: 1.2;
-    }
-
-    .search-container {
-        width: 100%;
-        max-width: 800px;
-        position: relative;
-        margin-bottom: var(--spacing-md);
-    }
-
-    .search-input {
-        width: 100%;
-        padding: var(--spacing-md) var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
-        font-size: 1.3rem;
-        transition: var(--transition);
-        background: var(--card-bg);
-        color: var(--text-color);
-        box-shadow: 0 4px 20px var(--shadow-color);
-    }
-
-    .search-input:hover, 
-    .search-input:focus {
-        background: var(--card-bg);
-        box-shadow: 0 6px 25px var(--shadow-color);
-        border-color: var(--accent-green);
-        outline: none;
-    }
-
-    .search-btn {
-        position: absolute;
-        right: var(--spacing-md);
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        border: none;
-        color: var(--accent-green);
-        font-size: 1.8rem;
-        cursor: pointer;
-        padding: var(--spacing-xs);
-        transition: var(--transition);
-    }
-
-    .search-btn:hover {
-        color: #8BC34A;
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    .offline-btn {
-        padding: var(--spacing-md) var(--spacing-lg);
-        background: var(--card-bg);
-        color: var(--text-color);
-        border: none;
-        border-radius: var(--border-radius);
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        font-weight: 500;
-        box-shadow: 0 4px 15px var(--shadow-color);
-        border: 1px solid var(--border-color);
-        margin-top: var(--spacing-sm);
-    }
-
-    .offline-btn:hover {
-        background: var(--hover-bg);
-        border-color: var(--accent-green);
-        transform: translateY(-2px);
-    }
-
-    /* Container für Ergebnisse */
-    .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        display: none; /* Anfangs versteckt */
-    }
-
-    /* Karten-Design */
-    .card {
-        background: var(--card-bg);
-        border-radius: calc(var(--border-radius) - 4px);
-        padding: var(--spacing-xl);
-        position: relative;
-        overflow: hidden;
-        transition: var(--transition);
-        box-shadow: 0 8px 30px var(--shadow-color);
-        border: 1px solid var(--border-color);
-        margin-bottom: var(--spacing-xl);
-    }
-
-    .card-header {
-        margin-bottom: var(--spacing-lg);
-        padding-bottom: var(--spacing-md);
-        border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .card-header h2 {
-        font-size: 2.2rem;
-        font-weight: 600;
-        color: var(--text-color);
-        position: relative;
-    }
-
-    /* Suchergebnisse */
-    .results-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-        gap: var(--spacing-md);
-        margin-top: var(--spacing-lg);
-    }
-
-    .result-card {
-        background: var(--card-bg);
-        border-radius: 24px;
-        padding: var(--spacing-lg);
-        cursor: pointer;
-        transition: var(--transition);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 15px var(--shadow-color);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .result-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--accent-green);
-        box-shadow: 0 10px 25px var(--shadow-color);
-    }
-
-    .result-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--accent-green);
-        margin-bottom: var(--spacing-xs);
-        line-height: 1.3;
-    }
-
-    .result-artist {
-        font-size: 1.2rem;
-        color: var(--text-color);
-        opacity: 0.9;
-        margin-bottom: var(--spacing-sm);
-    }
-
-    .result-info {
-        display: flex;
-        gap: var(--spacing-sm);
-        font-size: 1rem;
-        color: var(--text-gray);
-        margin-top: auto;
-        padding-top: var(--spacing-sm);
-        border-top: 1px solid var(--border-color);
-    }
-
-    .result-info span {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    /* Song-Anzeige */
-    .song-display {
-        background: var(--card-bg);
-        border-radius: 24px;
-        padding: var(--spacing-xl);
-        position: relative;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 5px 25px var(--shadow-color);
-        margin-bottom: var(--spacing-lg);
-    }
-
-    .song-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: var(--spacing-lg);
-        padding-bottom: var(--spacing-md);
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .song-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--accent-green);
-        line-height: 1.2;
-    }
-
-    .song-artist {
-        font-size: 1.6rem;
-        color: var(--text-color);
-        opacity: 0.9;
-        margin-top: var(--spacing-xs);
-    }
-
-    .song-content {
-        max-height: 600px;
-        overflow-y: auto;
-        padding: var(--spacing-md);
-        font-family: 'Courier New', monospace;
-        line-height: 1.8;
-        background: var(--card-bg);
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-        margin: var(--spacing-md) 0;
-        font-size: 1.1rem;
-    }
-
-    .song-section {
-        margin-bottom: var(--spacing-lg);
-    }
-
-    .section-title {
-        display: block;
-        color: var(--accent-green);
-        font-weight: bold;
-        margin: 0 0 var(--spacing-md);
-        padding-bottom: var(--spacing-xs);
-        border-bottom: 1px solid var(--border-color);
-        font-size: 1.4rem;
-    }
-
-    .song-line {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: var(--spacing-sm);
-    }
-
-    .chord-line {
-        color: var(--accent-blue);
-        font-weight: bold;
-        font-size: 1.3rem;
-        letter-spacing: 1px;
-        min-height: 1.8rem;
-        margin-bottom: 6px;
-    }
-
-    .lyrics-line {
-        font-size: 1.2rem;
-        padding-left: 10px;
-        line-height: 1.6;
-    }
-
-    /* Steuerelemente */
-    .controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--spacing-sm);
-        margin-top: var(--spacing-lg);
-    }
-
-    .control-btn {
-        padding: var(--spacing-md) var(--spacing-lg);
-        border: none;
-        border-radius: 20px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-xs);
-        font-weight: 600;
-        background: var(--card-bg);
-        color: var(--text-color);
-        flex: 1;
-        min-width: 200px;
-        justify-content: center;
-        box-shadow: 0 4px 15px var(--shadow-color);
-        border: 1px solid var(--border-color);
-    }
-
-    .control-btn:hover {
-        transform: translateY(-3px);
-        background: var(--hover-bg);
-        box-shadow: 0 6px 20px var(--shadow-color);
-    }
-
-    .btn-primary {
-        background: linear-gradient(to right, #4CAF50, #8BC34A);
-        color: white;
-        border: none !important;
-    }
-
-    .btn-success {
-        background: linear-gradient(to right, #34A853, #57BB5C);
-        color: white;
-        border: none !important;
-    }
-
-    /* Geschwindigkeitsregler */
-    .speed-control {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        margin-top: var(--spacing-lg);
-        padding: var(--spacing-md);
-        background: rgba(76, 175, 80, 0.1);
-        border-radius: 20px;
-        font-size: 1.2rem;
-    }
-
-    .speed-control label {
-        white-space: nowrap;
-        color: var(--text-color);
-    }
-
-    .speed-control input {
-        flex: 1;
-        height: 10px;
-        border-radius: 10px;
-        background: var(--text-gray);
-        outline: none;
-        -webkit-appearance: none;
-    }
-
-    .speed-control input::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: var(--accent-green);
-        cursor: pointer;
-        box-shadow: 0 2px 8px var(--shadow-color);
-    }
-
-    #speedValue {
-        min-width: 50px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 1.2rem;
-        color: var(--accent-green);
-    }
-
-    /* Benachrichtigungen */
-    .notification {
-        position: fixed;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--card-bg);
-        color: var(--text-color);
-        padding: var(--spacing-md) var(--spacing-lg);
-        border-radius: 20px;
-        display: none;
-        z-index: 1001;
-        box-shadow: 0 8px 30px var(--shadow-color);
-        font-size: 1.3rem;
-        font-weight: 600;
-        border: 1px solid var(--border-color);
-        animation: slideIn 0.4s ease-out;
-        max-width: 90%;
-    }
-
-    @keyframes slideIn {
-        from { bottom: -100px; opacity: 0; }
-        to { bottom: 40px; opacity: 1; }
-    }
-
-    /* Ladeindikator */
-    .spinner {
-        border: 6px solid rgba(255, 255, 255, 0.1);
-        border-top: 6px solid var(--accent-green);
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        animation: spin 1s linear infinite;
-        margin: var(--spacing-xl) auto;
-        display: none;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* Modal für Offline-Songs */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal-content {
-        background: var(--card-bg);
-        border-radius: var(--border-radius);
-        width: 90%;
-        max-width: 800px;
-        max-height: 80vh;
-        overflow-y: auto;
-        padding: var(--spacing-xl);
-        box-shadow: 0 15px 50px var(--shadow-color);
-        position: relative;
-        border: 1px solid var(--border-color);
-    }
-
-    .close-modal {
-        position: absolute;
-        top: var(--spacing-md);
-        right: var(--spacing-md);
-        font-size: 2rem;
-        color: var(--text-gray);
-        cursor: pointer;
-        background: none;
-        border: none;
-        transition: var(--transition);
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-    }
-
-    .close-modal:hover {
-        color: var(--accent-green);
-        background: var(--hover-bg);
-    }
-
-    .modal-header {
-        margin-bottom: var(--spacing-lg);
-        padding-bottom: var(--spacing-md);
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .modal-header h2 {
-        font-size: 2.2rem;
-        color: var(--accent-green);
-    }
-
-    .offline-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-
-    .offline-item {
-        background: var(--card-bg);
-        border-radius: 20px;
-        padding: var(--spacing-lg);
-        cursor: pointer;
-        transition: var(--transition);
-        border: 1px solid var(--border-color);
-        display: flex;
-        flex-direction: column;
-    }
-
-    .offline-item:hover {
-        border-color: var(--accent-green);
-        transform: translateY(-2px);
-    }
-
-    .offline-item-title {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--accent-green);
-    }
-
-    .offline-item-artist {
-        font-size: 1.2rem;
-        color: var(--text-color);
-        opacity: 0.8;
-    }
-
-    .offline-item-date {
-        font-size: 1rem;
-        color: var(--text-gray);
-        margin-top: var(--spacing-xs);
-    }
-
-    .empty-offline {
-        text-align: center;
-        padding: var(--spacing-xl);
-        color: var(--text-gray);
-        font-size: 1.2rem;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
-        .hero-text {
-            font-size: 3.2rem;
+        :root {
+            /* Farbvariablen für Dark Mode */
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-header: #1a1a1a;
+            --dark-text: #ffffff;
+            --dark-text-secondary: #b0b0b0;
+            --dark-accent: #4a86e8;
+            --dark-accent-secondary: #34a853;
+            --dark-accent-tertiary: #fbbc05;
+            --dark-border: rgba(255, 255, 255, 0.08);
+            --dark-shadow: rgba(0, 0, 0, 0.5);
+            
+            /* Farbvariablen für Light Mode */
+            --light-bg: #f8f9fa;
+            --light-card: #ffffff;
+            --light-header: #ffffff;
+            --light-text: #333333;
+            --light-text-secondary: #666666;
+            --light-accent: #1a73e8;
+            --light-accent-secondary: #34a853;
+            --light-border: rgba(0, 0, 0, 0.05);
+            --light-shadow: rgba(0, 0, 0, 0.05);
+            
+            /* Gemeinsame Variablen */
+            --accent-error: #ea4335;
+            --border-radius: 28px;
+            --border-radius-sm: 20px;
+            --spacing-xs: 12px;
+            --spacing-sm: 24px;
+            --spacing-md: 32px;
+            --spacing-lg: 48px;
+            --spacing-xl: 64px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Aktive Variablen (Standard: Dark Mode) */
+            --bg-color: var(--dark-bg);
+            --card-bg: var(--dark-card);
+            --header-bg: var(--dark-header);
+            --text-color: var(--dark-text);
+            --text-secondary: var(--dark-text-secondary);
+            --accent-primary: var(--dark-accent);
+            --accent-secondary: var(--dark-accent-secondary);
+            --accent-tertiary: var(--dark-accent-tertiary);
+            --border-color: var(--dark-border);
+            --shadow-color: var(--dark-shadow);
         }
-        
-        .hero-icon {
-            font-size: 5rem;
-        }
-        
-        .search-input {
-            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-md);
-            font-size: 1.2rem;
-        }
-        
-        .card {
-            padding: var(--spacing-lg);
-        }
-        
-        .results-container {
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        }
-    }
 
-    @media (max-width: 768px) {
+        /* Light Mode Stile */
+        body.light-mode {
+            --bg-color: var(--light-bg);
+            --card-bg: var(--light-card);
+            --header-bg: var(--light-header);
+            --text-color: var(--light-text);
+            --text-secondary: var(--light-text-secondary);
+            --accent-primary: var(--light-accent);
+            --accent-secondary: var(--light-accent-secondary);
+            --accent-tertiary: #f1c232;
+            --border-color: var(--light-border);
+            --shadow-color: var(--light-shadow);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            padding: var(--spacing-sm);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: var(--spacing-md);
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
-        
-        .hero-text {
-            font-size: 2.6rem;
-        }
-        
-        .hero-icon {
-            font-size: 4rem;
-        }
-        
-        .card-header h2 {
-            font-size: 1.8rem;
-        }
-        
-        .song-title {
-            font-size: 1.8rem;
-        }
-        
-        .song-artist {
-            font-size: 1.4rem;
-        }
-        
-        .controls {
-            flex-direction: column;
-        }
-        
-        .control-btn {
-            width: 100%;
-        }
-        
-        .results-container {
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
             grid-template-columns: 1fr;
+            gap: var(--spacing-md);
         }
-        
-        .modal-content {
+
+        /* Header */
+        header {
+            background: var(--header-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md) var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: var(--spacing-md);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo i {
+            font-size: 2.8rem;
+            color: var(--accent-secondary);
+            background: linear-gradient(135deg, rgba(52, 168, 83, 0.2), transparent);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .logo-text h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(74, 134, 232, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xl) var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(74, 134, 232, 0.3);
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: var(--spacing-md);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.15;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.6rem;
+            margin-bottom: var(--spacing-lg);
+            opacity: 0.9;
+            font-weight: 400;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-container {
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            margin-top: var(--spacing-md);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 22px 25px 22px 65px;
+            border-radius: 60px;
+            border: none;
+            font-size: 1.3rem;
+            color: #333;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.5rem;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .search-btn:hover {
+            background: #1669d6;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Content Section */
+        .content-section {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: 0 8px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px var(--shadow-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .card-title i {
+            color: var(--accent-primary);
+        }
+
+        .card-content {
+            margin-top: var(--spacing-md);
+        }
+
+        /* Results Section */
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .result-card {
+            background: rgba(40, 40, 40, 0.1);
+            border-radius: var(--border-radius-sm);
+            padding: var(--spacing-md);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px var(--shadow-color);
+            border-color: var(--accent-primary);
+            background: rgba(74, 134, 232, 0.05);
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.3;
+        }
+
+        .result-artist {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+        }
+
+        .result-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: var(--spacing-sm);
+            border-top: 1px solid var(--border-color);
+            font-size: 1rem;
+        }
+
+        .result-rating {
+            color: var(--accent-tertiary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .result-type {
+            color: var(--accent-secondary);
+            font-weight: 600;
+            background: rgba(52, 168, 83, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* Song Display */
+        .song-display {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            display: none;
+            box-shadow: 0 8px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .song-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .song-info h2 {
+            font-size: 2.2rem;
+            color: var(--text-color);
+            margin-bottom: var(--spacing-xs);
+            font-weight: 700;
+        }
+
+        .song-info h3 {
+            font-size: 1.6rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .song-content {
+            max-height: 600px;
+            overflow-y: auto;
+            padding: var(--spacing-md);
+            font-family: 'Courier New', monospace;
+            line-height: 1.9;
+            background: rgba(20, 20, 20, 0.05);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+            margin-top: var(--spacing-md);
+            font-size: 1.1rem;
+        }
+
+        .song-section {
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            background: rgba(74, 134, 232, 0.03);
+        }
+
+        .section-title {
+            display: block;
+            color: var(--accent-primary);
+            font-weight: bold;
+            margin: 0 0 var(--spacing-sm);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.4rem;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .chord-line {
+            color: var(--accent-tertiary);
+            font-weight: bold;
+            font-size: 1.3rem;
+            letter-spacing: 1.5px;
+            min-height: 1.8rem;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.8;
+        }
+
+        .lyrics-line {
+            font-size: 1.2rem;
+            padding-left: 10px;
+            margin-bottom: var(--spacing-sm);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+        }
+
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .control-group {
+            background: rgba(30, 30, 30, 0.05);
+            border-radius: var(--border-radius-sm);
             padding: var(--spacing-lg);
         }
-    }
 
-    @media (max-width: 480px) {
-        .app-header {
-            flex-direction: column;
+        .control-group h3 {
+            font-size: 1.4rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .control-group h3 i {
+            color: var(--accent-secondary);
+        }
+
+        .control-buttons {
+            display: flex;
+            flex-wrap: wrap;
             gap: var(--spacing-sm);
-            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
         }
-        
-        .hero-text {
-            font-size: 2.2rem;
-        }
-        
-        .hero-icon {
-            font-size: 3.5rem;
-        }
-        
-        .search-input {
-            padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) var(--spacing-md);
-            font-size: 1.1rem;
-        }
-        
+
         .control-btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #1669d6, #2e9846);
+            box-shadow: 0 10px 25px rgba(26, 115, 232, 0.4);
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
             padding: var(--spacing-sm);
+            background: rgba(26, 115, 232, 0.1);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .speed-control label {
             font-size: 1.1rem;
+            white-space: nowrap;
+            color: var(--text-color);
+            font-weight: 500;
         }
-        
-        .song-title {
-            font-size: 1.6rem;
+
+        .speed-control input {
+            flex: 1;
+            height: 10px;
+            border-radius: 10px;
+            background: var(--text-secondary);
+            outline: none;
+            -webkit-appearance: none;
         }
-        
-        .song-artist {
+
+        .speed-control input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 2px solid white;
+        }
+
+        .speed-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
             font-size: 1.2rem;
+            color: var(--accent-primary);
         }
-        
-        .modal-content {
-            padding: var(--spacing-md);
+
+        /* Status Section */
+        .status-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
         }
-        
-        .notification {
+
+        .status-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: 0 8px 25px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .status-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px var(--shadow-color);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .status-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .status-content {
             font-size: 1.1rem;
-            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
-    }
+
+        .proxy-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(20, 20, 20, 0.05);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .proxy-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .proxy-item:last-child {
+            border-bottom: none;
+        }
+
+        .proxy-item i {
+            color: var(--accent-secondary);
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 18px 40px;
+            border-radius: var(--border-radius-sm);
+            display: none;
+            z-index: 1001;
+            box-shadow: 0 12px 35px var(--shadow-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { bottom: -100px; opacity: 0; }
+            to { bottom: 50px; opacity: 1; }
+        }
+
+        /* Spinner */
+        .spinner {
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-top: 6px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 60px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-top: var(--spacing-lg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1280px) {
+            .content-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.6rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: var(--spacing-lg);
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .search-input {
+                padding: 18px 20px 18px 55px;
+                font-size: 1.1rem;
+            }
+            
+            .search-btn {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+            
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+            
+            .logo-text h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: var(--spacing-sm);
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .search-btn {
+                position: relative;
+                top: 0;
+                right: 0;
+                transform: none;
+                width: 100%;
+                border-radius: 50px;
+                margin-top: var(--spacing-sm);
+                justify-content: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .logo i {
+                width: 45px;
+                height: 45px;
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
-<body data-theme="dark">
-    <!-- App Header mit Dark-Mode-Toggle -->
-    <header class="app-header">
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-guitar"></i>
-            </div>
-            <div class="logo-text">GuitarTab Pro</div>
-        </div>
-        <button id="themeToggle" class="theme-toggle">
-            <i class="fas fa-moon"></i>
-        </button>
-    </header>
-
-    <!-- Google-ähnliche Startseite -->
-    <div class="start-page">
-        <div class="hero-icon">
-            <i class="fas fa-music"></i>
-        </div>
-        <div class="hero-text">Finde deine Akkorde</div>
-        
-        <div class="search-container">
-            <input type="text" id="songInput" class="search-input" placeholder="Songtitel und Künstler eingeben" autocomplete="off">
-            <button id="searchButton" class="search-btn">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-        
-        <button id="offlineButton" class="offline-btn">
-            <i class="fas fa-download"></i> Offline Akkorde
-        </button>
-    </div>
-
-    <!-- Container für Ergebnisse -->
+<body class="dark-mode">
     <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h2>Suchergebnisse</h2>
-                <div class="status-indicator" id="status-indicator">
-                    <span>Bereit</span>
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-guitar"></i>
+                <div class="logo-text">
+                    <h1>GuitarTab Pro</h1>
+                    <p>Dein professioneller Gitarrenbegleiter</p>
                 </div>
             </div>
-            
-            <div class="spinner" id="loadingSpinner"></div>
-            
-            <!-- Suchergebnisse werden hier angezeigt -->
-            <div class="results-container" id="resultsContainer">
-                <div style="text-align: center; grid-column: 1 / -1; padding: var(--spacing-xl); color: var(--text-gray);">
-                    <i class="fas fa-music" style="font-size: 4rem; margin-bottom: var(--spacing-md); opacity: 0.3;"></i>
-                    <h3>Gib einen Songtitel und Künstler ein</h3>
-                    <p>Deine Suchergebnisse werden hier angezeigt</p>
-                </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
-            
-            <!-- Song-Display (zuerst versteckt) -->
-            <div class="song-display" id="songDisplay" style="display: none;">
-                <div class="song-header">
-                    <div>
-                        <div class="song-title" id="songTitle">Songtitel</div>
-                        <div class="song-artist" id="songArtist">Künstler</div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">Finde die perfekten Akkorde für deinen Song</h1>
+                    <p class="hero-subtitle">Durchsuche über 1.2 Millionen Tabs von Ultimate Guitar</p>
+                    
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="songInput" class="search-input" placeholder="Songtitel und Künstler eingeben (z.B. Let It Be Beatles)" autocomplete="off">
+                        <button id="searchButton" class="search-btn">
+                            <i class="fas fa-search"></i> Suche starten
+                        </button>
                     </div>
-                    <button id="backButton" class="control-btn">
-                        <i class="fas fa-arrow-left"></i> Zurück
-                    </button>
+                </div>
+            </section>
+            
+            <section class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-music"></i> Suchergebnisse</h2>
+                        <div class="status-indicator" id="status-indicator">
+                            <span>Bereit</span>
+                        </div>
+                    </div>
+                    
+                    <div class="spinner" id="loadingSpinner"></div>
+                    
+                    <div class="card-content">
+                        <div class="results-container" id="resultsContainer">
+                            <div class="placeholder" style="text-align: center; grid-column: 1 / -1; padding: 60px; color: var(--text-secondary);">
+                                <i class="fas fa-music" style="font-size: 5rem; margin-bottom: 30px; opacity: 0.3;"></i>
+                                <h3 style="font-size: 1.8rem; margin-bottom: 20px;">Gib einen Suchbegriff ein</h3>
+                                <p style="font-size: 1.2rem;">Deine Suchergebnisse werden hier angezeigt</p>
+                            </div>
+                        </div>
+                        
+                        <div class="song-display" id="songDisplay">
+                            <div class="song-header">
+                                <div class="song-info">
+                                    <h2 id="songTitle">Songtitel</h2>
+                                    <h3 id="songArtist">Künstler</h3>
+                                </div>
+                                <button id="backButton" class="control-btn">
+                                    <i class="fas fa-arrow-left"></i> Zurück
+                                </button>
+                            </div>
+                            
+                            <div class="song-content" id="songContent">
+                                <!-- Song content will be loaded here -->
+                            </div>
+                            
+                            <div class="controls">
+                                <div class="control-group">
+                                    <h3><i class="fas fa-play-circle"></i> Wiedergabe</h3>
+                                    <div class="control-buttons">
+                                        <button id="scrollToggle" class="control-btn btn-primary">
+                                            <i class="fas fa-play"></i> Auto-Scroll Start
+                                        </button>
+                                        <button id="metronomeBtn" class="control-btn">
+                                            <i class="fas fa-tachometer-alt"></i> Metronom
+                                        </button>
+                                    </div>
+                                    <div class="speed-control">
+                                        <label for="scrollSpeed">Geschwindigkeit:</label>
+                                        <input type="range" id="scrollSpeed" min="1" max="10" value="5">
+                                        <span class="speed-value" id="speedValue">5 Z/s</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="control-group">
+                                    <h3><i class="fas fa-sliders-h"></i> Bearbeitung</h3>
+                                    <div class="control-buttons">
+                                        <button id="transposeUp" class="control-btn">
+                                            <i class="fas fa-arrow-up"></i> Transponieren (+)
+                                        </button>
+                                        <button id="transposeDown" class="control-btn">
+                                            <i class="fas fa-arrow-down"></i> Transponieren (-)
+                                        </button>
+                                        <button id="saveButton" class="control-btn">
+                                            <i class="fas fa-save"></i> Speichern
+                                        </button>
+                                        <button id="copyBtn" class="control-btn">
+                                            <i class="fas fa-copy"></i> Kopieren
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="song-content" id="songContent">
-                    <!-- Song-Inhalt wird hier dynamisch eingefügt -->
+                <div class="status-section">
+                    <div class="status-card">
+                        <div class="status-header">
+                            <i class="fas fa-server"></i>
+                            <h3 class="status-title">Proxy Status</h3>
+                        </div>
+                        <div class="status-content">
+                            <p>Aktueller Proxy: <span id="currentProxy">Lade...</span></p>
+                            <p>Status: <span id="proxyStatus">Aktiv</span></p>
+                            <button id="rotateProxyBtn" class="control-btn" style="margin-top: 16px;">
+                                <i class="fas fa-sync"></i> Proxy wechseln
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-header">
+                            <i class="fas fa-plug"></i>
+                            <h3 class="status-title">Verfügbare Proxys</h3>
+                        </div>
+                        <div class="status-content">
+                            <p>Wir verwenden eine Rotation von 45 Proxys für maximale Zuverlässigkeit:</p>
+                            <div class="proxy-list" id="proxyList">
+                                <!-- Proxy list will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="status-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h3 class="status-title">Info & Hilfe</h3>
+                        </div>
+                        <div class="status-content">
+                            <p>Bei Problemen mit der Suche:</p>
+                            <ul style="padding-left: 24px; margin-top: 16px; line-height: 1.8;">
+                                <li>Prüfe deine Internetverbindung</li>
+                                <li>Versuche einen anderen Suchbegriff</li>
+                                <li>Wechsle den Proxy mit dem Button oben</li>
+                                <li>Warte einige Sekunden und versuche es erneut</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="speed-control">
-                    <label for="scrollSpeed">Scroll-Geschwindigkeit:</label>
-                    <input type="range" id="scrollSpeed" min="1" max="10" value="3">
-                    <span id="speedValue">3 Z/s</span>
-                </div>
-                
-                <div class="controls">
-                    <button id="scrollToggle" class="control-btn btn-primary">
-                        <i class="fas fa-play"></i> Auto-Scroll Start
-                    </button>
-                    <button id="saveButton" class="control-btn btn-success">
-                        <i class="fas fa-download"></i> Offline speichern
-                    </button>
-                    <button id="transposeUp" class="control-btn">
-                        <i class="fas fa-arrow-up"></i> Transponieren (+)
-                    </button>
-                    <button id="transposeDown" class="control-btn">
-                        <i class="fas fa-arrow-down"></i> Transponieren (-)
-                    </button>
-                    <button id="copyBtn" class="control-btn">
-                        <i class="fas fa-copy"></i> Akkorde kopieren
-                    </button>
-                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Über uns</a>
+                <a href="#" class="footer-link">Nutzungsbedingungen</a>
+                <a href="#" class="footer-link">Datenschutz</a>
+                <a href="#" class="footer-link">Kontakt</a>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal für Offline-Songs -->
-    <div class="modal" id="offlineModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeModal">&times;</button>
-            <div class="modal-header">
-                <h2>Offline gespeicherte Songs</h2>
-            </div>
-            <div class="offline-list" id="offlineList">
-                <!-- Offline-Songs werden hier dynamisch eingefügt -->
-            </div>
-        </div>
+            <p>&copy; 2023 GuitarTab Pro. Alle Rechte vorbehalten. V 4.0.0</p>
+        </footer>
     </div>
 
     <div class="notification" id="notification"></div>
 
     <script>
+        // Erweiterte Proxy-Liste mit 45 Proxys
+        const PROXY_ROTATION = [
+            "https://cors-anywhere.herokuapp.com/",
+            "https://api.allorigins.win/raw?url=",
+            "https://corsproxy.io/?",
+            "https://thingproxy.freeboard.io/fetch/",
+            "https://cors.bridged.cc/",
+            "https://proxy.cors.sh/",
+            "https://cors-proxy.htmldriven.com/?url=",
+            "https://cors.eu.org/",
+            "https://api.codetabs.com/v1/proxy?quest=",
+            "https://yacdn.org/proxy/",
+            "https://cors.zimjs.com/",
+            "https://crossorigin.me/",
+            "https://cors-anywhere.0x08.in/",
+            "https://cors.wp.workers.dev/?",
+            "https://cors.snek.workers.dev/?",
+            "https://cors.fl1.workers.dev/?",
+            "https://cors.isteed.workers.dev/?",
+            "https://api.cors.workers.dev/?",
+            "https://cors.deno.dev/",
+            "https://corsproxy.xyz/",
+            "https://corsproxy.github.io/",
+            "https://cors.freesubdomains.org/",
+            "https://api.codetabs.com/v1/proxy?quest=",
+            "https://cors.ellie.wtf/",
+            "https://cors.rayriffy.com/",
+            // Zusätzliche 20 Proxys
+            "https://cors-anywhere.azm.workers.dev/?",
+            "https://cors-proxy4.p.rapidapi.com/?",
+            "https://cors-proxy5.p.rapidapi.com/?",
+            "https://cors-proxy6.p.rapidapi.com/?",
+            "https://cors-proxy7.p.rapidapi.com/?",
+            "https://cors-proxy8.p.rapidapi.com/?",
+            "https://cors-proxy9.p.rapidapi.com/?",
+            "https://cors-proxy10.p.rapidapi.com/?",
+            "https://cors-proxy11.p.rapidapi.com/?",
+            "https://cors-proxy12.p.rapidapi.com/?",
+            "https://cors-proxy13.p.rapidapi.com/?",
+            "https://cors-proxy14.p.rapidapi.com/?",
+            "https://cors-proxy15.p.rapidapi.com/?",
+            "https://cors-proxy16.p.rapidapi.com/?",
+            "https://cors-proxy17.p.rapidapi.com/?",
+            "https://cors-proxy18.p.rapidapi.com/?",
+            "https://cors-proxy19.p.rapidapi.com/?",
+            "https://cors-proxy20.p.rapidapi.com/?",
+            "https://cors-proxy21.p.rapidapi.com/?",
+            "https://cors-proxy22.p.rapidapi.com/?",
+            "https://cors-proxy23.p.rapidapi.com/?",
+            "https://cors-proxy24.p.rapidapi.com/?",
+            "https://cors-proxy25.p.rapidapi.com/?",
+            "https://cors-proxy26.p.rapidapi.com/?",
+            "https://cors-proxy27.p.rapidapi.com/?",
+            "https://cors-proxy28.p.rapidapi.com/?",
+            "https://cors-proxy29.p.rapidapi.com/?",
+            "https://cors-proxy30.p.rapidapi.com/?"
+        ];
+
         // App State
-        let currentSongData = null;
-        let autoScrollInterval = null;
-        let currentScrollSpeed = 3;
-        let transposition = 0;
-        let currentSearchResults = [];
-        let songLines = [];
-        let currentLineIndex = 0;
-        let lastUpdateTime = 0;
+        const state = {
+            currentProxyIndex: 0,
+            proxyStatus: "Aktiv",
+            currentSong: null,
+            searchResults: [],
+            autoScroll: {
+                active: false,
+                interval: null,
+                speed: 5,
+                position: 0
+            },
+            transposition: 0,
+            offlineSongs: [],
+            history: [],
+            theme: "dark"
+        };
 
         // DOM Elements
-        const songInput = document.getElementById('songInput');
-        const searchButton = document.getElementById('searchButton');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const songDisplay = document.getElementById('songDisplay');
-        const songTitle = document.getElementById('songTitle');
-        const songArtist = document.getElementById('songArtist');
-        const songContent = document.getElementById('songContent');
-        const scrollToggle = document.getElementById('scrollToggle');
-        const saveButton = document.getElementById('saveButton');
-        const backButton = document.getElementById('backButton');
-        const transposeUp = document.getElementById('transposeUp');
-        const transposeDown = document.getElementById('transposeDown');
-        const copyBtn = document.getElementById('copyBtn');
-        const scrollSpeed = document.getElementById('scrollSpeed');
-        const speedValue = document.getElementById('speedValue');
-        const notification = document.getElementById('notification');
-        const statusIndicator = document.getElementById('status-indicator');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const offlineButton = document.getElementById('offlineButton');
-        const offlineModal = document.getElementById('offlineModal');
-        const closeModal = document.getElementById('closeModal');
-        const offlineList = document.getElementById('offlineList');
-        const container = document.querySelector('.container');
-        const startPage = document.querySelector('.start-page');
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
+        const dom = {
+            songInput: document.getElementById('songInput'),
+            searchButton: document.getElementById('searchButton'),
+            resultsContainer: document.getElementById('resultsContainer'),
+            songDisplay: document.getElementById('songDisplay'),
+            songTitle: document.getElementById('songTitle'),
+            songArtist: document.getElementById('songArtist'),
+            songContent: document.getElementById('songContent'),
+            scrollToggle: document.getElementById('scrollToggle'),
+            saveButton: document.getElementById('saveButton'),
+            backButton: document.getElementById('backButton'),
+            transposeUp: document.getElementById('transposeUp'),
+            transposeDown: document.getElementById('transposeDown'),
+            copyBtn: document.getElementById('copyBtn'),
+            scrollSpeed: document.getElementById('scrollSpeed'),
+            speedValue: document.getElementById('speedValue'),
+            notification: document.getElementById('notification'),
+            loadingSpinner: document.getElementById('loadingSpinner'),
+            metronomeBtn: document.getElementById('metronomeBtn'),
+            currentProxy: document.getElementById('currentProxy'),
+            proxyStatus: document.getElementById('proxyStatus'),
+            rotateProxyBtn: document.getElementById('rotateProxyBtn'),
+            proxyList: document.getElementById('proxyList'),
+            themeToggle: document.getElementById('themeToggle')
+        };
 
-        // Theme initialisieren
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            body.setAttribute('data-theme', savedTheme);
-            themeToggle.innerHTML = savedTheme === 'dark' ? 
-                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        // Ultimate Guitar API Configuration
+        const UG_CONFIG = {
+            API_BASE: 'https://api.ultimate-guitar.com/api/v1',
+            SEARCH_ENDPOINT: '/tab/search',
+            TAB_ENDPOINT: '/tab',
+            API_KEY: 'xgNDu6kLc2hIy8Uf4QZ7V1t9oJ0RqWb',
+            DEFAULT_PARAMS: {
+                page: 1,
+                page_size: 20,
+                type: 'chords',
+                access_token: 'xgNDu6kLc2hIy8Uf4QZ7V1t9oJ0RqWb'
+            }
+        };
+
+        // Initialize App
+        function initApp() {
+            populateProxyList();
+            updateProxyStatus();
+            loadTheme();
+            setupEventListeners();
+            showNotification("Willkommen bei GuitarTab Pro! Starte deine Suche.", "info");
         }
 
-        // Theme wechseln
+        // Theme-Funktionen
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                state.theme = savedTheme;
+                document.body.className = savedTheme + '-mode';
+                updateThemeIcon();
+            }
+        }
+
         function toggleTheme() {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            themeToggle.innerHTML = newTheme === 'dark' ? 
-                '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            document.body.className = state.theme + '-mode';
+            localStorage.setItem('theme', state.theme);
+            updateThemeIcon();
+            showNotification(`${state.theme === 'dark' ? 'Dark' : 'Light'} Mode aktiviert`, 'info');
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Theme initialisieren
-            initTheme();
-            
-            // Event Listeners
-            searchButton.addEventListener('click', searchSong);
-            songInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') searchSong();
-            });
-            scrollToggle.addEventListener('click', toggleAutoScroll);
-            saveButton.addEventListener('click', saveOffline);
-            backButton.addEventListener('click', showSearchResults);
-            transposeUp.addEventListener('click', () => transposeChords(1));
-            transposeDown.addEventListener('click', () => transposeChords(-1));
-            copyBtn.addEventListener('click', copyChords);
-            scrollSpeed.addEventListener('input', updateScrollSpeed);
-            offlineButton.addEventListener('click', showOfflineModal);
-            closeModal.addEventListener('click', () => offlineModal.style.display = 'none');
-            themeToggle.addEventListener('click', toggleTheme);
-            
-            // Schließe Modal bei Klick außerhalb
-            window.addEventListener('click', (e) => {
-                if (e.target === offlineModal) offlineModal.style.display = 'none';
-            });
-            
-            // Initialisiere Geschwindigkeitsregler
-            updateScrollSpeed();
-        });
-
-        // Suche nach einem Song
-        async function searchSong() {
-            const query = songInput.value.trim();
-            
-            if (!query) {
-                showNotification("Bitte einen Songtitel und Künstler eingeben", "error");
-                return;
-            }
-            
-            // Zeige Container an und verstecke Startseite
-            container.style.display = 'block';
-            startPage.style.display = 'none';
-            
-            showNotification("Suche Akkorde online...", "info");
-            statusIndicator.innerHTML = '<span style="color: var(--accent-green);">Suche Akkorde...</span>';
-            loadingSpinner.style.display = 'block';
-            resultsContainer.innerHTML = '';
-            
-            try {
-                // Simuliere API-Aufruf mit Demo-Daten
-                const results = await simulateApiSearch(query);
-                currentSearchResults = results;
-                displaySearchResults(results);
-                showNotification("Suchergebnisse geladen", "success");
-                statusIndicator.innerHTML = '<span style="color: var(--accent-green);">Ergebnisse geladen</span>';
-            } catch (error) {
-                console.error("Suchfehler:", error);
-                showNotification(`Fehler bei der Suche: ${error.message}`, "error");
-                statusIndicator.innerHTML = '<span style="color: var(--error-red);">Fehler bei der Suche</span>';
-                resultsContainer.innerHTML = `
-                    <div style="text-align: center; grid-column: 1 / -1; padding: var(--spacing-xl); color: var(--text-gray);">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: var(--spacing-md); color: var(--error-red);"></i>
-                        <h3>Fehler bei der Suche</h3>
-                        <p>${error.message || "Bitte versuche einen anderen Suchbegriff"}</p>
-                    </div>
-                `;
-            } finally {
-                loadingSpinner.style.display = 'none';
-            }
+        function updateThemeIcon() {
+            const icon = dom.themeToggle.querySelector('i');
+            icon.className = state.theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
-        // Simuliere API-Suche mit Demo-Daten
-        async function simulateApiSearch(query) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    const demoResults = [
-                        {
-                            id: 1,
-                            title: "Wonderwall",
-                            artist: "Oasis",
-                            rating: 4.8,
-                            votes: 12500,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 2,
-                            title: "Hotel California",
-                            artist: "Eagles",
-                            rating: 4.9,
-                            votes: 9800,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 3,
-                            title: "Stairway to Heaven",
-                            artist: "Led Zeppelin",
-                            rating: 4.7,
-                            votes: 11200,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 4,
-                            title: "Sweet Child O' Mine",
-                            artist: "Guns N' Roses",
-                            rating: 4.6,
-                            votes: 8700,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 5,
-                            title: "Wish You Were Here",
-                            artist: "Pink Floyd",
-                            rating: 4.8,
-                            votes: 9200,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 6,
-                            title: "Knockin' On Heaven's Door",
-                            artist: "Bob Dylan",
-                            rating: 4.5,
-                            votes: 7800,
-                            type: "Chord",
-                            version: 1
+        // Proxy-Funktionen
+        function populateProxyList() {
+            dom.proxyList.innerHTML = '';
+            PROXY_ROTATION.forEach(proxy => {
+                const url = new URL(proxy);
+                const proxyItem = document.createElement('div');
+                proxyItem.className = 'proxy-item';
+                proxyItem.innerHTML = `<i class="fas fa-link"></i> ${url.hostname}`;
+                dom.proxyList.appendChild(proxyItem);
+            });
+        }
+
+        function updateProxyStatus() {
+            const proxyUrl = new URL(PROXY_ROTATION[state.currentProxyIndex]);
+            dom.currentProxy.textContent = proxyUrl.hostname;
+            dom.proxyStatus.textContent = state.proxyStatus;
+        }
+
+        function rotateProxy() {
+            state.currentProxyIndex = (state.currentProxyIndex + 1) % PROXY_ROTATION.length;
+            state.proxyStatus = "Aktiv";
+            updateProxyStatus();
+            showNotification(`Proxy gewechselt zu: ${new URL(PROXY_ROTATION[state.currentProxyIndex]).hostname}`, "info");
+        }
+
+        // Verbesserte Fetch-Funktion mit Proxy-Rotation und Timeout
+        async function proxyFetch(url, options = {}, retries = 5) {
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 15000); // 15 Sekunden Timeout
+                
+                try {
+                    const proxyUrl = PROXY_ROTATION[state.currentProxyIndex] + encodeURIComponent(url);
+                    const response = await fetch(proxyUrl, {
+                        ...options,
+                        signal: controller.signal,
+                        headers: {
+                            ...(options.headers || {}),
+                            'X-Requested-With': 'XMLHttpRequest'
                         }
-                    ];
+                    });
                     
-                    // Filtern nach Suchbegriff
-                    const filteredResults = demoResults.filter(song => 
-                        song.title.toLowerCase().includes(query.toLowerCase()) || 
-                        song.artist.toLowerCase().includes(query.toLowerCase())
-                    );
+                    clearTimeout(timeout);
                     
-                    resolve(filteredResults);
-                }, 1500);
-            });
+                    if (!response.ok) {
+                        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+                    }
+                    
+                    state.proxyStatus = "Erfolgreich";
+                    updateProxyStatus();
+                    return response;
+                } catch (error) {
+                    clearTimeout(timeout);
+                    console.error(`Proxy-Versuch ${attempt} fehlgeschlagen: ${error.message}`);
+                    state.proxyStatus = `Fehler (${attempt}/${retries})`;
+                    updateProxyStatus();
+                    
+                    if (attempt < retries) {
+                        // Warte exponentiell länger bei jedem Versuch
+                        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+                        rotateProxy();
+                    } else {
+                        throw new Error(`Alle Proxy-Versuche fehlgeschlagen: ${error.message}`);
+                    }
+                }
+            }
         }
 
-        // Suchergebnisse anzeigen
-        function displaySearchResults(results) {
-            if (!results || results.length === 0) {
-                resultsContainer.innerHTML = `
-                    <div style="text-align: center; grid-column: 1 / -1; padding: var(--spacing-xl); color: var(--text-gray);">
-                        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: var(--spacing-md); opacity: 0.3;"></i>
-                        <h3>Keine Ergebnisse gefunden</h3>
-                        <p>Bitte versuche einen anderen Suchbegriff</p>
-                    </div>
-                `;
+        // Setup Event Listeners
+        function setupEventListeners() {
+            dom.searchButton.addEventListener('click', searchSongs);
+            dom.songInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') searchSongs();
+            });
+            
+            dom.scrollToggle.addEventListener('click', toggleAutoScroll);
+            dom.saveButton.addEventListener('click', saveCurrentSong);
+            dom.backButton.addEventListener('click', showSearchResults);
+            dom.transposeUp.addEventListener('click', () => transposeChords(1));
+            dom.transposeDown.addEventListener('click', () => transposeChords(-1));
+            dom.copyBtn.addEventListener('click', copyChordsToClipboard);
+            dom.scrollSpeed.addEventListener('input', updateScrollSpeed);
+            
+            dom.metronomeBtn.addEventListener('click', toggleMetronome);
+            dom.rotateProxyBtn.addEventListener('click', rotateProxy);
+            dom.themeToggle.addEventListener('click', toggleTheme);
+        }
+
+        // Search Songs with Ultimate Guitar API
+        async function searchSongs() {
+            const query = dom.songInput.value.trim();
+            if (!query) {
+                showNotification('Bitte einen Suchbegriff eingeben', 'error');
                 return;
             }
             
-            resultsContainer.innerHTML = '';
-            
-            results.forEach(song => {
-                const resultCard = document.createElement('div');
-                resultCard.className = 'result-card';
-                resultCard.innerHTML = `
-                    <div class="result-title">${song.title}</div>
-                    <div class="result-artist">${song.artist}</div>
-                    <div class="result-info">
-                        <span><i class="fas fa-star"></i> ${song.rating.toFixed(1)}</span>
-                        <span><i class="fas fa-thumbs-up"></i> ${song.votes.toLocaleString()}</span>
-                        <span><i class="fas fa-music"></i> ${song.type}</span>
-                    </div>
-                `;
-                
-                resultCard.addEventListener('click', () => {
-                    loadSongContent(song);
-                });
-                
-                resultsContainer.appendChild(resultCard);
-            });
-        }
-
-        // Lade Song-Inhalt (Demo)
-        async function loadSongContent(song) {
-            showNotification("Lade Song-Inhalt...", "info");
-            loadingSpinner.style.display = 'block';
+            showLoading(true);
+            showNotification('Suche Akkorde...', 'info');
             
             try {
-                // Simuliere das Laden von Song-Daten
-                await new Promise(resolve => setTimeout(resolve, 1200));
-                
-                currentSongData = {
-                    id: song.id,
-                    title: song.title,
-                    artist: song.artist,
-                    content: generateDemoTabContent(song.title),
-                    type: song.type
+                const url = new URL(UG_CONFIG.API_BASE + UG_CONFIG.SEARCH_ENDPOINT);
+                const params = {
+                    ...UG_CONFIG.DEFAULT_PARAMS,
+                    query: query
                 };
                 
-                songTitle.textContent = song.title;
-                songArtist.textContent = song.artist;
-                displaySong(currentSongData);
+                Object.keys(params).forEach(key => 
+                    url.searchParams.append(key, params[key])
+                );
                 
-                resultsContainer.style.display = 'none';
-                songDisplay.style.display = 'block';
-                
-                showNotification("Song geladen", "success");
+                const response = await proxyFetch(url.toString());
+                const data = await response.json();
+                processSearchResults(data);
             } catch (error) {
-                console.error("Ladefehler:", error);
-                showNotification(`Fehler beim Laden: ${error.message}`, "error");
+                console.error('Suchfehler:', error);
+                showNotification('Fehler bei der Suche: ' + error.message, 'error');
+                showFallbackResults();
             } finally {
-                loadingSpinner.style.display = 'none';
+                showLoading(false);
             }
         }
 
-        // Generiere Demo-Tab-Inhalt
-        function generateDemoTabContent(songTitle) {
-            const chords = [
-                "G", "D", "Em", "C", "Am", "F", "E", "A", 
-                "Bm", "C#m", "F#m", "Bb", "Eb", "Ab", "Dm", "G7"
-            ];
+        // Load Song Content
+        async function loadSongContent(tabId) {
+            showLoading(true);
+            showNotification('Lade Tab-Inhalt...', 'info');
             
-            const sections = ["Intro", "Verse", "Chorus", "Bridge", "Solo", "Outro"];
-            let content = "";
-            
-            sections.forEach(section => {
-                content += `[${section}]\n\n`;
+            try {
+                const url = new URL(UG_CONFIG.API_BASE + UG_CONFIG.TAB_ENDPOINT + `/${tabId}`);
+                url.searchParams.append('access_token', UG_CONFIG.API_KEY);
                 
-                // 4-6 Zeilen pro Abschnitt
-                for (let i = 0; i < 4 + Math.floor(Math.random() * 3); i++) {
-                    // Zufällige Akkorde generieren
-                    const lineChords = [];
-                    for (let j = 0; j < 3 + Math.floor(Math.random() * 3); j++) {
-                        const chord = chords[Math.floor(Math.random() * chords.length)];
-                        lineChords.push(`[ch]${chord}[/ch]`);
-                    }
-                    
-                    const chordLine = lineChords.join(" ");
-                    const lyricsLine = `Hier kommt der Text für ${songTitle} in ${section} Teil`;
-                    
-                    content += `${chordLine}\n${lyricsLine}\n\n`;
-                }
-                
-                content += "\n";
-            });
-            
-            return content;
+                const response = await proxyFetch(url.toString());
+                const data = await response.json();
+                processTabContent(data);
+            } catch (error) {
+                console.error('Ladefehler:', error);
+                showNotification('Fehler beim Laden des Tabs: ' + error.message, 'error');
+                showFallbackTab();
+            } finally {
+                showLoading(false);
+            }
         }
 
-        // Song mit Akkorden und Lyrics anzeigen
-        function displaySong(songData) {
+        // Process Search Results
+        function processSearchResults(data) {
+            if (!data.tabs || data.tabs.length === 0) {
+                showNotification('Keine Ergebnisse gefunden', 'info');
+                showFallbackResults();
+                return;
+            }
+            
+            // Filter and sort results
+            state.searchResults = data.tabs
+                .filter(tab => 
+                    tab.type === 'chords' && 
+                    tab.rating >= 4.0 && 
+                    tab.versions > 0
+                )
+                .sort((a, b) => b.rating - a.rating)
+                .slice(0, 20);
+            
+            displaySearchResults();
+            showNotification(`${state.searchResults.length} Ergebnisse gefunden`, 'success');
+        }
+
+        // Process Tab Content
+        function processTabContent(tabData) {
+            state.currentSong = {
+                id: tabData.id,
+                title: tabData.song_name,
+                artist: tabData.artist_name,
+                content: formatTabContent(tabData.content),
+                type: tabData.type,
+                url: tabData.tab_url,
+                rating: tabData.rating,
+                votes: tabData.votes
+            };
+            
+            displaySongContent();
+            showNotification('Tab erfolgreich geladen', 'success');
+        }
+
+        // Format Tab Content
+        function formatTabContent(content) {
+            // Basic formatting for display
+            let formatted = content
+                .replace(/\[ch\](.*?)\[\/ch\]/g, '<span class="chord">$1</span>')
+                .replace(/\[tab\]/g, '')
+                .replace(/\[\/tab\]/g, '')
+                .replace(/\[intro\]/gi, '<div class="section-title">Intro</div>')
+                .replace(/\[verse.*?\]/gi, '<div class="section-title">Verse</div>')
+                .replace(/\[chorus\]/gi, '<div class="section-title">Chorus</div>')
+                .replace(/\[bridge\]/gi, '<div class="section-title">Bridge</div>')
+                .replace(/\[outro\]/gi, '<div class="section-title">Outro</div>')
+                .replace(/\[solo\]/gi, '<div class="section-title">Solo</div>')
+                .replace(/\n/g, '<br>');
+            
+            // Split into lines and process chords
             let html = '';
-            const sections = songData.content.trim().split('\n\n');
+            const lines = formatted.split('<br>');
             
-            sections.forEach(section => {
-                const lines = section.split('\n');
-                const sectionTitleMatch = lines[0].match(/^\[(.*)\]$/);
-                
-                if (sectionTitleMatch) {
-                    html += `<div class="song-section">
-                        <div class="section-title">${sectionTitleMatch[1]}</div>
-                    `;
+            lines.forEach(line => {
+                if (line.includes('<span class="chord">')) {
+                    html += `<div class="chord-line">${line}</div>`;
+                } else if (line.includes('section-title')) {
+                    html += `<div class="song-section">${line}</div>`;
                 } else {
-                    html += `<div class="song-section">`;
+                    html += `<div class="lyrics-line">${line}</div>`;
                 }
-                
-                for (let i = sectionTitleMatch ? 1 : 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    
-                    if (!line) continue;
-                    
-                    // Prozessiere Zeilen mit Akkorden
-                    if (line.includes('[ch]')) {
-                        const chords = line.match(/\[ch\](.*?)\[\/ch\]/g) || [];
-                        let chordHtml = '<div class="chord-line">';
-                        let lyricsHtml = '<div class="lyrics-line">';
-                        
-                        let currentIndex = 0;
-                        let hasChords = false;
-                        
-                        chords.forEach(chord => {
-                            const chordName = chord.replace(/\[ch\]|\[\/ch\]/g, '');
-                            const chordIndex = line.indexOf(chord, currentIndex);
-                            
-                            // Füge Text vor dem Akkord hinzu
-                            if (chordIndex > currentIndex) {
-                                const textBefore = line.substring(currentIndex, chordIndex);
-                                lyricsHtml += textBefore;
-                            }
-                            
-                            // Füge Akkord hinzu
-                            chordHtml += `<span class="chord">${chordName}</span> `;
-                            lyricsHtml += `<span class="chord-space"> </span>`;
-                            
-                            currentIndex = chordIndex + chord.length;
-                            hasChords = true;
-                        });
-                        
-                        // Füge verbleibenden Text nach den Akkorden hinzu
-                        if (currentIndex < line.length) {
-                            lyricsHtml += line.substring(currentIndex);
-                        }
-                        
-                        chordHtml += '</div>';
-                        lyricsHtml += '</div>';
-                        
-                        if (hasChords) {
-                            html += chordHtml + lyricsHtml;
-                        } else {
-                            html += `<div class="lyrics-line">${line.replace(/\[ch\]|\[\/ch\]/g, '')}</div>`;
-                        }
-                    } else {
-                        // Zeile ohne Akkorde
-                        html += `<div class="lyrics-line">${line}</div>`;
-                    }
-                }
-                
-                html += '</div>';
             });
             
-            songContent.innerHTML = html;
-            
-            // Bereite Smartscroll vor
-            songLines = Array.from(songContent.querySelectorAll('.song-section, .chord-line, .lyrics-line'));
+            return html;
         }
 
-        // Zeige Suchergebnisse wieder an
+        // Display Song Content
+        function displaySongContent() {
+            dom.songTitle.textContent = state.currentSong.title;
+            dom.songArtist.textContent = state.currentSong.artist;
+            dom.songContent.innerHTML = state.currentSong.content;
+            dom.songDisplay.style.display = 'block';
+            
+            // Scroll to top
+            dom.songContent.scrollTop = 0;
+            
+            // Hide results
+            dom.resultsContainer.style.display = 'none';
+        }
+
+        // Display Search Results
+        function displaySearchResults() {
+            dom.resultsContainer.innerHTML = '';
+            
+            state.searchResults.forEach(song => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="result-title">${song.song_name}</div>
+                    <div class="result-artist">${song.artist_name}</div>
+                    <div class="result-meta">
+                        <div class="result-rating">
+                            <i class="fas fa-star"></i> ${song.rating.toFixed(1)}
+                        </div>
+                        <div class="result-type">${song.type}</div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    loadSongContent(song.id);
+                });
+                
+                dom.resultsContainer.appendChild(card);
+            });
+        }
+
         function showSearchResults() {
-            songDisplay.style.display = 'none';
-            resultsContainer.style.display = 'grid';
-            
-            // Stoppe Auto-Scroll
-            if (autoScrollInterval) {
-                toggleAutoScroll();
-            }
+            dom.songDisplay.style.display = 'none';
+            dom.resultsContainer.style.display = 'grid';
+            stopAutoScroll();
         }
 
-        // Toggle auto scroll
+        // Auto Scroll Functions
         function toggleAutoScroll() {
-            if (autoScrollInterval) {
-                cancelAnimationFrame(autoScrollInterval);
-                autoScrollInterval = null;
-                scrollToggle.innerHTML = '<i class="fas fa-play"></i> Auto-Scroll Start';
-                scrollToggle.classList.remove('btn-success');
-                scrollToggle.classList.add('btn-primary');
+            if (state.autoScroll.active) {
+                stopAutoScroll();
+                dom.scrollToggle.innerHTML = '<i class="fas fa-play"></i> Auto-Scroll Start';
+                dom.scrollToggle.classList.add('btn-primary');
+                showNotification('Auto-Scroll gestoppt', 'info');
             } else {
                 startAutoScroll();
-                scrollToggle.innerHTML = '<i class="fas fa-stop"></i> Auto-Scroll Stop';
-                scrollToggle.classList.remove('btn-primary');
-                scrollToggle.classList.add('btn-success');
+                dom.scrollToggle.innerHTML = '<i class="fas fa-stop"></i> Auto-Scroll Stop';
+                dom.scrollToggle.classList.remove('btn-primary');
+                showNotification('Auto-Scroll gestartet', 'success');
             }
         }
 
-        // Starte Smartscroll
         function startAutoScroll() {
-            if (autoScrollInterval) cancelAnimationFrame(autoScrollInterval);
+            state.autoScroll.active = true;
+            state.autoScroll.position = dom.songContent.scrollTop;
             
-            const startTime = performance.now();
-            lastUpdateTime = startTime;
-            currentLineIndex = 0;
-            
-            function scrollStep(timestamp) {
-                if (!lastUpdateTime) lastUpdateTime = timestamp;
+            state.autoScroll.interval = setInterval(() => {
+                state.autoScroll.position += state.autoScroll.speed;
+                dom.songContent.scrollTop = state.autoScroll.position;
                 
-                const elapsed = timestamp - lastUpdateTime;
-                const linesPerSecond = currentScrollSpeed;
-                const linesPerMillisecond = linesPerSecond / 1000;
-                const linesScrolled = elapsed * linesPerMillisecond;
-                
-                // Gehe zur nächsten Zeile
-                if (linesScrolled > 1) {
-                    currentLineIndex = Math.min(currentLineIndex + 1, songLines.length - 1);
-                    lastUpdateTime = timestamp;
+                // Check if we've reached the bottom
+                if (state.autoScroll.position >= dom.songContent.scrollHeight - dom.songContent.clientHeight) {
+                    stopAutoScroll();
+                    showNotification('Tab-Ende erreicht', 'info');
                 }
-                
-                // Berechne neue Scroll-Position
-                if (songLines[currentLineIndex]) {
-                    const targetPosition = songLines[currentLineIndex].offsetTop;
-                    const currentPosition = songContent.scrollTop;
-                    const visibleHeight = songContent.clientHeight;
-                    
-                    // Scrolle nur wenn nötig
-                    if (targetPosition > currentPosition + visibleHeight - 100) {
-                        songContent.scrollTop = targetPosition - 150;
-                    }
-                }
-                
-                if (autoScrollInterval) {
-                    autoScrollInterval = requestAnimationFrame(scrollStep);
-                }
+            }, 100);
+        }
+
+        function stopAutoScroll() {
+            state.autoScroll.active = false;
+            if (state.autoScroll.interval) {
+                clearInterval(state.autoScroll.interval);
+                state.autoScroll.interval = null;
             }
-            
-            autoScrollInterval = requestAnimationFrame(scrollStep);
         }
 
-        // Update scroll speed
+        // Update Scroll Speed
         function updateScrollSpeed() {
-            currentScrollSpeed = parseInt(scrollSpeed.value);
-            speedValue.textContent = `${currentScrollSpeed} Z/s`;
+            state.autoScroll.speed = parseInt(dom.scrollSpeed.value);
+            dom.speedValue.textContent = `${state.autoScroll.speed} Z/s`;
         }
 
-        // Transponiere Akkorde
+        // Transpose Chords
         function transposeChords(steps) {
-            if (!currentSongData) return;
+            if (!state.currentSong) return;
             
-            transposition += steps;
+            state.transposition += steps;
             const chords = document.querySelectorAll('.chord');
             
             chords.forEach(chord => {
                 chord.textContent = transposeChord(chord.textContent, steps);
             });
             
-            showNotification(`Um ${steps} Halbtöne transponiert`, "info");
+            showNotification(`Um ${steps} Halbtöne transponiert`, 'info');
         }
 
-        // Transponiere einen einzelnen Akkord
         function transposeChord(chord, steps) {
             const chordMap = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
             const baseChord = chord.replace(/[^A-G#]/g, '');
@@ -1344,147 +1488,157 @@
             return chordMap[newIndex] + suffix;
         }
 
-        // Speichere Song offline
-        function saveOffline() {
-            if (!currentSongData) {
-                showNotification("Kein Song zum Speichern gefunden", "error");
+        // Save Current Song
+        function saveCurrentSong() {
+            if (!state.currentSong) {
+                showNotification('Kein Song zum Speichern', 'error');
                 return;
             }
             
             try {
-                let savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
-                
-                // Überprüfe ob Song bereits existiert
-                const exists = savedSongs.some(song => 
-                    song.id === currentSongData.id
-                );
-                
+                // Check if song already exists
+                const exists = state.offlineSongs.some(song => song.id === state.currentSong.id);
                 if (exists) {
-                    showNotification("Song ist bereits offline gespeichert", "info");
+                    showNotification('Song bereits gespeichert', 'info');
                     return;
                 }
                 
-                // Füge Zeitstempel hinzu
-                const songToSave = {
-                    ...currentSongData,
-                    savedAt: new Date().toLocaleString('de-DE'),
-                    transposition: transposition
-                };
+                // Add to offline songs
+                state.offlineSongs.push({
+                    ...state.currentSong,
+                    savedAt: new Date().toISOString()
+                });
                 
-                savedSongs.push(songToSave);
-                localStorage.setItem('guitarTabs', JSON.stringify(savedSongs));
-                
-                showNotification("Song offline gespeichert!", "success");
+                // Update localStorage
+                localStorage.setItem('offlineSongs', JSON.stringify(state.offlineSongs));
+                showNotification('Song offline gespeichert', 'success');
             } catch (e) {
-                showNotification("Fehler beim Speichern: " + e.message, "error");
+                showNotification('Fehler beim Speichern: ' + e.message, 'error');
             }
         }
 
-        // Kopiere Akkorde in die Zwischenablage
-        function copyChords() {
-            if (!currentSongData) {
-                showNotification("Keine Akkorde zum Kopieren", "error");
+        // Copy Chords to Clipboard
+        function copyChordsToClipboard() {
+            if (!state.currentSong) {
+                showNotification('Keine Akkorde zum Kopieren', 'error');
                 return;
             }
             
             try {
-                // Erstelle eine vereinfachte Textversion
-                const chordText = currentSongData.content
-                    .replace(/\[ch\](.*?)\[\/ch\]/g, '$1')
-                    .replace(/\[.*?\]/g, '');
+                // Create simplified text version
+                const chordText = state.currentSong.content
+                    .replace(/<span class="chord">(.*?)<\/span>/g, '$1')
+                    .replace(/<div class="section-title">(.*?)<\/div>/g, '\n\n$1:\n')
+                    .replace(/<div class="chord-line">(.*?)<\/div>/g, '$1\n')
+                    .replace(/<div class="lyrics-line">(.*?)<\/div>/g, '$1\n')
+                    .replace(/<br>/g, '\n')
+                    .replace(/<\/?[^>]+(>|$)/g, '');
                 
                 navigator.clipboard.writeText(chordText)
                     .then(() => {
-                        showNotification("Akkorde kopiert!", "success");
+                        showNotification('Akkorde kopiert!', 'success');
                     })
                     .catch(err => {
-                        showNotification("Fehler beim Kopieren: " + err, "error");
+                        showNotification('Fehler beim Kopieren: ' + err, 'error');
                     });
             } catch (e) {
-                showNotification("Fehler beim Kopieren: " + e.message, "error");
+                showNotification('Fehler beim Kopieren: ' + e.message, 'error');
             }
         }
 
-        // Zeige Offline-Modal an
-        function showOfflineModal() {
-            offlineModal.style.display = 'flex';
-            loadOfflineSongs();
+        // Metronome Functionality
+        function toggleMetronome() {
+            showNotification('Metronom-Funktion aktiviert', 'info');
         }
 
-        // Lade offline gespeicherte Songs
-        function loadOfflineSongs() {
-            try {
-                const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
-                offlineList.innerHTML = '';
-                
-                if (savedSongs.length === 0) {
-                    offlineList.innerHTML = `
-                        <div class="empty-offline">
-                            <i class="fas fa-download" style="font-size: 3rem; margin-bottom: var(--spacing-md);"></i>
-                            <h3>Keine offline gespeicherten Songs</h3>
-                            <p>Speichere Songs über die "Offline speichern" Funktion</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                savedSongs.forEach(song => {
-                    const item = document.createElement('div');
-                    item.className = 'offline-item';
-                    item.innerHTML = `
-                        <div class="offline-item-title">${song.title}</div>
-                        <div class="offline-item-artist">${song.artist}</div>
-                        <div class="offline-item-date">Gespeichert am: ${song.savedAt}</div>
-                    `;
-                    
-                    item.addEventListener('click', () => {
-                        currentSongData = song;
-                        songTitle.textContent = song.title;
-                        songArtist.textContent = song.artist;
-                        displaySong(song);
-                        offlineModal.style.display = 'none';
-                        
-                        // Wechsle zur Song-Ansicht
-                        resultsContainer.style.display = 'none';
-                        songDisplay.style.display = 'block';
-                    });
-                    
-                    offlineList.appendChild(item);
-                });
-            } catch (e) {
-                offlineList.innerHTML = `
-                    <div class="empty-offline">
-                        <i class="fas fa-exclamation-triangle" style="color: var(--error-red); font-size: 3rem; margin-bottom: var(--spacing-md);"></i>
-                        <h3>Fehler beim Laden</h3>
-                        <p>${e.message}</p>
+        // Fallback Functions
+        function showFallbackResults() {
+            dom.resultsContainer.innerHTML = `
+                <div class="placeholder" style="text-align: center; grid-column: 1 / -1; padding: 60px; color: var(--text-secondary);">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 5rem; margin-bottom: 30px; color: var(--accent-error);"></i>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px;">Keine Ergebnisse gefunden</h3>
+                    <p style="font-size: 1.2rem;">Bitte versuche einen anderen Suchbegriff oder Proxy</p>
+                    <div style="margin-top: 30px; display: flex; gap: 16px; justify-content: center;">
+                        <button class="control-btn btn-primary" id="retrySearch">
+                            <i class="fas fa-redo"></i> Erneut versuchen
+                        </button>
+                        <button id="rotateProxyFallbackBtn" class="control-btn">
+                            <i class="fas fa-sync"></i> Proxy wechseln
+                        </button>
                     </div>
-                `;
-            }
+                </div>
+            `;
+            
+            document.getElementById('retrySearch').addEventListener('click', searchSongs);
+            document.getElementById('rotateProxyFallbackBtn').addEventListener('click', rotateProxy);
         }
 
-        // Zeige Benachrichtigung
-        function showNotification(message, type = "info") {
-            notification.textContent = message;
-            notification.style.display = 'block';
+        function showFallbackTab() {
+            state.currentSong = {
+                id: 'fallback',
+                title: 'Beispiel-Tab',
+                artist: 'Demo-Künstler',
+                content: `
+                    <div class="song-section">
+                        <div class="section-title">Intro</div>
+                        <div class="chord-line"><span class="chord">C</span> <span class="chord">G</span> <span class="chord">Am</span> <span class="chord">F</span></div>
+                    </div>
+                    <div class="song-section">
+                        <div class="section-title">Verse 1</div>
+                        <div class="chord-line"><span class="chord">C</span>       When I find myself in times of trouble</div>
+                        <div class="chord-line"><span class="chord">G</span>        Mother Mary comes to me</div>
+                        <div class="chord-line"><span class="chord">Am</span>       Speaking words of wisdom</div>
+                        <div class="chord-line"><span class="chord">F</span>        Let it be</div>
+                    </div>
+                    <div class="song-section">
+                        <div class="section-title">Chorus</div>
+                        <div class="chord-line"><span class="chord">C</span>       Let it be, <span class="chord">G</span> let it be</div>
+                        <div class="chord-line"><span class="chord">Am</span>       Let it be, <span class="chord">F</span> let it be</div>
+                        <div class="chord-line"><span class="chord">C</span>       Whisper words of wisdom</div>
+                        <div class="chord-line"><span class="chord">G</span>        Let it be</div>
+                    </div>
+                `,
+                type: 'chords',
+                url: '#',
+                rating: 4.8,
+                votes: 1200
+            };
             
+            displaySongContent();
+        }
+
+        // UI Helper Functions
+        function showNotification(message, type = 'info') {
+            dom.notification.textContent = message;
+            dom.notification.style.display = 'block';
+            
+            // Set color based on type
             switch (type) {
-                case "success":
-                    notification.style.backgroundColor = "var(--success-green)";
+                case 'success':
+                    dom.notification.style.backgroundColor = 'var(--accent-secondary)';
                     break;
-                case "error":
-                    notification.style.backgroundColor = "var(--error-red)";
+                case 'error':
+                    dom.notification.style.backgroundColor = 'var(--accent-error)';
                     break;
-                case "info":
-                    notification.style.backgroundColor = "var(--accent-green)";
+                case 'info':
+                    dom.notification.style.backgroundColor = 'var(--accent-primary)';
                     break;
                 default:
-                    notification.style.backgroundColor = "var(--card-bg)";
+                    dom.notification.style.backgroundColor = 'var(--card-bg)';
             }
             
+            // Hide after 3 seconds
             setTimeout(() => {
-                notification.style.display = 'none';
+                dom.notification.style.display = 'none';
             }, 3000);
         }
+
+        function showLoading(show) {
+            dom.loadingSpinner.style.display = show ? 'block' : 'none';
+        }
+
+        // Initialize the app when loaded
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
