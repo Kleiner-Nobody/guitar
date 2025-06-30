@@ -1,4 +1,10 @@
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuitarTab Pro - Akkorde mit Smart Scroll</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     :root {
         --ms-blue: #0078d4;
@@ -58,7 +64,7 @@
         margin: 0 auto;
         padding: 40px 20px;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+        grid-template-columns: 1fr;
         gap: 30px;
     }
 
@@ -90,6 +96,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
+        justify-content: center;
     }
 
     .logo h1 {
@@ -176,65 +183,114 @@
         width: 100px;
     }
 
-    /* Scanner Container */
-    #scanner-container {
-        width: 100%;
-        height: 500px;
-        background: var(--ms-gray);
-        border-radius: 12px;
-        overflow: hidden;
+    /* Search Section */
+    .search-container {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+
+    .search-input {
+        flex: 1;
+        min-width: 300px;
+        padding: 20px;
+        border: 2px solid var(--ms-gray-dark);
+        border-radius: var(--ms-border-radius);
+        font-size: 1.2rem;
+        transition: var(--ms-transition);
+        background: var(--ms-gray-light);
+        color: var(--ms-dark);
+    }
+
+    .search-input:focus {
+        border-color: var(--ms-blue);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(0, 120, 212, 0.3);
+    }
+
+    .search-btn {
+        padding: 20px 40px;
+        background: var(--ms-blue);
+        color: white;
+        border: none;
+        border-radius: var(--ms-border-radius);
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: var(--ms-transition);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-weight: 600;
+        box-shadow: var(--ms-card-shadow);
+    }
+
+    .search-btn:hover {
+        background: var(--ms-blue-dark);
+        transform: translateY(-5px);
+        box-shadow: var(--ms-card-shadow-hover);
+    }
+
+    .search-btn i {
+        font-size: 1.8rem;
+    }
+
+    /* Song Display */
+    .song-display {
+        background: var(--ms-gray-light);
+        border-radius: var(--ms-border-radius);
+        padding: 30px;
+        margin-top: 20px;
+        max-height: 500px;
+        overflow-y: auto;
         position: relative;
-        margin: 30px 0;
         border: 1px solid var(--ms-gray-dark);
         box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-        transition: var(--ms-transition);
     }
 
-    #scanner-container.active {
-        box-shadow: 0 0 0 3px var(--ms-blue);
+    .song-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--ms-blue);
+        margin-bottom: 10px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--ms-gray-dark);
     }
 
-    #scanner-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: var(--ms-transition);
+    .song-artist {
+        font-size: 1.4rem;
+        color: var(--ms-dark);
+        margin-bottom: 25px;
+        font-style: italic;
     }
 
-    #barcode-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 10;
+    .chord-line {
+        color: var(--ms-error);
+        font-weight: bold;
+        font-size: 1.3rem;
+        line-height: 2;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
     }
 
-    #barcode-box {
-        position: absolute;
-        border: 4px solid var(--ms-success);
-        box-shadow: 0 0 30px rgba(40, 167, 69, 0.6);
-        display: none;
-        z-index: 10;
-        transition: all 0.2s ease;
-        border-radius: 4px;
+    .lyrics-line {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        padding-left: 10px;
     }
 
-    .scanner-overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 70%;
-        height: 250px;
-        border: 4px solid rgba(255,255,255,0.3);
-        pointer-events: none;
-        border-radius: 12px;
-        transition: var(--ms-transition);
+    .section-title {
+        display: block;
+        color: var(--ms-blue);
+        font-weight: bold;
+        margin: 30px 0 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--ms-gray-dark);
+        font-size: 1.4rem;
     }
 
-    /* Controls Grid */
+    /* Controls */
     .controls {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -242,8 +298,7 @@
         margin-top: 30px;
     }
 
-    /* Buttons - Microsoft Style */
-    button {
+    .control-btn {
         padding: 25px 20px;
         border: none;
         border-radius: var(--ms-border-radius);
@@ -258,26 +313,9 @@
         box-shadow: var(--ms-card-shadow);
         position: relative;
         overflow: hidden;
-        transform: translateY(0);
     }
 
-    button::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(100%);
-        transition: transform 0.3s ease;
-    }
-
-    button:hover::after {
-        transform: translateY(0);
-    }
-
-    button:hover {
+    .control-btn:hover {
         transform: translateY(-5px);
         box-shadow: var(--ms-card-shadow-hover);
     }
@@ -318,143 +356,63 @@
         background: #b0262e;
     }
 
-    button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none !important;
-        box-shadow: var(--ms-card-shadow);
+    .btn-accent {
+        background: var(--ms-accent);
+        color: var(--ms-dark);
     }
 
-    button i {
+    .btn-accent:hover {
+        background: var(--ms-accent-dark);
+    }
+
+    .control-btn i {
         font-size: 1.8rem;
     }
 
-    /* Cart Section */
-    .cart-section {
-        background: var(--ms-light);
-        border-radius: var(--ms-border-radius);
-        padding: 40px;
-        margin-top: 0;
-        box-shadow: var(--ms-card-shadow);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        position: relative;
-        overflow: hidden;
-        animation: fadeIn var(--ms-animation-duration) ease-out 0.2s;
-        animation-fill-mode: both;
-    }
-
-    .cart-section::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: var(--ms-success);
-        transition: var(--ms-transition);
-    }
-
-    .cart-section:hover::before {
-        background: #0d6910;
-    }
-
-    .cart-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 25px 0;
-        border-bottom: 1px solid var(--ms-gray-dark);
-        transition: var(--ms-transition);
-    }
-
-    .cart-item:hover {
-        background: rgba(0, 0, 0, 0.02);
-    }
-
-    .quantity-controls {
+    /* Speed Control */
+    .speed-control {
         display: flex;
         align-items: center;
         gap: 15px;
-        background: var(--ms-gray);
-        border-radius: 8px;
-        padding: 12px 18px;
-        border: 1px solid var(--ms-gray-dark);
-    }
-
-    .quantity-controls button {
-        background: none;
-        border: none;
-        padding: 8px 16px;
-        font-size: 1.8rem;
-        color: var(--ms-dark);
-        box-shadow: none;
-        width: auto;
-        height: auto;
-    }
-
-    .quantity-controls button:hover {
-        background: var(--ms-gray-dark);
-        transform: none;
-    }
-
-    /* Modals - Microsoft Style */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: var(--ms-light);
-        padding: 50px;
+        margin-top: 25px;
+        padding: 15px;
+        background: rgba(0, 120, 212, 0.1);
         border-radius: var(--ms-border-radius);
-        width: 95%;
-        max-width: 700px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        z-index: 1000;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .modal::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: var(--ms-blue);
-    }
-
-    .modal h3 {
-        margin: 0 0 40px 0;
-        font-size: 2.2rem;
-        color: var(--ms-dark);
-        font-weight: 700;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--ms-gray-dark);
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .modal-input {
-        width: 100%;
-        padding: 25px;
-        margin: 25px 0;
-        border: 2px solid var(--ms-blue);
-        border-radius: var(--ms-border-radius);
+    .speed-control label {
         font-size: 1.2rem;
-        transition: var(--ms-transition);
-        background: var(--ms-gray);
+        white-space: nowrap;
         color: var(--ms-dark);
     }
 
-    .modal-input:focus {
-        border-color: var(--ms-blue-dark);
+    .speed-control input {
+        flex: 1;
+        height: 12px;
+        border-radius: 10px;
+        background: var(--ms-gray);
         outline: none;
-        box-shadow: 0 0 0 4px rgba(0, 120, 212, 0.3);
+        -webkit-appearance: none;
     }
 
+    .speed-control input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: var(--ms-blue);
+        cursor: pointer;
+    }
+
+    #speedValue {
+        min-width: 50px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: var(--ms-blue);
+    }
+
+    /* Notification */
     .notification {
         position: fixed;
         bottom: 50px;
@@ -462,7 +420,7 @@
         transform: translateX(-50%);
         background: var(--ms-dark);
         color: white;
-        padding: 35px 60px;
+        padding: 25px 50px;
         border-radius: var(--ms-border-radius);
         display: none;
         animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -470,48 +428,6 @@
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         font-size: 1.3rem;
         font-weight: 600;
-    }
-
-    #cart-total {
-        font-weight: 700;
-        margin-top: 30px;
-        padding-top: 30px;
-        border-top: 1px solid var(--ms-gray-dark);
-        font-size: 1.8rem;
-        color: var(--ms-dark);
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .status-indicator {
-        display: inline-flex;
-        align-items: center;
-        gap: 15px;
-        padding: 12px 25px;
-        border-radius: 30px;
-        font-size: 1.3rem;
-        background: rgba(39, 174, 96, 0.1);
-        color: var(--ms-success);
-        box-shadow: var(--ms-card-shadow);
-        transition: var(--ms-transition);
-    }
-
-    .status-indicator .dot {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: var(--ms-success);
-        box-shadow: 0 0 10px var(--ms-success);
-    }
-
-    .status-indicator.inactive .dot {
-        background: var(--ms-error);
-        box-shadow: 0 0 10px var(--ms-error);
-    }
-
-    .status-indicator.inactive {
-        background: rgba(220, 53, 69, 0.1);
-        color: var(--ms-error);
     }
 
     /* Animations */
@@ -530,35 +446,14 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes scaleIn {
-        from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
-        to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    }
-
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
-        100% { transform: translateY(0px); }
-    }
-
     @keyframes pulse {
         0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+        50% { transform: scale(1.05); }
         100% { transform: scale(1); }
-    }
-
-    @keyframes fadeInOut {
-        0% { opacity: 0.7; }
-        50% { opacity: 1; }
-        100% { opacity: 0.7; }
     }
 
     /* Responsive design */
     @media (max-width: 1200px) {
-        .container {
-            grid-template-columns: 1fr;
-        }
-        
         header {
             margin: 0 5% 30px;
         }
@@ -581,30 +476,25 @@
             font-size: 1.8rem;
         }
         
-        .card, .cart-section {
+        .card {
             padding: 30px;
         }
         
-        #scanner-container {
-            height: 400px;
-        }
-        
-        .scanner-overlay {
-            width: 85%;
-            height: 200px;
+        .song-display {
+            max-height: 400px;
         }
         
         .card-header h2 {
             font-size: 1.8rem;
         }
         
-        button {
+        .control-btn {
             padding: 20px;
             font-size: 1.2rem;
         }
         
-        .modal {
-            padding: 35px;
+        .search-input {
+            min-width: 100%;
         }
     }
 
@@ -613,38 +503,25 @@
             padding: 20px 15px;
         }
         
-        #scanner-container {
-            height: 300px;
-        }
-        
-        .scanner-overlay {
-            height: 180px;
-        }
-        
-        button {
+        .control-btn {
             padding: 18px;
             font-size: 1.1rem;
         }
         
-        .modal {
-            padding: 25px 20px;
+        .song-title {
+            font-size: 1.6rem;
         }
         
-        .modal-input {
-            padding: 20px;
+        .song-artist {
+            font-size: 1.2rem;
         }
         
-        .notification {
-            padding: 30px 40px;
+        .chord-line {
             font-size: 1.1rem;
         }
         
-        .card, .cart-section {
-            padding: 25px 20px;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
+        .lyrics-line {
+            font-size: 1rem;
         }
         
         .controls {
@@ -652,3 +529,402 @@
         }
     }
     </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-guitar"></i>
+            <h1>GuitarTab Pro</h1>
+        </div>
+        <p style="text-align: center; margin-top: 20px; font-size: 1.2rem;">
+            Finde Gitarrenakkorde für deine Lieblingssongs - Mit Smart Scroll Funktion
+        </p>
+    </header> 
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Songsuche</h2>
+                <div class="status-indicator" id="status-indicator">
+                    <span>Bereit</span>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="artistInput" class="search-input" placeholder="Künstler (z.B. Beatles)">
+                <input type="text" id="songInput" class="search-input" placeholder="Songtitel (z.B. Let It Be)">
+                <button id="searchButton" class="search-btn">
+                    <i class="fas fa-search"></i> Akkorde finden
+                </button>
+            </div>
+            
+            <div class="song-display" id="song-display">
+                <div style="text-align: center; padding: 40px; color: var(--ms-gray-dark);">
+                    <i class="fas fa-music" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                    <h3>Gib einen Künstler und Songtitel ein</h3>
+                    <p>Deine Akkorde werden hier angezeigt</p>
+                </div>
+            </div>
+            
+            <div class="speed-control">
+                <label for="scrollSpeed">Scroll-Geschwindigkeit:</label>
+                <input type="range" id="scrollSpeed" min="20" max="100" value="50">
+                <span id="speedValue">50%</span>
+            </div>
+            
+            <div class="controls">
+                <button id="scrollToggle" class="control-btn btn-primary">
+                    <i class="fas fa-play"></i> Auto-Scroll Start
+                </button>
+                <button id="saveButton" class="control-btn btn-success">
+                    <i class="fas fa-download"></i> Offline speichern
+                </button>
+                <button id="transposeUp" class="control-btn btn-secondary">
+                    <i class="fas fa-arrow-up"></i> Transponieren (+)
+                </button>
+                <button id="transposeDown" class="control-btn btn-secondary">
+                    <i class="fas fa-arrow-down"></i> Transponieren (-)
+                </button>
+                <button id="copyBtn" class="control-btn btn-accent">
+                    <i class="fas fa-copy"></i> Akkorde kopieren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // App State
+        let currentSongData = null;
+        let autoScrollInterval = null;
+        let currentScrollSpeed = 50;
+        let scrollPosition = 0;
+        let transposition = 0;
+
+        // DOM Elements
+        const artistInput = document.getElementById('artistInput');
+        const songInput = document.getElementById('songInput');
+        const searchButton = document.getElementById('searchButton');
+        const songDisplay = document.getElementById('song-display');
+        const scrollToggle = document.getElementById('scrollToggle');
+        const saveButton = document.getElementById('saveButton');
+        const transposeUp = document.getElementById('transposeUp');
+        const transposeDown = document.getElementById('transposeDown');
+        const copyBtn = document.getElementById('copyBtn');
+        const scrollSpeed = document.getElementById('scrollSpeed');
+        const speedValue = document.getElementById('speedValue');
+        const notification = document.getElementById('notification');
+        const statusIndicator = document.getElementById('status-indicator');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event Listeners
+            searchButton.addEventListener('click', searchSong);
+            scrollToggle.addEventListener('click', toggleAutoScroll);
+            saveButton.addEventListener('click', saveOffline);
+            transposeUp.addEventListener('click', () => transposeChords(1));
+            transposeDown.addEventListener('click', () => transposeChords(-1));
+            copyBtn.addEventListener('click', copyChords);
+            scrollSpeed.addEventListener('input', updateScrollSpeed);
+            
+            // Load saved songs
+            loadSavedSongs();
+            
+            // Set initial scroll speed
+            updateScrollSpeed();
+        });
+
+        // Search for a song
+        async function searchSong() {
+            const artist = artistInput.value.trim();
+            const song = songInput.value.trim();
+            
+            if (!artist || !song) {
+                showNotification("Bitte Künstler und Songtitel eingeben", "error");
+                return;
+            }
+            
+            showNotification("Suche Akkorde...", "info");
+            statusIndicator.innerHTML = '<span style="color: var(--ms-accent);">Suche Akkorde...</span>';
+            
+            try {
+                // For GitHub Pages, we'll use a simple mock as we can't use a proxy
+                // In a real implementation, you would use a backend service here
+                const songData = await fetchSongData(artist, song);
+                currentSongData = songData;
+                displaySong(songData);
+                showNotification("Akkorde geladen!", "success");
+                statusIndicator.innerHTML = '<span style="color: var(--ms-success);">Akkorde geladen</span>';
+            } catch (error) {
+                console.error(error);
+                showNotification("Fehler beim Laden des Songs. Bitte versuche einen anderen Songtitel.", "error");
+                statusIndicator.innerHTML = '<span style="color: var(--ms-error);">Fehler beim Laden</span>';
+            }
+        }
+
+        // Fetch song data - Mock implementation for GitHub Pages
+        async function fetchSongData(artist, song) {
+            // This is a mock implementation for GitHub Pages
+            // In a real implementation, you would call a backend service
+            // that fetches data from Ultimate Guitar or similar
+            
+            return new Promise((resolve) => {
+                // Simulate network delay
+                setTimeout(() => {
+                    resolve({
+                        title: song,
+                        artist: artist,
+                        content: `
+[Intro]
+[ch]C[/ch] [ch]G[/ch] [ch]Am[/ch] [ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]
+
+[Verse 1]
+[ch]C[/ch]When I find myself in times of trouble
+[ch]G[/ch]Mother Mary comes to me
+[ch]Am[/ch]Speaking words of wisdom
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+
+[Verse 2]
+[ch]C[/ch]And in my hour of darkness
+[ch]G[/ch]She is standing right in front of me
+[ch]Am[/ch]Speaking words of wisdom
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+
+[Chorus]
+[ch]Am[/ch]Let it be, [ch]G[/ch]let it be
+[ch]F[/ch]Let it be, [ch]C[/ch]let it be
+[ch]G[/ch]Whisper words of wisdom
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+
+[Verse 3]
+[ch]C[/ch]And when the broken hearted people
+[ch]G[/ch]Living in the world agree
+[ch]Am[/ch]There will be an answer
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+
+[Chorus]
+[ch]Am[/ch]Let it be, [ch]G[/ch]let it be
+[ch]F[/ch]Let it be, [ch]C[/ch]let it be
+[ch]G[/ch]There will be an answer
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be
+
+[Outro]
+[ch]C[/ch]Let it be, [ch]G[/ch]let it be
+[ch]Am[/ch]Let it be, [ch]F[/ch]let it be
+[ch]C[/ch]Yeah, there will be an answer
+[ch]G[/ch]Let it be
+[ch]F[/ch]Let it be, [ch]C[/ch]let it be
+[ch]G[/ch]Let it be, [ch]F[/ch]let it be
+[ch]C[/ch]Whisper words of wisdom
+[ch]G[/ch]Let it be
+                        `
+                    });
+                }, 1500);
+            });
+        }
+
+        // Display song
+        function displaySong(songData) {
+            let html = `
+                <div class="song-title">${songData.title}</div>
+                <div class="song-artist">${songData.artist}</div>
+            `;
+            
+            const sections = songData.content.split('\n\n');
+            
+            sections.forEach(section => {
+                const lines = section.trim().split('\n');
+                const sectionTitle = lines[0].match(/\[(.*?)\]/)?.[1];
+                
+                if (sectionTitle) {
+                    html += `<div class="section-title">${sectionTitle}</div>`;
+                }
+                
+                let chordLine = '';
+                let lyricLine = '';
+                
+                for (let i = sectionTitle ? 1 : 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    
+                    if (line.includes('[ch]')) {
+                        // Chord line
+                        const chordLineContent = line.replace(/\[ch\](.*?)\[\/ch\]/g, '<span class="chord">$1</span>');
+                        chordLine += `<div class="chord-line">${chordLineContent}</div>`;
+                    } else if (line) {
+                        // Lyric line
+                        lyricLine += `<div class="lyrics-line">${line}</div>`;
+                    }
+                }
+                
+                html += chordLine + lyricLine;
+            });
+            
+            songDisplay.innerHTML = html;
+            
+            // Reset scroll position
+            songDisplay.scrollTop = 0;
+            scrollPosition = 0;
+            
+            // Reset transposition
+            transposition = 0;
+        }
+
+        // Toggle auto scroll
+        function toggleAutoScroll() {
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+                autoScrollInterval = null;
+                scrollToggle.innerHTML = '<i class="fas fa-play"></i> Auto-Scroll Start';
+                scrollToggle.classList.remove('btn-danger');
+                scrollToggle.classList.add('btn-primary');
+            } else {
+                startAutoScroll();
+                scrollToggle.innerHTML = '<i class="fas fa-stop"></i> Auto-Scroll Stop';
+                scrollToggle.classList.remove('btn-primary');
+                scrollToggle.classList.add('btn-danger');
+            }
+        }
+
+        // Start auto scroll
+        function startAutoScroll() {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            
+            autoScrollInterval = setInterval(() => {
+                const maxScroll = songDisplay.scrollHeight - songDisplay.clientHeight;
+                
+                if (scrollPosition >= maxScroll) {
+                    scrollPosition = 0;
+                } else {
+                    scrollPosition += 1;
+                }
+                
+                songDisplay.scrollTop = scrollPosition;
+            }, 1000 / (currentScrollSpeed / 10));
+        }
+
+        // Update scroll speed
+        function updateScrollSpeed() {
+            currentScrollSpeed = parseInt(scrollSpeed.value);
+            speedValue.textContent = `${currentScrollSpeed}%`;
+            
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+                startAutoScroll();
+            }
+        }
+
+        // Transpose chords
+        function transposeChords(steps) {
+            transposition += steps;
+            const chords = document.querySelectorAll('.chord');
+            
+            chords.forEach(chord => {
+                chord.textContent = transposeChord(chord.textContent, steps);
+            });
+            
+            showNotification(`Um ${steps} Halbtöne transponiert`, "info");
+        }
+
+        // Transpose a single chord
+        function transposeChord(chord, steps) {
+            const chordMap = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const baseChord = chord.replace(/[^A-G#]/g, '');
+            const suffix = chord.replace(baseChord, '');
+            
+            const baseIndex = chordMap.indexOf(baseChord);
+            if (baseIndex === -1) return chord;
+            
+            const newIndex = (baseIndex + steps + 12) % 12;
+            return chordMap[newIndex] + suffix;
+        }
+
+        // Save song offline
+        function saveOffline() {
+            if (!currentSongData) {
+                showNotification("Kein Song zum Speichern gefunden", "error");
+                return;
+            }
+            
+            try {
+                let savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
+                
+                // Add timestamp
+                const songToSave = {
+                    ...currentSongData,
+                    savedAt: new Date().toISOString(),
+                    transposition: transposition
+                };
+                
+                savedSongs.push(songToSave);
+                localStorage.setItem('guitarTabs', JSON.stringify(savedSongs));
+                
+                showNotification("Song offline gespeichert!", "success");
+            } catch (e) {
+                showNotification("Fehler beim Speichern: " + e.message, "error");
+            }
+        }
+
+        // Load saved songs
+        function loadSavedSongs() {
+            try {
+                const savedSongs = JSON.parse(localStorage.getItem('guitarTabs')) || [];
+                if (savedSongs.length > 0) {
+                    showNotification(`${savedSongs.length} offline gespeicherte Songs gefunden`, "info");
+                }
+            } catch (e) {
+                console.error("Error loading saved songs:", e);
+            }
+        }
+
+        // Copy chords to clipboard
+        function copyChords() {
+            if (!currentSongData) {
+                showNotification("Keine Akkorde zum Kopieren", "error");
+                return;
+            }
+            
+            try {
+                // Create a simplified text version
+                const chordText = currentSongData.content
+                    .replace(/\[ch\](.*?)\[\/ch\]/g, '$1')
+                    .replace(/\[.*?\]/g, '');
+                
+                navigator.clipboard.writeText(chordText)
+                    .then(() => {
+                        showNotification("Akkorde kopiert!", "success");
+                    })
+                    .catch(err => {
+                        showNotification("Fehler beim Kopieren: " + err, "error");
+                    });
+            } catch (e) {
+                showNotification("Fehler beim Kopieren: " + e.message, "error");
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = "info") {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            switch (type) {
+                case "success":
+                    notification.style.backgroundColor = "var(--ms-success)";
+                    break;
+                case "error":
+                    notification.style.backgroundColor = "var(--ms-error)";
+                    break;
+                case "info":
+                    notification.style.backgroundColor = "var(--ms-blue)";
+                    break;
+                default:
+                    notification.style.backgroundColor = "var(--ms-dark)";
+            }
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
