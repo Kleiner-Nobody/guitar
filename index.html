@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuitarTab Pro - Erweiterte Akkord-Darstellung</title>
+    <title>GuitarTab Pro - Online Akkord-Suche</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     :root {
@@ -256,6 +256,9 @@
         border-bottom: 1px solid var(--ms-gray-dark);
         cursor: pointer;
         transition: var(--ms-transition);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .suggestion-item:hover {
@@ -266,6 +269,13 @@
     .suggestion-artist {
         font-size: 0.9rem;
         opacity: 0.7;
+    }
+
+    .suggestion-source {
+        background: var(--ms-accent);
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
     }
 
     /* Song Display */
@@ -541,6 +551,23 @@
         color: white;
     }
 
+    /* Loading spinner */
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid var(--ms-blue);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
     /* Animations */
     @keyframes slideDown {
         from { transform: translateY(-100px); opacity: 0; }
@@ -655,33 +682,34 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h2>Songsuche</h2>
+                <h2>Online Songsuche</h2>
                 <div class="status-indicator" id="status-indicator">
                     <span>Bereit</span>
                 </div>
             </div>
             
             <div class="search-container">
-                <input type="text" id="artistInput" class="search-input" placeholder="Künstler (z.B. Beatles)">
-                <input type="text" id="songInput" class="search-input" placeholder="Songtitel (z.B. Let It Be)">
+                <input type="text" id="songInput" class="search-input" placeholder="Songtitel und Künstler (z.B. Let It Be Beatles)">
                 <button id="searchButton" class="search-btn">
                     <i class="fas fa-search"></i> Akkorde finden
                 </button>
                 <div class="suggestions-container" id="suggestionsContainer"></div>
             </div>
             
+            <div class="spinner" id="loadingSpinner"></div>
+            
             <div class="song-display" id="song-display">
                 <div style="text-align: center; padding: 40px; color: var(--ms-gray-dark);">
                     <i class="fas fa-music" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
-                    <h3>Gib einen Künstler und Songtitel ein</h3>
+                    <h3>Gib einen Songtitel und Künstler ein</h3>
                     <p>Deine Akkorde werden hier angezeigt</p>
                 </div>
             </div>
             
             <div class="speed-control">
                 <label for="scrollSpeed">Scroll-Geschwindigkeit:</label>
-                <input type="range" id="scrollSpeed" min="20" max="100" value="50">
-                <span id="speedValue">50%</span>
+                <input type="range" id="scrollSpeed" min="1" max="10" value="3">
+                <span id="speedValue">3 W/s</span>
             </div>
             
             <div class="controls">
@@ -726,12 +754,14 @@
         // App State
         let currentSongData = null;
         let autoScrollInterval = null;
-        let currentScrollSpeed = 50;
+        let currentScrollSpeed = 3; // Wörter pro Sekunde
         let scrollPosition = 0;
         let transposition = 0;
+        let songLines = [];
+        let currentLineIndex = 0;
+        let lastUpdateTime = 0;
 
         // DOM Elements
-        const artistInput = document.getElementById('artistInput');
         const songInput = document.getElementById('songInput');
         const searchButton = document.getElementById('searchButton');
         const songDisplay = document.getElementById('song-display');
@@ -749,10 +779,138 @@
         const offlineSongsModal = document.getElementById('offlineSongsModal');
         const closeOfflineModal = document.getElementById('closeOfflineModal');
         const offlineSongsList = document.getElementById('offlineSongsList');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
-        // Song database with 1000+ popular guitar songs
-        const songDatabase = [
-            { title: "Let It Be", artist: "The Beatles", content: `
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event Listeners
+            searchButton.addEventListener('click', searchSong);
+            scrollToggle.addEventListener('click', toggleAutoScroll);
+            saveButton.addEventListener('click', saveOffline);
+            transposeUp.addEventListener('click', () => transposeChords(1));
+            transposeDown.addEventListener('click', () => transposeChords(-1));
+            copyBtn.addEventListener('click', copyChords);
+            scrollSpeed.addEventListener('input', updateScrollSpeed);
+            offlineSongsBtn.addEventListener('click', showOfflineSongs);
+            closeOfflineModal.addEventListener('click', () => {
+                offlineSongsModal.style.display = 'none';
+            });
+            
+            // Search suggestions
+            songInput.addEventListener('input', showSuggestions);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === offlineSongsModal) {
+                    offlineSongsModal.style.display = 'none';
+                }
+            });
+            
+            // Set initial scroll speed
+            updateScrollSpeed();
+        });
+
+        // Show search suggestions
+        function showSuggestions() {
+            const query = songInput.value.trim().toLowerCase();
+            
+            suggestionsContainer.innerHTML = '';
+            
+            if (!query) {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+            
+            // In a real implementation, this would fetch from an API
+            // For demo, we'll show some popular suggestions
+            const popularSongs = [
+                { title: "Let It Be", artist: "The Beatles", source: "Online" },
+                { title: "Hotel California", artist: "Eagles", source: "Online" },
+                { title: "Wonderwall", artist: "Oasis", source: "Online" },
+                { title: "Stairway to Heaven", artist: "Led Zeppelin", source: "Online" },
+                { title: "Sweet Child O' Mine", artist: "Guns N' Roses", source: "Online" }
+            ];
+            
+            const filteredSongs = popularSongs.filter(songData => {
+                const songStr = `${songData.title} ${songData.artist}`.toLowerCase();
+                return songStr.includes(query);
+            }).slice(0, 5);
+            
+            if (filteredSongs.length === 0) {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+            
+            filteredSongs.forEach(songData => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                suggestionItem.innerHTML = `
+                    <div>
+                        <div>${songData.title}</div>
+                        <div class="suggestion-artist">${songData.artist}</div>
+                    </div>
+                    <div class="suggestion-source">${songData.source}</div>
+                `;
+                
+                suggestionItem.addEventListener('click', () => {
+                    songInput.value = `${songData.title} ${songData.artist}`;
+                    suggestionsContainer.style.display = 'none';
+                    searchSong();
+                });
+                
+                suggestionsContainer.appendChild(suggestionItem);
+            });
+            
+            suggestionsContainer.style.display = 'block';
+        }
+
+        // Search for a song online
+        async function searchSong() {
+            const query = songInput.value.trim();
+            
+            if (!query) {
+                showNotification("Bitte einen Songtitel und Künstler eingeben", "error");
+                return;
+            }
+            
+            showNotification("Suche Akkorde online...", "info");
+            statusIndicator.innerHTML = '<span style="color: var(--ms-accent);">Suche Akkorde...</span>';
+            loadingSpinner.style.display = 'block';
+            songDisplay.innerHTML = '';
+            
+            try {
+                const songData = await fetchSongData(query);
+                currentSongData = songData;
+                displaySong(songData);
+                showNotification("Akkorde geladen!", "success");
+                statusIndicator.innerHTML = '<span style="color: var(--ms-success);">Akkorde geladen</span>';
+            } catch (error) {
+                console.error(error);
+                showNotification("Fehler beim Laden des Songs. Bitte versuche einen anderen Songtitel.", "error");
+                statusIndicator.innerHTML = '<span style="color: var(--ms-error);">Fehler beim Laden</span>';
+                songDisplay.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--ms-gray-dark);">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 20px; color: var(--ms-error);"></i>
+                        <h3>Fehler beim Laden des Songs</h3>
+                        <p>Bitte versuche einen anderen Songtitel</p>
+                    </div>
+                `;
+            } finally {
+                loadingSpinner.style.display = 'none';
+                suggestionsContainer.style.display = 'none';
+            }
+        }
+
+        // Fetch song data from online source (mock implementation)
+        async function fetchSongData(query) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // This would be an API call in a real implementation
+                    // For demo, we return mock data based on the query
+                    let songContent = '';
+                    
+                    if (query.toLowerCase().includes('let it be')) {
+                        songContent = `
 [Intro]
 [ch]C[/ch] [ch]G[/ch] [ch]Am[/ch] [ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]
 
@@ -772,8 +930,11 @@
 [ch]Am[/ch]Let it be, [ch]G[/ch]let it be
 [ch]F[/ch]Let it be, [ch]C[/ch]let it be
 [ch]G[/ch]Whisper words of wisdom
-[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be` },
-            { title: "Hotel California", artist: "Eagles", content: `
+[ch]F[/ch] [ch]C[/ch] [ch]G[/ch] [ch]F[/ch] [ch]C[/ch]Let it be`;
+                        resolve({ title: "Let It Be", artist: "The Beatles", content: songContent });
+                    } 
+                    else if (query.toLowerCase().includes('hotel california')) {
+                        songContent = `
 [Intro]
 [ch]Bm[/ch] [ch]F#[/ch] [ch]A[/ch] [ch]E[/ch] [ch]G[/ch] [ch]D[/ch] [ch]Em[/ch] [ch]F#[/ch]
 
@@ -782,207 +943,29 @@
 [ch]F#[/ch]Warm smell of colitas, rising up through the air
 [ch]A[/ch]Up ahead in the distance, I saw a shimmering light
 [ch]E[/ch]My head grew heavy and my sight grew dim
-[ch]G[/ch]I had to stop for the night` },
-            { title: "Wonderwall", artist: "Oasis", content: `
-[Intro]
-[ch]Em[/ch] [ch]G[/ch] [ch]D[/ch] [ch]A7[/ch]
-
-[Verse 1]
-[ch]Em[/ch]Today is gonna be the day
-[ch]G[/ch]That they're gonna throw it back to you
-[ch]D[/ch]By now you should've somehow
-[ch]A7[/ch]Realized what you gotta do` },
-            { title: "Stairway to Heaven", artist: "Led Zeppelin", content: `
-[Intro]
-[ch]Am[/ch] [ch]C[/ch] [ch]D[/ch] [ch]F[/ch] [ch]Am[/ch] [ch]C[/ch] [ch]E[/ch] [ch]Am[/ch]
-
-[Verse 1]
-[ch]Am[/ch]There's a lady who's sure
-[ch]C[/ch]All that glitters is gold
-[ch]D[/ch]And she's buying a stairway to heaven` },
-            { title: "Sweet Child O' Mine", artist: "Guns N' Roses", content: `
-[Intro]
-[ch]D[/ch] [ch]C[/ch] [ch]G[/ch] [ch]D[/ch]
-
-[Verse 1]
-[ch]D[/ch]She's got a smile that it seems to me
-[ch]C[/ch]Reminds me of childhood memories
-[ch]G[/ch]Where everything was as fresh as the bright blue sky
-[ch]D[/ch]Now and then when I see her face` },
-            { title: "Smells Like Teen Spirit", artist: "Nirvana", content: `
-[Intro]
-[ch]F[/ch] [ch]Bb[/ch] [ch]Ab[/ch] [ch]Db[/ch]
-
-[Verse 1]
-[ch]F[/ch]Load up on guns, bring your friends
-[ch]Bb[/ch]It's fun to lose and to pretend
-[ch]Ab[/ch]She's over bored and self assured
-[ch]Db[/ch]Oh no, I know a dirty word` },
-            { title: "Hey Jude", artist: "The Beatles", content: `
-[Verse 1]
-[ch]F[/ch]Hey Jude, don't make it bad
-[ch]C[/ch]Take a sad song and make it better
-[ch]G[/ch]Remember to let her into your heart
-[ch]D[/ch]Then you can start to make it better` },
-            { title: "Wish You Were Here", artist: "Pink Floyd", content: `
-[Intro]
-[ch]Em[/ch] [ch]G[/ch] [ch]D[/ch] [ch]A[/ch]
-
-[Verse 1]
-[ch]Em[/ch]So, so you think you can tell
-[ch]G[/ch]Heaven from hell?
-[ch]D[/ch]Blue skies from pain?
-[ch]A[/ch]Can you tell a green field` },
-            { title: "Knockin' on Heaven's Door", artist: "Bob Dylan", content: `
-[Verse 1]
-[ch]G[/ch]Mama, take this badge off of me
-[ch]D[/ch]I can't use it anymore
-[ch]Am[/ch]It's gettin' dark, too dark to see
-[ch]G[/ch]I feel like I'm knockin' on heaven's door` },
-            { title: "Tears in Heaven", artist: "Eric Clapton", content: `
-[Verse 1]
-[ch]A[/ch]Would you know my name
-[ch]E[/ch]If I saw you in heaven?
-[ch]F#m[/ch]Would it be the same
-[ch]D[/ch]If I saw you in heaven?` }
-            // In a real implementation, this would contain 1000 entries
-        ];
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Event Listeners
-            searchButton.addEventListener('click', searchSong);
-            scrollToggle.addEventListener('click', toggleAutoScroll);
-            saveButton.addEventListener('click', saveOffline);
-            transposeUp.addEventListener('click', () => transposeChords(1));
-            transposeDown.addEventListener('click', () => transposeChords(-1));
-            copyBtn.addEventListener('click', copyChords);
-            scrollSpeed.addEventListener('input', updateScrollSpeed);
-            offlineSongsBtn.addEventListener('click', showOfflineSongs);
-            closeOfflineModal.addEventListener('click', () => {
-                offlineSongsModal.style.display = 'none';
-            });
-            
-            // Search suggestions
-            songInput.addEventListener('input', showSuggestions);
-            artistInput.addEventListener('input', showSuggestions);
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', (e) => {
-                if (e.target === offlineSongsModal) {
-                    offlineSongsModal.style.display = 'none';
-                }
-            });
-            
-            // Set initial scroll speed
-            updateScrollSpeed();
-        });
-
-        // Show search suggestions
-        function showSuggestions() {
-            const artist = artistInput.value.trim().toLowerCase();
-            const song = songInput.value.trim().toLowerCase();
-            
-            suggestionsContainer.innerHTML = '';
-            
-            if (!artist && !song) {
-                suggestionsContainer.style.display = 'none';
-                return;
-            }
-            
-            const filteredSongs = songDatabase.filter(songData => {
-                const matchesArtist = artist ? songData.artist.toLowerCase().includes(artist) : true;
-                const matchesSong = song ? songData.title.toLowerCase().includes(song) : true;
-                return matchesArtist && matchesSong;
-            }).slice(0, 10); // Limit to 10 suggestions
-            
-            if (filteredSongs.length === 0) {
-                suggestionsContainer.style.display = 'none';
-                return;
-            }
-            
-            filteredSongs.forEach(songData => {
-                const suggestionItem = document.createElement('div');
-                suggestionItem.className = 'suggestion-item';
-                suggestionItem.innerHTML = `
-                    <div>${songData.title}</div>
-                    <div class="suggestion-artist">${songData.artist}</div>
-                `;
-                
-                suggestionItem.addEventListener('click', () => {
-                    artistInput.value = songData.artist;
-                    songInput.value = songData.title;
-                    suggestionsContainer.style.display = 'none';
-                    searchSong();
-                });
-                
-                suggestionsContainer.appendChild(suggestionItem);
-            });
-            
-            suggestionsContainer.style.display = 'block';
-        }
-
-        // Search for a song
-        async function searchSong() {
-            const artist = artistInput.value.trim();
-            const song = songInput.value.trim();
-            
-            if (!artist && !song) {
-                showNotification("Bitte Künstler oder Songtitel eingeben", "error");
-                return;
-            }
-            
-            showNotification("Suche Akkorde...", "info");
-            statusIndicator.innerHTML = '<span style="color: var(--ms-accent);">Suche Akkorde...</span>';
-            
-            try {
-                const songData = await fetchSongData(artist, song);
-                currentSongData = songData;
-                displaySong(songData);
-                showNotification("Akkorde geladen!", "success");
-                statusIndicator.innerHTML = '<span style="color: var(--ms-success);">Akkorde geladen</span>';
-            } catch (error) {
-                console.error(error);
-                showNotification("Fehler beim Laden des Songs. Bitte versuche einen anderen Songtitel.", "error");
-                statusIndicator.innerHTML = '<span style="color: var(--ms-error);">Fehler beim Laden</span>';
-            }
-            
-            suggestionsContainer.style.display = 'none';
-        }
-
-        // Fetch song data from database
-        async function fetchSongData(artist, song) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    const foundSong = songDatabase.find(songData => {
-                        const matchesArtist = artist ? 
-                            songData.artist.toLowerCase().includes(artist.toLowerCase()) : true;
-                        const matchesSong = song ? 
-                            songData.title.toLowerCase().includes(song.toLowerCase()) : true;
-                        return matchesArtist && matchesSong;
-                    });
-                    
-                    if (foundSong) {
-                        resolve(foundSong);
-                    } else {
-                        // Fallback to a generic song
-                        resolve({
-                            title: song || "Unbekannter Song",
-                            artist: artist || "Unbekannter Künstler",
-                            content: `
+[ch]G[/ch]I had to stop for the night`;
+                        resolve({ title: "Hotel California", artist: "Eagles", content: songContent });
+                    }
+                    else {
+                        // Generic song
+                        const [title, artist] = query.split(' ').length > 1 ? 
+                            [query.split(' ').slice(0, -1).join(' '), query.split(' ').pop()] :
+                            [query, "Unbekannter Künstler"];
+                            
+                        songContent = `
 [Verse]
-[ch]C[/ch]This is a sample song for ${artist || "unknown artist"}
+[ch]C[/ch]This is a sample song for "${title}"
 [ch]G[/ch]Showing how chords are displayed above lyrics
-[ch]Am[/ch]Try searching for one of our 1000+ songs
+[ch]Am[/ch]In a real implementation, this would come from an online API
 [ch]F[/ch]Chords are shown above the corresponding lyrics
 
 [Chorus]
 [ch]C[/ch]Chord [ch]G[/ch]positioning [ch]Am[/ch]works without CORS
-[ch]F[/ch]Using our extensive song library
-[ch]C[/ch]Enjoy [ch]G[/ch]playing [ch]F[/ch]guitar!`
-                        });
+[ch]F[/ch]Using our online search functionality
+[ch]C[/ch]Enjoy [ch]G[/ch]playing [ch]F[/ch]guitar!`;
+                        resolve({ title, artist, content: songContent });
                     }
-                }, 500);
+                }, 1500);
             });
         }
 
@@ -994,6 +977,7 @@
             `;
             
             const sections = songData.content.trim().split('\n\n');
+            songLines = [];
             
             sections.forEach(section => {
                 const lines = section.split('\n');
@@ -1005,16 +989,14 @@
                 
                 let chordLine = '';
                 let lyricLine = '';
-                let chordActive = false;
                 
                 for (let i = sectionTitleMatch ? 1 : 0; i < lines.length; i++) {
                     const line = lines[i].trim();
                     
                     // Process chord lines
                     if (line.includes('[ch]')) {
-                        chordActive = true;
-                        const chords = line.match(/\[ch\](.*?)\[\/ch\]/g);
                         chordLine = '<div class="chord-line">';
+                        const chords = line.match(/\[ch\](.*?)\[\/ch\]/g) || [];
                         
                         chords.forEach(chord => {
                             const chordName = chord.replace(/\[ch\]|\[\/ch\]/g, '');
@@ -1029,10 +1011,12 @@
                         // Only add if we have chords to display above
                         if (chordLine) {
                             html += chordLine + lyricLine;
+                            songLines.push(chordLine);
+                            songLines.push(lyricLine);
                             chordLine = '';
-                            chordActive = false;
                         } else {
                             html += lyricLine;
+                            songLines.push(lyricLine);
                         }
                     }
                 }
@@ -1040,6 +1024,7 @@
                 // Add remaining chords if any
                 if (chordLine) {
                     html += chordLine;
+                    songLines.push(chordLine);
                 }
             });
             
@@ -1048,6 +1033,8 @@
             // Reset scroll position
             songDisplay.scrollTop = 0;
             scrollPosition = 0;
+            currentLineIndex = 0;
+            lastUpdateTime = 0;
             
             // Reset transposition
             transposition = 0;
@@ -1126,7 +1113,7 @@
         // Toggle auto scroll
         function toggleAutoScroll() {
             if (autoScrollInterval) {
-                clearInterval(autoScrollInterval);
+                cancelAnimationFrame(autoScrollInterval);
                 autoScrollInterval = null;
                 scrollToggle.innerHTML = '<i class="fas fa-play"></i> Auto-Scroll Start';
                 scrollToggle.classList.remove('btn-danger');
@@ -1139,32 +1126,60 @@
             }
         }
 
-        // Start auto scroll
+        // Start auto scroll with word-based speed
         function startAutoScroll() {
-            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            if (autoScrollInterval) cancelAnimationFrame(autoScrollInterval);
             
-            autoScrollInterval = setInterval(() => {
-                const maxScroll = songDisplay.scrollHeight - songDisplay.clientHeight;
+            const startTime = performance.now();
+            lastUpdateTime = startTime;
+            
+            function scrollStep(timestamp) {
+                if (!lastUpdateTime) lastUpdateTime = timestamp;
                 
-                if (scrollPosition >= maxScroll) {
-                    scrollPosition = 0;
+                const elapsed = timestamp - lastUpdateTime;
+                const wordsPerSecond = currentScrollSpeed;
+                const wordsPerMillisecond = wordsPerSecond / 1000;
+                const wordsScrolled = elapsed * wordsPerMillisecond;
+                
+                // Move to the next line based on word count
+                if (currentLineIndex < songLines.length) {
+                    const line = songLines[currentLineIndex];
+                    const wordCount = line.split(/\s+/).filter(word => word.length > 0).length;
+                    
+                    if (wordsScrolled >= wordCount) {
+                        // Move to next line
+                        currentLineIndex++;
+                        lastUpdateTime = timestamp;
+                        
+                        // Calculate new scroll position
+                        if (currentLineIndex > 0) {
+                            const lineElements = songDisplay.querySelectorAll('.chord-line, .lyrics-line, .section-title');
+                            if (lineElements[currentLineIndex]) {
+                                scrollPosition = lineElements[currentLineIndex].offsetTop;
+                                songDisplay.scrollTop = scrollPosition;
+                            }
+                        }
+                    }
                 } else {
-                    scrollPosition += 1;
+                    // Reached the end, reset
+                    currentLineIndex = 0;
+                    scrollPosition = 0;
+                    songDisplay.scrollTop = 0;
+                    lastUpdateTime = timestamp;
                 }
                 
-                songDisplay.scrollTop = scrollPosition;
-            }, 1000 / (currentScrollSpeed / 10));
+                if (autoScrollInterval) {
+                    autoScrollInterval = requestAnimationFrame(scrollStep);
+                }
+            }
+            
+            autoScrollInterval = requestAnimationFrame(scrollStep);
         }
 
         // Update scroll speed
         function updateScrollSpeed() {
             currentScrollSpeed = parseInt(scrollSpeed.value);
-            speedValue.textContent = `${currentScrollSpeed}%`;
-            
-            if (autoScrollInterval) {
-                clearInterval(autoScrollInterval);
-                startAutoScroll();
-            }
+            speedValue.textContent = `${currentScrollSpeed} W/s`;
         }
 
         // Transpose chords
