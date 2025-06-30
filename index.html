@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuitarTab Pro - Akkorde für Gitarre</title>
+    <title>GuitarTab Pro - Ultimate Guitar Chords</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -960,6 +960,21 @@
     <div class="notification" id="notification"></div>
 
     <script>
+        // Ultimate Guitar API Key
+        const UG_API_KEY = "xgNDu6kLc2hIy8Uf4QZ7V1t9oJ0RqWb";
+        
+        // CORS Proxies for fallback
+        const CORS_PROXIES = [
+            "https://cors-anywhere.herokuapp.com/",
+            "https://api.allorigins.win/raw?url=",
+            "https://corsproxy.io/?",
+            "https://yacdn.org/proxy/",
+            "https://thingproxy.freeboard.io/fetch/",
+            "https://cors.zimjs.com/",
+            "https://cors.bridged.cc/",
+            "https://api.cors.workers.dev/?"
+        ];
+        
         // App State
         let currentSongData = null;
         let autoScrollInterval = null;
@@ -969,6 +984,7 @@
         let songLines = [];
         let currentLineIndex = 0;
         let lastUpdateTime = 0;
+        let currentProxyIndex = 0;
 
         // DOM Elements
         const songInput = document.getElementById('songInput');
@@ -1067,8 +1083,11 @@
             resultsContainer.innerHTML = '';
             
             try {
-                // Simuliere API-Aufruf mit Demo-Daten
-                const results = await simulateApiSearch(query);
+                // Zurücksetzen des Proxy-Index
+                currentProxyIndex = 0;
+                
+                // Suche durchführen
+                const results = await searchUltimateGuitar(query);
                 currentSearchResults = results;
                 
                 if (results.length === 0) {
@@ -1082,29 +1101,28 @@
                 console.error("Suchfehler:", error);
                 showNotification(`Fehler bei der Suche: ${error.message}`, "error");
                 statusIndicator.innerHTML = '<span style="color: var(--error-red);">Fehler bei der Suche</span>';
-                resultsContainer.innerHTML = `
-                    <div class="no-results">
-                        <div class="no-results-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <h3 class="no-results-title">Fehler bei der Suche</h3>
-                        <p class="no-results-text">${error.message || "Bitte versuche einen anderen Suchbegriff"}</p>
-                    </div>
-                `;
+                showNoResults(query, true);
             } finally {
                 loadingSpinner.style.display = 'none';
             }
         }
 
         // Zeige "Keine Ergebnisse" Seite
-        function showNoResults(query) {
+        function showNoResults(query, isError = false) {
             resultsContainer.innerHTML = `
                 <div class="no-results">
                     <div class="no-results-icon">
-                        <i class="fas fa-search"></i>
+                        <i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-search'}"></i>
                     </div>
-                    <h3 class="no-results-title">Keine Ergebnisse gefunden</h3>
-                    <p class="no-results-text">Es wurden keine Songs für "${query}" gefunden. Versuche einen anderen Suchbegriff.</p>
+                    <h3 class="no-results-title">
+                        ${isError ? 'Fehler bei der Suche' : 'Keine Ergebnisse gefunden'}
+                    </h3>
+                    <p class="no-results-text">
+                        ${isError 
+                            ? `Es gab ein Problem bei der Suche nach "${query}".` 
+                            : `Es wurden keine Songs für "${query}" gefunden.`}
+                        <br>Versuche einen anderen Suchbegriff.
+                    </p>
                     
                     <div class="no-results-actions">
                         <button class="action-btn" onclick="songInput.focus()">
@@ -1116,135 +1134,84 @@
                     </div>
                 </div>
             `;
-            
-            showNotification("Keine Suchergebnisse gefunden", "info");
-            statusIndicator.innerHTML = '<span style="color: var(--text-gray);">Keine Ergebnisse</span>';
         }
 
-        // Simuliere API-Suche mit Demo-Daten
-        async function simulateApiSearch(query) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    // Für Demo: Bei bestimmten Suchbegriffen keine Ergebnisse liefern
-                    if (query.toLowerCase().includes("nirvana") || query.toLowerCase().includes("leer")) {
-                        resolve([]);
-                        return;
-                    }
-                    
-                    const demoResults = [
-                        {
-                            id: 1,
-                            title: "Wonderwall",
-                            artist: "Oasis",
-                            rating: 4.8,
-                            votes: 12500,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 2,
-                            title: "Hotel California",
-                            artist: "Eagles",
-                            rating: 4.9,
-                            votes: 9800,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 3,
-                            title: "Stairway to Heaven",
-                            artist: "Led Zeppelin",
-                            rating: 4.7,
-                            votes: 11200,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 4,
-                            title: "Sweet Child O' Mine",
-                            artist: "Guns N' Roses",
-                            rating: 4.6,
-                            votes: 8700,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 5,
-                            title: "Wish You Were Here",
-                            artist: "Pink Floyd",
-                            rating: 4.8,
-                            votes: 9200,
-                            type: "Chord",
-                            version: 1
-                        },
-                        {
-                            id: 6,
-                            title: "Knockin' On Heaven's Door",
-                            artist: "Bob Dylan",
-                            rating: 4.5,
-                            votes: 7800,
-                            type: "Chord",
-                            version: 1
-                        }
-                    ];
-                    
-                    // Filtern nach Suchbegriff
-                    const filteredResults = demoResults.filter(song => 
-                        song.title.toLowerCase().includes(query.toLowerCase()) || 
-                        song.artist.toLowerCase().includes(query.toLowerCase())
-                    );
-                    
-                    resolve(filteredResults);
-                }, 1500);
-            });
-        }
-
-        // Suchergebnisse anzeigen
-        function displaySearchResults(results) {
-            resultsContainer.innerHTML = '';
+        // Suche mit Ultimate Guitar API
+        async function searchUltimateGuitar(query) {
+            const params = new URLSearchParams({
+                page: 1,
+                page_size: 20,
+                query: query,
+                type: "chords",
+                access_token: UG_API_KEY
+            }).toString();
             
-            results.forEach(song => {
-                const resultCard = document.createElement('div');
-                resultCard.className = 'result-card';
-                resultCard.innerHTML = `
-                    <div class="result-title">${song.title}</div>
-                    <div class="result-artist">${song.artist}</div>
-                    <div class="result-info">
-                        <span><i class="fas fa-star"></i> ${song.rating.toFixed(1)}</span>
-                        <span><i class="fas fa-thumbs-up"></i> ${song.votes.toLocaleString()}</span>
-                        <span><i class="fas fa-music"></i> ${song.type}</span>
-                    </div>
-                `;
+            const targetUrl = `https://api.ultimate-guitar.com/api/v1/tab/search?${params}`;
+            
+            try {
+                // Versuche mit dem aktuellen Proxy
+                const proxy = CORS_PROXIES[currentProxyIndex];
+                const proxiedUrl = proxy + encodeURIComponent(targetUrl);
                 
-                resultCard.addEventListener('click', () => {
-                    loadSongContent(song);
+                const response = await fetch(proxiedUrl, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
                 });
                 
-                resultsContainer.appendChild(resultCard);
-            });
+                if (!response.ok) {
+                    throw new Error(`API-Fehler: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Filtere nur Chord-Tabs mit genügend Sternen
+                return data.tabs
+                    .filter(tab => 
+                        tab.type === "chords" && 
+                        tab.rating >= 4.0 && 
+                        tab.versions > 0
+                    )
+                    .map(tab => ({
+                        id: tab.id,
+                        title: tab.song_name,
+                        artist: tab.artist_name,
+                        rating: tab.rating,
+                        votes: tab.votes,
+                        type: "Chord",
+                        version: tab.version
+                    }));
+            } catch (error) {
+                console.warn(`Proxy ${CORS_PROXIES[currentProxyIndex]} fehlgeschlagen:`, error);
+                
+                // Nächsten Proxy versuchen
+                currentProxyIndex = (currentProxyIndex + 1) % CORS_PROXIES.length;
+                
+                if (currentProxyIndex === 0) {
+                    throw new Error("Alle Proxies fehlgeschlagen");
+                }
+                
+                // Rekursiv mit nächstem Proxy versuchen
+                return await searchUltimateGuitar(query);
+            }
         }
 
-        // Lade Song-Inhalt (Demo)
+        // Lade Song-Inhalt
         async function loadSongContent(song) {
             showNotification("Lade Song-Inhalt...", "info");
             loadingSpinner.style.display = 'block';
             
             try {
-                // Simuliere das Laden von Song-Daten
-                await new Promise(resolve => setTimeout(resolve, 1200));
+                // Lade Song-Daten von Ultimate Guitar
+                const songData = await getSongTab(song.id);
+                currentSongData = songData;
                 
-                currentSongData = {
-                    id: song.id,
-                    title: song.title,
-                    artist: song.artist,
-                    content: generateDemoTabContent(song.title),
-                    type: song.type
-                };
-                
+                // Zeige den Song an
                 songTitle.textContent = song.title;
                 songArtist.textContent = song.artist;
-                displaySong(currentSongData);
+                displaySong(songData);
                 
+                // Wechsle zur Song-Ansicht
                 resultsContainer.style.display = 'none';
                 songDisplay.style.display = 'block';
                 
@@ -1257,38 +1224,78 @@
             }
         }
 
-        // Generiere Demo-Tab-Inhalt
-        function generateDemoTabContent(songTitle) {
-            const chords = [
-                "G", "D", "Em", "C", "Am", "F", "E", "A", 
-                "Bm", "C#m", "F#m", "Bb", "Eb", "Ab", "Dm", "G7"
-            ];
+        // Hole Tab-Daten
+        async function getSongTab(tabId) {
+            const params = new URLSearchParams({
+                access_token: UG_API_KEY
+            }).toString();
             
-            const sections = ["Intro", "Verse", "Chorus", "Bridge", "Solo", "Outro"];
-            let content = "";
+            const targetUrl = `https://api.ultimate-guitar.com/api/v1/tab/${tabId}?${params}`;
             
-            sections.forEach(section => {
-                content += `[${section}]\n\n`;
+            try {
+                // Versuche mit dem aktuellen Proxy
+                const proxy = CORS_PROXIES[currentProxyIndex];
+                const proxiedUrl = proxy + encodeURIComponent(targetUrl);
                 
-                // 4-6 Zeilen pro Abschnitt
-                for (let i = 0; i < 4 + Math.floor(Math.random() * 3); i++) {
-                    // Zufällige Akkorde generieren
-                    const lineChords = [];
-                    for (let j = 0; j < 3 + Math.floor(Math.random() * 3); j++) {
-                        const chord = chords[Math.floor(Math.random() * chords.length)];
-                        lineChords.push(`[ch]${chord}[/ch]`);
+                const response = await fetch(proxiedUrl, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
-                    
-                    const chordLine = lineChords.join(" ");
-                    const lyricsLine = `Hier kommt der Text für ${songTitle} in ${section} Teil`;
-                    
-                    content += `${chordLine}\n${lyricsLine}\n\n`;
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Tab API-Fehler: ${response.status}`);
                 }
                 
-                content += "\n";
-            });
+                const tabData = await response.json();
+                
+                // Extrahiere relevante Daten
+                return {
+                    id: tabData.id,
+                    title: tabData.song_name,
+                    artist: tabData.artist_name,
+                    content: formatTabContent(tabData.content),
+                    type: tabData.type,
+                    url: tabData.tab_url
+                };
+            } catch (error) {
+                console.warn(`Proxy ${CORS_PROXIES[currentProxyIndex]} fehlgeschlagen:`, error);
+                
+                // Nächsten Proxy versuchen
+                currentProxyIndex = (currentProxyIndex + 1) % CORS_PROXIES.length;
+                
+                if (currentProxyIndex === 0) {
+                    throw new Error("Alle Proxies fehlgeschlagen");
+                }
+                
+                // Rekursiv mit nächstem Proxy versuchen
+                return await getSongTab(tabId);
+            }
+        }
+
+        // Formatiere den Tab-Inhalt für die Anzeige
+        function formatTabContent(content) {
+            // Vereinfachte Formatierung:
+            // 1. Ersetze [ch]Akkord[/ch] mit unserem Format
+            // 2. Behalte Abschnitte bei
+            // 3. Konvertiere HTML-Tags zu Text
             
-            return content;
+            // Entferne HTML-Tags
+            let text = content.replace(/<[^>]*>/g, '');
+            
+            // Ersetze UG Chord-Tags mit unserem Format
+            text = text.replace(/\[ch\](.*?)\[\/ch\]/g, '[ch]$1[/ch]');
+            
+            // Ersetze Abschnitts-Tags
+            text = text.replace(/\[tab\]/g, '').replace(/\[\/tab\]/g, '');
+            text = text.replace(/\[intro\]/gi, '[Intro]');
+            text = text.replace(/\[verse.*?\]/gi, '[Verse]');
+            text = text.replace(/\[chorus\]/gi, '[Chorus]');
+            text = text.replace(/\[bridge\]/gi, '[Bridge]');
+            text = text.replace(/\[outro\]/gi, '[Outro]');
+            text = text.replace(/\[solo\]/gi, '[Solo]');
+            
+            return text;
         }
 
         // Song mit Akkorden und Lyrics anzeigen
